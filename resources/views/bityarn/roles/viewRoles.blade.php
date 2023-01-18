@@ -1,0 +1,31 @@
+@include('common/header')
+<div class = "text-center table-schools">
+	<main>
+	<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Role ID</th>
+					<th scope="col">Role Name</th>
+					<th scope="col">Role Description</th>
+					<th scope="col">Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($roles as $role)
+				<tr>
+			
+					<td>{{ $role->id }}</td>
+					<td>{{ $role->role_name }}</td>
+                    <td>{{ $role->role_description }}</td>
+					<td>{{ $role->status }}</td>
+
+					<td>
+						<a href = "{{ url('bityarn/editrole/'.$role->id) }}" class = "btn btn-sm btn-warning">Update</a>
+						<a href = "{{ url('bityarn/deleterole/'.$role->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+					</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+	</main>
+</div>

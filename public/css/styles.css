@@ -1,0 +1,221 @@
+body{
+    overflow-x: hidden; 
+    /* overflow-y: scroll; */
+}
+.navbar-brand, .green-color {
+    color: #088264;
+}
+nav{
+    box-shadow:1px 1px 5px;
+    background-color: #ffffff;
+}
+#sms{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.nav-link{
+    color: black;
+}
+.nav-link:hover, #active:hover, .navbar-brand:hover{
+    color: rgb(230, 100, 100);
+}
+button{
+    background-color: #088264;
+    border-radius: 25px;
+    border: solid 0.2px #fff;
+    color: #fff;
+    padding: 10px 15px 10px;
+}
+button:hover{
+    background-color: transparent;
+    color: rgb(230, 100, 100);
+    border: solid 2px #000;
+}
+.features{
+    background-color: #088264;
+    color: #fff;
+    padding: 50px 30px;
+}
+img#tick{
+    width: 20%;
+}
+.features h1{
+    padding-bottom: 10px;
+}
+.features-col.col{
+    margin: 20px;
+    background-color: #fff;
+    color: #000;
+    padding: 10px 10px;
+    line-height: 30px;
+}
+.contact{
+    background-color: #D2E6EB;
+    padding: 3% 30% 5%;
+}
+footer{
+    background-color: #088264;
+    padding-top: 15px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+#brand_footer{
+    padding: 70px 10px 50px;
+}
+.footer_links a{
+    text-decoration: none;
+    color: #fff;
+    padding: 5px;
+}
+.email-no{
+    padding: 25px 0px 20px;
+}
+.socials img{
+    /* margin: 70px 10px 50px; */
+    width: 10%;
+}
+.welcome{
+    padding: 10% 10% 15%;
+    background-color: #088264;
+    color: white;
+    box-shadow:1px 1px 5px;
+}
+button#signup{
+    background-color: transparent;
+}
+#signup:hover{
+    background-color: white;
+    color: #000;
+}
+#signindiv{
+    padding: 10% 10% 10%;
+}
+#signinheader, #welcome-back{
+    padding-bottom:20px;
+}
+#forgot-password:hover, .footer_links ul li a:hover, .welcome a:hover{
+    color:rgb(230, 100, 100);
+    cursor: pointer;
+}
+#welcome-back, .welcome a{
+    color: #000;
+    text-decoration: none;
+}
+
+@media only screen and (min-width: 1200px){
+    img#student_bg{
+        width: 100%;
+        height: 400px;
+    }
+    .sms1img{
+        margin-top:10%;
+        margin-bottom: 5%;
+    }
+    .sms1{
+        margin-top: 7%;
+    }
+    .signincontainer{
+        margin: 10% 20% 0%;
+        box-shadow:1px 1px 5px;
+    }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px){
+    img#student_bg{
+        max-width: 900px;
+    }
+    .sms1img{
+        margin: 2% 2% 10%;
+    }
+    .sms1{
+        margin-top: 8%;
+    }
+    .signincontainer{
+        margin: 13% 20% 0%;
+        box-shadow:1px 1px 5px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px){
+    img#student_bg{
+        max-width: 700px;
+    }
+    .sms1img{
+        margin: 6% 0% 10%;
+    }
+    .sms1{
+        margin-top: 10%;
+    }
+    .signincontainer{
+        margin: 22% 10% 0%;
+        box-shadow:1px 1px 5px;
+    }
+} 
+@media only screen and (min-width: 600px) and (max-width: 767px){
+    img#student_bg{
+        max-width: 500px;
+    }
+    .sms1img{
+        margin: 6% 0% 10%;
+    }
+    .sms1{
+        margin-top: 15%;
+    }
+    .signincontainer{
+        margin-top: 30%;
+        box-shadow:1px 1px 5px;
+    }
+} 
+@media only screen and (max-width: 600px) and (min-width: 500px){
+    img#student_bg{
+        max-width: 450px;
+    }
+    .sms1img{
+        margin: 6% 0% 10%;
+    }
+    .sms1{
+        margin-top: 15%;
+    }
+    .signincontainer{
+        margin: 25% 20% 10%;
+        box-shadow:1px 1px 5px;
+    }
+    .welcome{
+        min-width: 100%;
+    }
+} 
+@media only screen and (min-width: 350px) and (max-width: 499px){
+    img#student_bg{
+        max-width: 250px;
+    }
+    .sms1img{
+        margin: 6% 0% 10%;
+    }
+    .sms1{
+        margin-top: 20%;
+    }
+    .signincontainer{
+        margin: 30% 20% 5%;
+        box-shadow:1px 1px 5px;
+    }
+    .welcome{
+        min-width: 100%;
+    }
+}
+@media only screen and (max-width: 499px){
+    img#student_bg{
+        max-width: 150px;
+    }
+    .sms1img{
+        margin: 6% 0% 10%;
+    }
+    .sms1{
+        margin-top: 50%;
+    }
+    .signincontainer{
+        margin: 70% 10% 10%;
+        box-shadow:1px 1px 5px;
+    }
+    .welcome{
+        min-width: 100%;
+    }
+}

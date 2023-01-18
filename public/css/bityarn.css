@@ -1,0 +1,15 @@
+#addSchoolForm, #addEmployeeForm, #addRoleForm{
+    margin: 10% 30% 5%;
+}
+form{
+    box-shadow:1px 1px 5px;
+    background-color: #ecfbff;
+    padding: 20px 40px 40px;
+}
+table{
+    margin-top: 8%;
+}
+.thead{
+    margin-left: 3%;
+    margin-right: 3%;
+}
