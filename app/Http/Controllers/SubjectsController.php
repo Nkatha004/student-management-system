@@ -3,69 +3,72 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\SubjectCategories;
+use App\Models\Subject;
 
 class SubjectsController extends Controller
 {
     public function index(){
-        return view('subjects/addSubject');
+        $categories = SubjectCategories::all()->where('status', 'Active');
+
+        return view('subjects/addSubject', ['categories'=> $categories ]);
     }
     public function store(Request $request){
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'category'=>'required'
         ]);
         
-        // School::create([
-        //     'school_name' => request('schoolname'),
-        //     'email' => request('email'),
-        //     'phone_number' => request('telNo')
-        // ]);
+        Subject::create([
+            'subject_name' => request('name'),
+            'category_id' => request('category')
+        ]);
 
-        // return redirect('/bityarn/viewschools')->with('message', 'School added successfully!');
+        return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
     }
-    // public function viewSchools(){
-    //     $schools = School::all();
+    public function viewSubjects(){
+        $subjects = Subject::all();
 
-    //     return view('bityarn/schools/viewschools', ['schools'=> $schools]);
-    // }
+        return view('subjects/viewSubjects', ['subjects'=> $subjects]);
+    }
 
-    // public function edit($id){
-    //     $school = School::find($id);
+    public function edit($id){
+        $subject = Subject::find($id);
+        $categories = SubjectCategories::all()->where('status', 'Active');
 
-    //     return view('bityarn/schools/editSchool', ['school'=>$school]);
-    // }
+        return view('subjects/editSubject', ['subject'=> $subject,'categories'=> $categories]);
+    }
 
-    // public function update(Request $request, $id){
-    //     $request->validate([
-    //         'schoolname' => 'required',
-    //         'email' => 'required | email',
-    //         'telNo' => 'required',
-    //         'status' => 'required'
-    //     ]);
+    public function update(Request $request, $id){
+        $request->validate([
+            'name' => 'required',
+            'category' => 'required',
+            'status' => 'required'
+        ]);
 
-    //     $school = School::find($id);
+        $subject = Subject::find($id);
         
-    //     $school->school_name= $request->input('schoolname');
-    //     $school->email = $request->input('email');
-    //     $school->phone_number= $request->input('telNo');
-    //     $school->status= $request->input('status');
-    //     $school->save();
+        $subject->subject_name= $request->input('name');
+        $subject->category_id = $request->input('category');
+        $subject->status= $request->input('status');
+        $subject->save();
 
-    //     return redirect('/bityarn/viewschools')->with('message', 'School updated successfully!');
-    // }
+        return redirect('/viewsubjects')->with('message', 'Subject updated successfully!');
+    }
 
-    // public function destroy($id)
-    // {
-    //     $school = School::find($id);
+    public function destroy($id)
+    {
+        $subject = Subject::find($id);
 
-    //     $school->status = "Deleted";
-    //     $school->save();
+        $subject->status = "Deleted";
+        $subject->save();
 
-    //     return redirect('/bityarn/viewschools')->with('message', 'School deleted successfully!');
-    // }
+        return redirect('/viewsubjects')->with('message', 'Subject deleted successfully!');
+    }
 
-    // public static function getSchoolName($id){
-    //     $school = School::find($id);
+    public static function getSubjectName($id){
+        $subject = Subject::find($id);
 
-    //     return $school->school_name;
-    // }
+        return $subject->subject_name;
+    }
 }

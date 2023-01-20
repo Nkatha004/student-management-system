@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('subject_name');
+            $table->integer('category_id')->unsigned();
+            $table -> foreign('category_id') -> references('id') -> on('subject_categories');
             $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
             $table->timestamps();
         });

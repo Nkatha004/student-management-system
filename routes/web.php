@@ -54,10 +54,10 @@ Route::controller(SchoolsController::class)->group(function(){
 Route::controller(SubjectsController::class)->group(function(){
     Route::get('/subjects', 'index');
     Route::post('/subjects', 'store');
-    // Route::get('/editsubject/{id}', 'edit');
-    // Route::get('/viewsubjects', 'viewSubjects');
-    // Route::post('/updatesubject/{id}', 'update');
-    // Route::get('/deletesubject/{id}', 'destroy');
+    Route::get('/editsubject/{id}', 'edit');
+    Route::get('/viewsubjects', 'viewSubjects');
+    Route::post('/updatesubject/{id}', 'update');
+    Route::get('/deletesubject/{id}', 'destroy');
 });
 
 Route::controller(SubjectCategoriesController::class)->group(function(){
