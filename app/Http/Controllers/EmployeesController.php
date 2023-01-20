@@ -23,7 +23,7 @@ class EmployeesController extends Controller
             'email' => 'required | email | unique:employees',
             'telNo' => 'required',
             'password' => 'required | min:6',
-            'password_confirmation' => 'required | confirmed',
+            'password_confirmation' => 'required | min:6 | same:password',
             'tscNo' => 'required',
             'school' => 'required',
             'role' => 'required'

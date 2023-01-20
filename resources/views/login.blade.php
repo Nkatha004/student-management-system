@@ -8,15 +8,30 @@
                 <p>If your school is registered, please proceed to login.</p>
             </div>
             
-            <div class = "col text-center" id = "signindiv">
-                
+            <form action = "{{ url('/login') }}" method = "post" class = "col text-center" id = "signindiv">
+                @csrf
+                @if(session()->has('message'))
+                    <div class="alert alert-danger">
+                        {{ session()->get('message') }}
+                    </div>
+                @endif
                 <h3 id = "signinheader">Sign in</h3>
+                @if($errors->has('email'))
+                    <div class = "alert alert-danger" role = "alert">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-12">
                         <input type="email" class="form-control" id="email" name = "email" placeholder="Email Address">
                     </div>
                 </div><br/>
-                <div class="row">
+                @if($errors->has('password'))
+                    <div class = "alert alert-danger" role = "alert">
+                        {{ $errors->first('password') }}
+                    </div>
+                @endif
+                    <div class="row">
                     <div class="mb-3">
                         <input type="password" class="form-control" id="password" name = "password" placeholder="Password">
                     </div>
@@ -26,7 +41,7 @@
                     <button id = "signin">SIGN IN</button>
                 </div>
              
-            </div>
+            </form>
             
         </div>
     </div>

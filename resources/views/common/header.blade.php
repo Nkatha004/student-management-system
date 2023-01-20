@@ -25,6 +25,18 @@
                         <a class="nav-link" href="{{URL::to('/#section2')}}">Features</a>
                         <a class="nav-link" href="{{URL::to('/#section3')}}">Contact us</a>
                         <a class="nav-link" href="{{URL::to('/login')}}">Login</a>
+                        @if (Auth::check())
+                            <div class="dropdown">
+                                <a id = "user" class="nav-link dropdown-toggle" data-bs-toggle= "dropdown" href = "" id = "dropdownMenuButton">
+                                    <i class="fa-solid fa-circle-user"></i>
+                                    {{ Auth::user()->first_name.' '.Auth::user()->last_name }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="{{URL::to('/logout')}}">Log out</a></li>
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

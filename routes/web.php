@@ -5,7 +5,8 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\SchoolsController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\SubjectsController;
+use App\Http\Controllers\SubjectCategoriesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,3 +50,25 @@ Route::controller(SchoolsController::class)->group(function(){
     Route::post('/bityarn/updateschool/{id}', 'update');
     Route::get('/bityarn/deleteschool/{id}', 'destroy');
 });
+
+Route::controller(SubjectsController::class)->group(function(){
+    Route::get('/subjects', 'index');
+    Route::post('/subjects', 'store');
+    // Route::get('/editsubject/{id}', 'edit');
+    // Route::get('/viewsubjects', 'viewSubjects');
+    // Route::post('/updatesubject/{id}', 'update');
+    // Route::get('/deletesubject/{id}', 'destroy');
+});
+
+Route::controller(SubjectCategoriesController::class)->group(function(){
+    Route::get('/subjectcategories', 'index');
+    Route::post('/subjectcategories', 'store');
+    // Route::get('/editsubject/{id}', 'edit');
+    // Route::get('/viewsubjects', 'viewSubjects');
+    // Route::post('/updatesubject/{id}', 'update');
+    // Route::get('/deletesubject/{id}', 'destroy');
+});
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/logout', [HomeController::class, 'logout']);
+ });

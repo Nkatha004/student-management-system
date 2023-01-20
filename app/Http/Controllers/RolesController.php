@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
 use App\Models\Role;
 
 class RolesController extends Controller
@@ -12,13 +13,27 @@ class RolesController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
+        $input = $request->all();
+
+        $rules = [
             'rolename'=>'required',
             'roleDesc'=>'required'
-        ]);
+        ];
+
+        $messages = [
+            'rolename.required' => 'Role name is required',
+            'roleDesc.required'=>'Role description is required'
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator->messages());
+        }
+
         Role::create([
-            'role_name' => request('rolename'),
-            'role_description' => request('roleDesc')
+            'role_name' => $input['rolename'],
+            'role_description' => $input['roleDesc']
         ]);
 
         return redirect('/bityarn/viewroles')->with('message', 'Role added successfully!');
@@ -36,17 +51,29 @@ class RolesController extends Controller
     }
 
     public function update(Request $request, $id){
-        $request->validate([
+        $input = $request->all();
+        $role = Role::find($id);
+
+        $rules = [
             'rolename' => 'required',
             'roleDesc' => 'required',
             'status' => 'required'
-        ]);
+        ];
 
-        $role = Role::find($id);
+        $messages = [
+            'rolename.required' => 'Role name is required',
+            'roleDesc.required'=>'Role description is required'
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
         
-        $role->role_name= $request->input('rolename');
-        $role->role_description = $request->input('roleDesc');
-        $role->status = $request->input('status');
+        if ($validator->fails()) {
+            return back()->withErrors($validator->messages());
+        }
+
+        $role->role_name= $input['rolename'];
+        $role->role_description = $input['roleDesc'];
+        $role->status = $input['status'];
         $role->save();
 
         return redirect('/bityarn/viewroles')->with('message', 'Role updated successfully!');

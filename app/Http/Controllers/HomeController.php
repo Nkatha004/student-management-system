@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class HomeController extends Controller
 {
@@ -12,7 +14,7 @@ class HomeController extends Controller
     public function login(){
         return view('login');
     }
-    public function processLogin(){
+    public function processLogin(Request $request){
         $request->validate([
             'email' => 'required',
             'password' => 'required'
@@ -21,9 +23,17 @@ class HomeController extends Controller
         $credentials = $request->only('email', 'password');
 
         if(Auth::attempt($credentials)){
-            return redirect('/');
+            return redirect('/')->with('message', 'Login successful');
         }
 
-        return redirect('/login')->with('message', 'Invalid login details');
+        return redirect()->back()->with('message', 'Invalid login credentials');
+    }
+    public function logout()
+    {
+        Session::flush();
+        
+        Auth::logout();
+
+        return redirect('/login');
     }
 }

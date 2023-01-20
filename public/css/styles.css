@@ -2,7 +2,7 @@ body{
     overflow-x: hidden; 
     /* overflow-y: scroll; */
 }
-.navbar-brand, .green-color {
+.navbar-brand, .green-color, #user{
     color: #088264;
 }
 nav{
@@ -16,7 +16,7 @@ nav{
 .nav-link{
     color: black;
 }
-.nav-link:hover, #active:hover, .navbar-brand:hover{
+.nav-link:hover, #active:hover,#user:hover, .navbar-brand:hover{
     color: rgb(230, 100, 100);
 }
 button{
@@ -115,7 +115,7 @@ button#signup{
         margin-top: 7%;
     }
     .signincontainer{
-        margin: 10% 20% 0%;
+        margin: 10% 20% 2%;
         box-shadow:1px 1px 5px;
     }
 }
