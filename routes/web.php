@@ -63,10 +63,10 @@ Route::controller(SubjectsController::class)->group(function(){
 Route::controller(SubjectCategoriesController::class)->group(function(){
     Route::get('/subjectcategories', 'index');
     Route::post('/subjectcategories', 'store');
-    // Route::get('/editsubject/{id}', 'edit');
-    // Route::get('/viewsubjects', 'viewSubjects');
-    // Route::post('/updatesubject/{id}', 'update');
-    // Route::get('/deletesubject/{id}', 'destroy');
+    Route::get('/editsubjectcategory/{id}', 'edit');
+    Route::get('/viewsubjectcategories', 'viewSubjectCategories');
+    Route::post('/updatesubjectcategory/{id}', 'update');
+    Route::get('/deletesubjectcategory/{id}', 'destroy');
 });
 
 Route::group(['middleware' => ['auth']], function() {
