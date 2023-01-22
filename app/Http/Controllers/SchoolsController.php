@@ -8,7 +8,7 @@ use App\Models\School;
 class SchoolsController extends Controller
 {
     public function index(){
-        return view('bityarn/schools/addSchool');
+        return view('schools/addSchool');
     }
     public function store(Request $request){
         $request->validate([
@@ -23,18 +23,18 @@ class SchoolsController extends Controller
             'phone_number' => request('telNo')
         ]);
 
-        return redirect('/bityarn/viewschools')->with('message', 'School added successfully!');
+        return redirect('/viewschools')->with('message', 'School added successfully!');
     }
     public function viewSchools(){
         $schools = School::all();
 
-        return view('bityarn/schools/viewschools', ['schools'=> $schools]);
+        return view('schools/viewschools', ['schools'=> $schools]);
     }
 
     public function edit($id){
         $school = School::find($id);
 
-        return view('bityarn/schools/editSchool', ['school'=>$school]);
+        return view('schools/editSchool', ['school'=>$school]);
     }
 
     public function update(Request $request, $id){
@@ -53,7 +53,7 @@ class SchoolsController extends Controller
         $school->status= $request->input('status');
         $school->save();
 
-        return redirect('/bityarn/viewschools')->with('message', 'School updated successfully!');
+        return redirect('/viewschools')->with('message', 'School updated successfully!');
     }
 
     public function destroy($id)
@@ -63,7 +63,7 @@ class SchoolsController extends Controller
         $school->status = "Deleted";
         $school->save();
 
-        return redirect('/bityarn/viewschools')->with('message', 'School deleted successfully!');
+        return redirect('/viewschools')->with('message', 'School deleted successfully!');
     }
 
     public static function getSchoolName($id){

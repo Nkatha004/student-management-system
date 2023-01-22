@@ -9,7 +9,7 @@ use App\Models\Role;
 class RolesController extends Controller
 {
     public function index(){
-        return view('bityarn/roles/addRole');
+        return view('roles/addRole');
     }
 
     public function store(Request $request){
@@ -36,18 +36,18 @@ class RolesController extends Controller
             'role_description' => $input['roleDesc']
         ]);
 
-        return redirect('/bityarn/viewroles')->with('message', 'Role added successfully!');
+        return redirect('/viewroles')->with('message', 'Role added successfully!');
     }
     public function viewRoles(){
         $roles = Role::all();
 
-        return view('bityarn/roles/viewroles', ['roles'=> $roles]);
+        return view('roles/viewroles', ['roles'=> $roles]);
     }
 
     public function edit($id){
         $role = Role::find($id);
 
-        return view('bityarn/roles/editRole', ['role'=>$role]);
+        return view('roles/editRole', ['role'=>$role]);
     }
 
     public function update(Request $request, $id){
@@ -76,7 +76,7 @@ class RolesController extends Controller
         $role->status = $input['status'];
         $role->save();
 
-        return redirect('/bityarn/viewroles')->with('message', 'Role updated successfully!');
+        return redirect('/viewroles')->with('message', 'Role updated successfully!');
     }
 
     public function destroy($id)
@@ -86,7 +86,7 @@ class RolesController extends Controller
         $role->status = "Deleted";
         $role->save();
 
-        return redirect('/bityarn/viewroles')->with('message', 'Role deleted successfully!');
+        return redirect('/viewroles')->with('message', 'Role deleted successfully!');
     }
 
     public static function getRoleName($id){

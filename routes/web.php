@@ -34,21 +34,21 @@ Route::controller(EmployeesController::class)->group(function(){
 });
 
 Route::controller(RolesController::class)->group(function(){
-    Route::get('/bityarn/roles', 'index');
-    Route::post('/bityarn/roles', 'store');
-    Route::get('/bityarn/editrole/{id}', 'edit');
-    Route::get('/bityarn/viewroles', 'viewRoles');
-    Route::post('/bityarn/updaterole/{id}', 'update');
-    Route::get('/bityarn/deleterole/{id}', 'destroy');
+    Route::get('/roles', 'index');
+    Route::post('/roles', 'store');
+    Route::get('/editrole/{id}', 'edit');
+    Route::get('/viewroles', 'viewRoles');
+    Route::post('/updaterole/{id}', 'update');
+    Route::get('/deleterole/{id}', 'destroy');
 });
 
 Route::controller(SchoolsController::class)->group(function(){
-    Route::get('/bityarn/schools', 'index');
-    Route::post('/bityarn/schools', 'store');
-    Route::get('/bityarn/editschool/{id}', 'edit');
-    Route::get('/bityarn/viewschools', 'viewSchools');
-    Route::post('/bityarn/updateschool/{id}', 'update');
-    Route::get('/bityarn/deleteschool/{id}', 'destroy');
+    Route::get('/schools', 'index');
+    Route::post('/schools', 'store');
+    Route::get('/editschool/{id}', 'edit');
+    Route::get('/viewschools', 'viewSchools');
+    Route::post('/updateschool/{id}', 'update');
+    Route::get('/deleteschool/{id}', 'destroy');
 });
 
 Route::controller(SubjectsController::class)->group(function(){

@@ -22,8 +22,8 @@
 					<td>{{ $school->status }}</td>
 
 					<td>
-						<a href = "{{ url('bityarn/editschool/'.$school->id) }}" class = "btn btn-sm btn-warning">Update</a>
-						<a href = "{{ url('bityarn/deleteschool/'.$school->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						<a href = "{{ url('/editschool/'.$school->id) }}" class = "btn btn-sm btn-warning">Update</a>
+						<a href = "{{ url('/deleteschool/'.$school->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 					</td>
 				</tr>
 				@endforeach

@@ -40,7 +40,6 @@
             <label for="status" class=" form-label">Status</label>
             <select id="inputState" class="form-select" name = "status">
                 <option value = "Active">Active</option>
-                <option value = "Deleted">Deleted</option>
                 <option value = "Archived">Archived</option>
             </select>
         </div>

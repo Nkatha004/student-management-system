@@ -2,7 +2,7 @@
 
 <main>
     
-    <form method = "post" action = "{{ url('bityarn/updaterole/'.$role->id) }}" id = "addRoleForm" class="row g-3 form">
+    <form method = "post" action = "{{ url('/updaterole/'.$role->id) }}" id = "addRoleForm" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">
@@ -40,7 +40,6 @@
             <label for="status" class=" form-label">Status</label>
             <select id="inputState" class="form-select" name = "status">
                 <option value = "Active">Active</option>
-                <option value = "Deleted">Deleted</option>
                 <option value = "Archived">Archived</option>
             </select>
         </div>

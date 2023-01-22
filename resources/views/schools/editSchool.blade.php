@@ -1,7 +1,7 @@
 @include('common/header')
 
 <main>
-    <form method = "post" action = "{{ url('bityarn/updateschool/'.$school->id) }}" id = "addSchoolForm" class="row g-3 form">
+    <form method = "post" action = "{{ url('/updateschool/'.$school->id) }}" id = "addSchoolForm" class="row g-3 form">
         @csrf
         
         @if(session()->has('message'))
@@ -50,7 +50,6 @@
             <label for="status" class=" form-label">Status</label>
             <select id="inputState" class="form-select" name = "status">
                 <option value = "Active">Active</option>
-                <option value = "Deleted">Deleted</option>
                 <option value = "Archived">Archived</option>
             </select>
         </div>
