@@ -11,6 +11,10 @@
         @endif
 
         <h3 class = "text-center">Edit Employee</h3>
+        <div class="col-12">
+            <label for="employeeID" class="form-label">Employee ID</label>
+            <input type="number" class="form-control" id="employeeid" name = "employeeid" readonly value = "{{$employee->id}}">
+        </div>
         @if($errors->has('fname'))
             <div class = "alert alert-danger" role = "alert">
                 {{ $errors->first('fname') }}

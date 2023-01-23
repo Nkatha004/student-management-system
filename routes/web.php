@@ -7,6 +7,7 @@ use App\Http\Controllers\SchoolsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\SubjectCategoriesController;
+use App\Http\Controllers\ClassesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +68,15 @@ Route::controller(SubjectCategoriesController::class)->group(function(){
     Route::get('/viewsubjectcategories', 'viewSubjectCategories');
     Route::post('/updatesubjectcategory/{id}', 'update');
     Route::get('/deletesubjectcategory/{id}', 'destroy');
+});
+
+Route::controller(ClassesController::class)->group(function(){
+    Route::get('/classes', 'index');
+    Route::post('/classes', 'store');
+    Route::get('/editclass/{id}', 'edit');
+    Route::get('/viewclasses', 'viewClasses');
+    Route::post('/updateclass/{id}', 'update');
+    Route::get('/deleteclass/{id}', 'destroy');
 });
 
 Route::group(['middleware' => ['auth']], function() {

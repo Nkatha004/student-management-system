@@ -11,6 +11,10 @@
         @endif
 
         <h3 class = "text-center">Edit Subject</h3>
+        <div class="col-12">
+            <label for="subject" class="form-label">Subject ID</label>
+            <input type="number" class="form-control" id="subjectid" name = "subjectid" readonly value = "{{$subject->id}}">
+        </div>
         @if($errors->has('name'))
             <div class = "alert alert-danger" role = "alert">
                 {{ $errors->first('name') }}

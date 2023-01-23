@@ -10,7 +10,10 @@
             </div>
         @endif
         <h3 class = "text-center">Edit Subject Category</h3>
-        
+        <div class="col-12">
+            <label for="category" class="form-label">Subject Category ID</label>
+            <input type="number" class="form-control" id="categoryid" name = "categoryid" readonly value = "{{$category->id}}">
+        </div>
         <div class="col-12">
             @if($errors->has('category_name'))
                 <div class = "alert alert-danger" role = "alert">

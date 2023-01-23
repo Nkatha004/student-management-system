@@ -2,7 +2,7 @@
 
 <main>
     
-    <form method = "post" action = "{{ url('/bityarn/schools') }}" id = "addSchoolForm" class="row g-3 form">
+    <form method = "post" action = "{{ url('/schools') }}" id = "addSchoolForm" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">

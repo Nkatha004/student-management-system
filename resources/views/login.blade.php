@@ -4,7 +4,7 @@
         <div class="row signincontainer">
             <div class = "col welcome">
                 <h4 id = "welcome-back"class = "text-center">Welcome back!</h4>
-                <p>To sign up as a school kindly <a href = "{{URL::to('students#section3')}}">contact us. </a>You can reach us via <a href = "mailto: info@example.com">email</a> or <a href = "tel: +254XXXXXXXXX">phone</a></p>
+                <p>To register a school kindly <a href = "{{URL::to('/#section3')}}">contact us. </a>You can reach us via <a href = "mailto: info@example.com">email</a> or <a href = "tel: +254XXXXXXXXX">phone</a></p>
                 <p>If your school is registered, please proceed to login.</p>
             </div>
             
