@@ -42,21 +42,10 @@
                 }
             </script>
         </div>
-        
-        @if($errors->has('school'))
-            <div class = "alert alert-danger" role = "alert">
-                {{ $errors->first('school') }}
-            </div>
+        @if (Auth::check())
+        <input value = "{{ Auth::user()->school_id }} " name = "school" hidden>
         @endif
-        <div class="col-12">
-            <label for="inputState" class="form-label">School Name</label>
-            <select id="inputState" class="form-select" name = "school">
-                <option selected disabled>Choose the school</option>
-                @foreach($schools as $school)
-                <option value = "{{ $school->id}} ">{{ $school->school_name}}</option>
-                @endforeach
-            </select>
-        </div>
+        
         <div class="col-12 text-center">
             <button type="submit">Add Class</button>
         </div>

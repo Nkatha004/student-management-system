@@ -64,7 +64,8 @@ class EmployeesController extends Controller
             'telNo' => 'required',
             'tscNo' => 'required',
             'school' => 'required',
-            'role' => 'required'
+            'role' => 'required',
+            'status' => 'required'
         ]);
 
         $employee = Employee::find($id);

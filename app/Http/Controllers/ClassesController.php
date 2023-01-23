@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Classes;
-use Hash;
 
 class ClassesController extends Controller
 {
@@ -17,10 +16,11 @@ class ClassesController extends Controller
     public function store(Request $request){
         $request->validate([
             'classname' => 'required',
-            'year' => 'required',
-            'school' => 'required'
+            'year' => 'required'
         ]);
-
+        if(request('school') == NULL){
+            return redirect('/login')->with('message', "Please login to add a new class");
+        }
         Classes::create([
             'class_name' => request('classname'), 
             'year' => request('year'),
@@ -46,7 +46,6 @@ class ClassesController extends Controller
         $request->validate([
             'classname' => 'required',
             'year' => 'required',
-            'school' => 'required',
             'status'=>'required'
         ]);
 
@@ -70,6 +69,15 @@ class ClassesController extends Controller
         $class->save();
 
         return redirect('/viewclasses')->with('message', 'Class deleted successfully!');
+    }
+
+    public static function getClassName($id){
+        if($id == NULL){
+            return "Unassigned";
+        }
+        $class = Classes::find($id);
+
+        return $class->class_name;
     }
     
 }

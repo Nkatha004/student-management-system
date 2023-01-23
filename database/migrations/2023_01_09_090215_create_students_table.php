@@ -20,11 +20,9 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('guardian_name');
             $table->string('guardian_phone_number');
-            $table->string('guardian_email')->unique();
+            $table->string('guardian_email');
             $table->integer('class_id')->unsigned()->nullable();
             $table -> foreign('class_id') -> references('id') -> on('classes');
-            $table->integer('school_id')->unsigned();
-            $table -> foreign('school_id') -> references('id') -> on('schools');
             $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
             $table->timestamps();
         });

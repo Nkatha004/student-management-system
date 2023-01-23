@@ -8,6 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\SubjectCategoriesController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\StudentsController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -77,6 +80,15 @@ Route::controller(ClassesController::class)->group(function(){
     Route::get('/viewclasses', 'viewClasses');
     Route::post('/updateclass/{id}', 'update');
     Route::get('/deleteclass/{id}', 'destroy');
+});
+
+Route::controller(StudentsController::class)->group(function(){
+    Route::get('/students', 'index');
+    Route::post('/students', 'store');
+    Route::get('/editstudent/{id}', 'edit');
+    Route::get('/viewstudents', 'viewStudents');
+    Route::post('/updatestudent/{id}', 'update');
+    Route::get('/deletestudent/{id}', 'destroy');
 });
 
 Route::group(['middleware' => ['auth']], function() {
