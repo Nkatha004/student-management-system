@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->integer('tsc_number');
+            $table->integer('tsc_number')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('telephone_number');

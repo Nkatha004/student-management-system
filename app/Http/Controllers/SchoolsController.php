@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\School;
+use App\Models\Role;
+use App\Models\Employee;
+use Hash;
 
 class SchoolsController extends Controller
 {
@@ -13,17 +16,38 @@ class SchoolsController extends Controller
     public function store(Request $request){
         $request->validate([
             'schoolname' => 'required',
-            'email' => 'required | email | unique:schools',
-            'telNo' => 'required'
-
+            'school_email' => 'required | email',
+            'school_telNo' => 'required',
+            'principal_fname' => 'required',
+            'principal_lname' => 'required',
+            'principal_tscNo' => 'required',
+            'principal_telNo' => 'required',
+            'principal_email' => 'required | email',
+            'password' => 'required | min:6',
+            'password_confirmation' => 'required | min:6 | same:password'
         ]);
         School::create([
             'school_name' => request('schoolname'),
-            'email' => request('email'),
-            'phone_number' => request('telNo')
+            'email' => request('school_email'),
+            'phone_number' => request('school_telNo')
         ]);
 
-        return redirect('/viewschools')->with('message', 'School added successfully!');
+        $school = School::select('id')->where('school_name', '=', request('schoolname'))->get();
+        $role = Role::select('id')->where('role_name', '=', 'Principal')->get();
+
+        // return $school[0]['id'];
+        Employee::create([
+            'first_name' => request('principal_fname'), 
+            'last_name' => request('principal_lname'),
+            'tsc_number' => request('principal_tscNo'),
+            'email' => request('principal_email'),
+            'password' => Hash::make(request('password')),
+            'telephone_number' => request('principal_telNo'),
+            'school_id' => $school[0]['id'],
+            'role_id' => $role[0]['id']
+        ]);
+
+        return redirect('/login')->with('message', 'School registered successfully!');
     }
     public function viewSchools(){
         $schools = School::all();

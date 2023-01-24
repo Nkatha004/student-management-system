@@ -16,6 +16,34 @@ table{
 #viewstudents{
     margin: 0
 }
-.fa-trash{
+.fa-trash, .fa-times-circle-o{
     color: red;
+}
+.cancel button{
+    color: #fff;
+    background-color: #e06565;
+}
+#payments{
+    margin: 10% 30% 5%;
+}
+#paypal{
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+}
+.successPay{
+    margin-top: 20%;
+}
+.fa-circle-check{
+    font-size: 200px;
+    color: #088264;;
+    padding: 10px;
+}
+.fa-times-circle-o{
+    font-size: 200px;
+    padding: 10px;
+    color:  #fb5656;
+}
+.btns{
+    margin-top: 20px;
 }

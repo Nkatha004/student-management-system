@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('schools', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('school_name');
-            $table->string('email');
-            $table->integer('phone_number');
-            $table->enum('payment_status', ['Payment Complete', 'Payment Pending'])->default('Payment Pending');
+        Schema::create('payments', function (Blueprint $table) {
+            $table->id();
+            $table->string('transaction_id');
+            $table->string('payer_id');
+            $table->string('payer_email');
+            $table->float('amount', 10, 2);
+            $table->string('currency');
+            $table->string('payment_status');
+            $table->integer('paid_by')->unsigned();
+            $table -> foreign('paid_by') -> references('id') -> on('employees');
             $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
             $table->timestamps();
         });
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schools');
+        Schema::dropIfExists('payments');
     }
 };

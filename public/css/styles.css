@@ -93,12 +93,19 @@ button#signup{
 #signinheader, #welcome-back{
     padding-bottom:20px;
 }
-#forgot-password:hover, .footer_links ul li a:hover, .welcome a:hover{
+#forgot-password:hover, .footer_links ul li a:hover, #haveAccount:hover{
     color:rgb(230, 100, 100);
+    cursor: pointer;
+}
+.welcome a:hover{
+    color:rgb(170, 227, 252);
     cursor: pointer;
 }
 #welcome-back, .welcome a{
     color: #000;
+    text-decoration: none;
+}
+a#haveAccount, a#forgot-password{
     text-decoration: none;
 }
 

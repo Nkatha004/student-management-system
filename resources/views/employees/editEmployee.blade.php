@@ -64,35 +64,6 @@
             <input type="text" class="form-control" id="tscNo" name = "tscNo" value = "{{ $employee->tsc_number }}">
         </div>
         
-        @if($errors->has('school'))
-            <div class = "alert alert-danger" role = "alert">
-                {{ $errors->first('school') }}
-            </div>
-        @endif
-        <div class="col-12">
-            <label for="inputState" class="form-label">School Name</label>
-            <select id="inputState" class="form-select" name = "school">
-                <option selected disabled>Choose the school</option>
-                @foreach($schools as $school)
-                <option value = "{{ $school->id}} ">{{ $school->school_name}}</option>
-                @endforeach
-            </select>
-        </div>
-
-        @if($errors->has('role'))
-            <div class = "alert alert-danger" role = "alert">
-                {{ $errors->first('role') }}
-            </div>
-        @endif
-        <div class="col-12">
-            <label for="inputState" class="form-label">Role Name</label>
-            <select id="inputState" class="form-select" name = "role">
-                <option selected disabled>Choose the role</option>
-                @foreach($roles as $role)
-                <option value = "{{ $role->id}} ">{{ $role->role_name}}</option>
-                @endforeach
-            </select>
-        </div>
         <div class="col-12">
             @if($errors->has('status'))
                 <div class = "alert alert-danger" role = "alert">

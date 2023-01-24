@@ -23,10 +23,7 @@ class EmployeesController extends Controller
             'email' => 'required | email | unique:employees',
             'telNo' => 'required',
             'password' => 'required | min:6',
-            'password_confirmation' => 'required | min:6 | same:password',
-            'tscNo' => 'required',
-            'school' => 'required',
-            'role' => 'required'
+            'password_confirmation' => 'required | min:6 | same:password'
         ]);
 
         Employee::create([
@@ -50,10 +47,8 @@ class EmployeesController extends Controller
     }
     public function edit($id){
         $employee = Employee::find($id);
-        $schools = School::all()->where('status', 'Active');
-        $roles = Role::all()->where('status', 'Active');
 
-        return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools, 'roles'=>$roles]);
+        return view('employees/editEmployee', ['employee'=>$employee]);
     }
 
     public function update(Request $request, $id){
@@ -63,8 +58,6 @@ class EmployeesController extends Controller
             'email' => 'required | email',
             'telNo' => 'required',
             'tscNo' => 'required',
-            'school' => 'required',
-            'role' => 'required',
             'status' => 'required'
         ]);
 
@@ -75,8 +68,6 @@ class EmployeesController extends Controller
         $employee->email = $request->input('email');
         $employee->telephone_number = $request->input('telNo');
         $employee->tsc_number = $request->input('tscNo');
-        $employee->school_id = $request->input('school');
-        $employee->role_id = $request->input('role');
         $employee->status= $request->input('status');
 
         $employee->save();

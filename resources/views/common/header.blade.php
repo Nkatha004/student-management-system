@@ -24,7 +24,7 @@
                         <a id = "active"class="nav-link active" aria-current="page" href="{{URL::to('/#section1')}}">Home</a>
                         <a class="nav-link" href="{{URL::to('/#section2')}}">Features</a>
                         <a class="nav-link" href="{{URL::to('/#section3')}}">Contact us</a>
-                        <a class="nav-link" href="{{URL::to('/login')}}">Login</a>
+                        <a class="nav-link" href="{{URL::to('/login')}}">Registration | Login</a>
                         @if (Auth::check())
                             <div class="dropdown">
                                 <a id = "user" class="nav-link dropdown-toggle" data-bs-toggle= "dropdown" href = "" id = "dropdownMenuButton">
