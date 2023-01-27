@@ -45,6 +45,21 @@
         @if (Auth::check())
         <input value = "{{ Auth::user()->school_id }} " name = "school" hidden>
         @endif
+
+        @if($errors->has('teacher'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('teacher') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="inputState" class="form-label">Class Teacher Name</label>
+            <select id="inputState" class="form-select" name = "teacher">
+                <option selected disabled>Choose the teacher</option>
+                @foreach($teachers as $teacher)
+                <option value = "{{ $teacher->id}} ">{{ $teacher->first_name. ' '. $teacher->last_name}}</option>
+                @endforeach
+            </select>
+        </div>
         
         <div class="col-12 text-center">
             <button type="submit">Add Class</button>

@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Classes;
+use App\Models\Employee;
 
 class ClassesController extends Controller
 {
     public function index(){
         $schools = School::all()->where('status', 'Active');
+        $teachers = Employee::all()->where('status', 'Active');
 
-        return view('classes/addClass', ['schools'=>$schools]);
+        return view('classes/addClass', ['schools'=>$schools, 'teachers'=>$teachers]);
     }
     public function store(Request $request){
         $request->validate([
             'classname' => 'required',
-            'year' => 'required'
+            'year' => 'required',
+            'teacher'=>'required'
         ]);
         if(request('school') == NULL){
             return redirect('/login')->with('message', "Please login to add a new class");
@@ -24,7 +27,8 @@ class ClassesController extends Controller
         Classes::create([
             'class_name' => request('classname'), 
             'year' => request('year'),
-            'school_id' => request('school')
+            'school_id' => request('school'),
+            'class_teacher'=>request('teacher')
         ]);
 
         return redirect('/viewclasses')->with('message', 'Class added successfully!');
@@ -38,14 +42,16 @@ class ClassesController extends Controller
     public function edit($id){
         $class = Classes::find($id);
         $schools = School::all()->where('status', 'Active');
+        $teachers = Employee::all()->where('status', 'Active');
 
-        return view('classes/editclass', ['class'=>$class, 'schools'=>$schools]);
+        return view('classes/editclass', ['class'=>$class, 'schools'=>$schools, 'teachers'=>$teachers]);
     }
 
     public function update(Request $request, $id){
         $request->validate([
             'classname' => 'required',
             'year' => 'required',
+            'teacher'=>'required',
             'status'=>'required'
         ]);
 
@@ -54,6 +60,7 @@ class ClassesController extends Controller
         $class->class_name= $request->input('classname');
         $class->year = $request->input('year');
         $class->school_id = $request->input('school');
+        $class->class_teacher = $request->input('teacher');
         $class->status= $request->input('status');
 
         $class->save();
