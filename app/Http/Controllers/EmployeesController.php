@@ -17,6 +17,7 @@ class EmployeesController extends Controller
         return view('employees/addEmployee', ['schools'=>$schools, 'roles'=>$roles]);
     }
     public function store(Request $request){
+        //Form validation
         $request->validate([
             'fname' => 'required',
             'lname' => 'required',
@@ -37,6 +38,7 @@ class EmployeesController extends Controller
             'role_id' => request('role')
         ]);
 
+        //Return a view of all employees
         return redirect('/viewemployees')->with('message', 'Employee added successfully!');
 
     }

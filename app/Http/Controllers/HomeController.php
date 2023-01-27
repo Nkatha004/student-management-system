@@ -32,8 +32,9 @@ class HomeController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        //Login user
         if(Auth::attempt($credentials)){
-           
+            //Check the roles of users and redirect to the appropriate dashboard
             if(Auth::user()->role_id == 1){
                 return 'Admin';
             }else if(Auth::user()->role_id == 2){

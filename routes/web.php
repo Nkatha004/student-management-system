@@ -10,6 +10,7 @@ use App\Http\Controllers\SubjectCategoriesController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\EmployeeSubjectsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,37 @@ Route::controller(SchoolsController::class)->group(function(){
     Route::get('/register', 'index');
 });
 
+Route::controller(EmployeesController::class)->group(function(){
+    Route::get('/employees', 'index');
+    Route::post('/employees', 'store');
+});
+
+Route::controller(RolesController::class)->group(function(){
+    Route::get('/roles', 'index');
+    Route::post('/roles', 'store');
+});
+
+Route::controller(SubjectCategoriesController::class)->group(function(){
+    Route::get('/subjectcategories', 'index');
+    Route::post('/subjectcategories', 'store');
+});
+
+Route::controller(SubjectsController::class)->group(function(){
+    Route::get('/subjects', 'index');
+    Route::post('/subjects', 'store');
+});
+
+Route::controller(ClassesController::class)->group(function(){
+    Route::get('/classes', 'index');
+    Route::post('/classes', 'store');
+});
+
+Route::controller(StudentsController::class)->group(function(){
+    Route::get('/students', 'index');
+    Route::post('/students', 'store');
+});
+
+//Require authentication to access routes
 Route::group(['middleware' => ['auth']], function() {
 
     Route::controller(HomeController::class)->group(function(){
@@ -49,12 +81,18 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     Route::controller(EmployeesController::class)->group(function(){
-        Route::get('/employees', 'index');
-        Route::post('/employees', 'store');
         Route::get('/editemployee/{id}', 'edit');
         Route::get('/viewemployees', 'viewEmployees');
         Route::post('/updateemployee/{id}', 'update');
         Route::get('/deleteemployee/{id}', 'destroy');
+    });
+
+    Route::controller(EmployeeSubjectsController::class)->group(function(){
+        Route::get('/employeesubjects/{id}', 'index');
+        Route::post('/employeesubjects', 'store');
+        Route::get('/editemployeesubject/{id}', 'edit');
+        Route::post('/updateemployeesubject/{id}', 'update');
+        Route::get('/deleteemployeesubject/{id}', 'destroy');
     });
 
     Route::controller(PaymentsController::class)->group(function(){
@@ -65,11 +103,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/error', 'errorOccured');
         Route::get('/mytransactions', 'myTransactions');
         Route::get('/cancelpayment', 'cancelPayment');
+        Route::get('/viewpayments', 'viewPayments');
     });
 
     Route::controller(RolesController::class)->group(function(){
-        Route::get('/roles', 'index');
-        Route::post('/roles', 'store');
         Route::get('/editrole/{id}', 'edit');
         Route::get('/viewroles', 'viewRoles');
         Route::post('/updaterole/{id}', 'update');
@@ -77,8 +114,6 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     Route::controller(SubjectCategoriesController::class)->group(function(){
-        Route::get('/subjectcategories', 'index');
-        Route::post('/subjectcategories', 'store');
         Route::get('/editsubjectcategory/{id}', 'edit');
         Route::get('/viewsubjectcategories', 'viewSubjectCategories');
         Route::post('/updatesubjectcategory/{id}', 'update');
@@ -86,8 +121,6 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     Route::controller(SubjectsController::class)->group(function(){
-        Route::get('/subjects', 'index');
-        Route::post('/subjects', 'store');
         Route::get('/editsubject/{id}', 'edit');
         Route::get('/viewsubjects', 'viewSubjects');
         Route::post('/updatesubject/{id}', 'update');
@@ -95,8 +128,6 @@ Route::group(['middleware' => ['auth']], function() {
     });
     
     Route::controller(ClassesController::class)->group(function(){
-        Route::get('/classes', 'index');
-        Route::post('/classes', 'store');
         Route::get('/editclass/{id}', 'edit');
         Route::get('/viewclasses', 'viewClasses');
         Route::post('/updateclass/{id}', 'update');
@@ -104,8 +135,6 @@ Route::group(['middleware' => ['auth']], function() {
     });
     
     Route::controller(StudentsController::class)->group(function(){
-        Route::get('/students', 'index');
-        Route::post('/students', 'store');
         Route::get('/editstudent/{id}', 'edit');
         Route::get('/viewstudents', 'viewStudents');
         Route::post('/updatestudent/{id}', 'update');

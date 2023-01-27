@@ -11,7 +11,7 @@ use App\Models\School;
 class PaymentsController extends Controller
 {
     private $gateway;
-
+    //setup paypal
     public function __construct() {
         $this->gateway = Omnipay::create('PayPal_Rest');
         $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
@@ -44,7 +44,7 @@ class PaymentsController extends Controller
             return $th->getMessage();
         }
     }
-
+    //Processes successful payment
     public function success(Request $request)
     {
         if ($request->input('paymentId') && $request->input('PayerID')) {
@@ -55,6 +55,7 @@ class PaymentsController extends Controller
 
             $response = $transaction->send();
 
+            //Transaction details
             if ($response->isSuccessful()) {
 
                 $arr = $response->getData();
@@ -96,6 +97,7 @@ class PaymentsController extends Controller
         return redirect('/cancelpayment')->with('message', 'User declined the payment');
     }
 
+    //specific user transactions/payments
     public function myTransactions(){
         if(Auth::check()){
             $user = Auth::user()->id;
@@ -109,4 +111,10 @@ class PaymentsController extends Controller
         return view('payments/cancelled');
     }
 
+    //all users transactions/payments
+    public function viewPayments(){
+        $transactions = Payment::all();
+
+        return view('payments/ViewAllPayments', ['transactions'=>$transactions]);
+    }
 }

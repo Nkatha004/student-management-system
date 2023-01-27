@@ -1,6 +1,6 @@
 @include('common/header')
-<div class = "text-center table-employees">
-	<main>
+<main>
+	<div class = "text-center table-employees">
 	<table class="table table-striped">
 			<thead id = "viewstudents">
 				<tr>
@@ -35,5 +35,5 @@
 				@endforeach
 			</tbody>
 		</table>
-	</main>
-</div>
+	</div>
+</main>

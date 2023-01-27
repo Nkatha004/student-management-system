@@ -26,16 +26,18 @@ class SchoolsController extends Controller
             'password' => 'required | min:6',
             'password_confirmation' => 'required | min:6 | same:password'
         ]);
+        //Insert school records first
         School::create([
             'school_name' => request('schoolname'),
             'email' => request('school_email'),
             'phone_number' => request('school_telNo')
         ]);
 
+        //select the inserted school
         $school = School::select('id')->where('school_name', '=', request('schoolname'))->get();
         $role = Role::select('id')->where('role_name', '=', 'Principal')->get();
 
-        // return $school[0]['id'];
+        //create an employee whose school id is the inserted school above
         Employee::create([
             'first_name' => request('principal_fname'), 
             'last_name' => request('principal_lname'),

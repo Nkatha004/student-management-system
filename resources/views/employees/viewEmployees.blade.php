@@ -1,6 +1,7 @@
 @include('common/header')
-<div class = "text-center table-employees">
-	<main>
+
+<main>
+	<div class = "text-center table-employees">
 	<table class="table table-striped">
 			<thead>
 				<tr>
@@ -17,7 +18,12 @@
 			<tbody>
 				@foreach($employees as $employee)
 				<tr>
+					@if ($employee->role_id == 1)
+					<td>Not Applicable</td>
+					@else
 					<td>{{ $employee->tsc_number }}</td>
+					@endif
+
 					<td>{{ $employee->first_name }}</td>
                     <td>{{ $employee->last_name }}</td>
 					<td>{{ $employee->email }}</td>
@@ -25,14 +31,20 @@
                     <td>{{App\Http\Controllers\SchoolsController::getSchoolName($employee->school_id) }}</td>
                     <td>{{App\Http\Controllers\RolesController::getRoleName($employee->role_id) }}</td>
 					<td>{{ $employee->status }}</td>
-
+					@if ($employee->role_id != 1)
 					<td>
+						<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Teaching Subjects</a>
 						<a href = "{{ url('/editemployee/'.$employee->id) }}" class = "btn btn-sm btn-warning">Update</a>
 						<a href = "{{ url('/deleteemployee/'.$employee->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 					</td>
+					@else
+					<td>
+					<a style = "width: 100%"href = "{{ url('/editemployee/'.$employee->id) }}" class = "btn btn-warning">Update Admin</a>
+					</td>
+					@endif
 				</tr>
 				@endforeach
 			</tbody>
 		</table>
-	</main>
-</div>
+	</div>
+</main>

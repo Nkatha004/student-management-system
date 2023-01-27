@@ -47,3 +47,11 @@ table{
 .btns{
     margin-top: 20px;
 }
+td p{
+    padding-bottom: 0.5px;
+    padding-top: 0.2px;
+    margin: 0.1px;
+}
+#teachingSubjects{
+    margin: 0% 10% 2%;
+}
