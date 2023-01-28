@@ -20,8 +20,8 @@
                 {{ $errors->first('name') }}
             </div>
         @endif
-        <div class="col-md-6">
-            <label for="name" class="form-label">First Name</label>
+        <div class="col-12">
+            <label for="name" class="form-label">Subject Name</label>
             <input type="text" class="form-control" id="name" name = "name" value = "{{ $subject->subject_name }}">
         </div>
        
