@@ -1,4 +1,4 @@
-@include('common.header')
+@include('common/header')
 <main>
     <div class="container">
         <div class="row">
@@ -10,7 +10,7 @@
                     Starting with the registration process of new students, their classes and their performance. 
                 </p>
                 <div class = "text-center">
-                <a href = "{{URL::to('/register')}}"><button>Get Started</button></a>
+                    <a href = "{{URL::to('/register')}}"><button>Get Started</button></a>
                 </div>
                 
             </div>
@@ -29,7 +29,7 @@
             </div>
             <div class="features-col col">
                 <img id = "tick" src = "{{URL::asset('/images/tick.png')}}">
-                <h3>Exam results</h3>
+                <h3>Exam Results</h3>
                 <p>Analyze the results of students, track their overall performance, class performance as well as subject performance.</p>
             </div>
             <div class="features-col col">
@@ -39,21 +39,18 @@
             </div>
         </div>
     </div>
-    <div class="container text-center">
+    <div class="starting text-center">
         <h1>Getting Started</h1>
         <div class="row">
             <div class="getting-started col">
-                <img id = "tick" src = "{{URL::asset('/images/tick.png')}}">
-                <h3>Registration | Login</h3>
-                <p>The first step to getting started is register your school with us and fill in the principal details. After which, you will proceed to the login page. Sign in with the principal's email address and the created password!</p>
+                <h3>Registration</h3>
+                <p>The first step to getting started is register your school with us and fill in the principal details. After which, you will proceed to the login page. Sign in with the principal's email address and the created password.</p>
             </div>
             <div class="getting-started col">
-                <img id = "tick" src = "{{URL::asset('/images/tick.png')}}">
                 <h3>Make Payment</h3>
                 <p>After successful registration, you are now one step away from accessing system's features. You will now be directed on how to make your initial payment.</p>
             </div>
             <div class="getting-started col">
-                <img id = "tick" src = "{{URL::asset('/images/tick.png')}}">
                 <h3>Access System Features</h3>
                 <p>Congratulations! You have now unlocked the system's full functionality and are able to access all our features.</p>
             </div>
@@ -92,4 +89,4 @@
         </div>
     </div>
 </main>
-@include('common.footer')
+@include('common/footer')

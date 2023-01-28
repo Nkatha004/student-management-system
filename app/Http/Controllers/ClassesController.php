@@ -10,10 +10,10 @@ use App\Models\Employee;
 class ClassesController extends Controller
 {
     public function index(){
-        $schools = School::all()->where('status', 'Active');
-        $teachers = Employee::all()->where('status', 'Active');
+        //exclude admin and principal from being class teachers
+        $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2');
 
-        return view('classes/addClass', ['schools'=>$schools, 'teachers'=>$teachers]);
+        return view('classes/addClass', ['teachers'=>$teachers]);
     }
     public function store(Request $request){
         $request->validate([
@@ -42,7 +42,7 @@ class ClassesController extends Controller
     public function edit($id){
         $class = Classes::find($id);
         $schools = School::all()->where('status', 'Active');
-        $teachers = Employee::all()->where('status', 'Active');
+        $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2');
 
         return view('classes/editclass', ['class'=>$class, 'schools'=>$schools, 'teachers'=>$teachers]);
     }

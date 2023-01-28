@@ -86,5 +86,11 @@ class EmployeesController extends Controller
 
         return redirect('/viewemployees')->with('message', 'Employee deleted successfully!');
     }
+
+    public static function getEmployeeName($id){
+        $employee = Employee::find($id);
+
+        return $employee->first_name.' '.$employee->last_name;
+    }
     
 }

@@ -1,6 +1,5 @@
 body{
-    overflow-x: hidden; 
-    /* overflow-y: scroll; */
+    overflow-x: hidden;
 }
 .navbar-brand, .green-color, #user{
     color: #088264;
@@ -26,6 +25,9 @@ button{
     color: #fff;
     padding: 10px 15px 10px;
 }
+.sms1 button{
+    margin-top: 20px;
+}
 button:hover{
     background-color: transparent;
     color: rgb(230, 100, 100);
@@ -35,6 +37,14 @@ button:hover{
     background-color: #088264;
     color: #fff;
     padding: 50px 30px;
+}
+.starting{
+    background-color: #fff;
+    color: #000;
+    margin: 30px;
+}
+.starting h3{
+    color: #000;
 }
 img#tick{
     width: 20%;
@@ -78,7 +88,6 @@ footer{
     padding: 25px 0px 20px;
 }
 .socials img{
-    /* margin: 70px 10px 50px; */
     width: 10%;
 }
 .welcome{
