@@ -25,7 +25,7 @@
             <input type="text" class="form-control" id="name" name = "name" value = "{{ $subject->subject_name }}">
         </div>
        
-        @if($errors->has('category'))
+        @if($errors->has('category')
             <div class = "alert alert-danger" role = "alert">
                 {{ $errors->first('category') }}
             </div>
