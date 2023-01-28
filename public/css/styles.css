@@ -49,6 +49,13 @@ img#tick{
     padding: 10px 10px;
     line-height: 30px;
 }
+.getting-started{
+    margin: 20px;
+    background-color: #088264;
+    color: #fff;
+    padding: 10px 10px;
+    line-height: 30px;
+}
 .contact{
     background-color: #D2E6EB;
     padding: 3% 30% 5%;
