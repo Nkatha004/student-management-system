@@ -54,15 +54,17 @@
             <input type="email" class="form-control" id="email" name = "email" value = "{{ $employee->email }}">
         </div>
 
-        @if($errors->has('tscNo'))
-            <div class = "alert alert-danger" role = "alert">
-                {{ $errors->first('tscNo') }}
+        @if($employee->id != 1)
+            @if($errors->has('tscNo'))
+                <div class = "alert alert-danger" role = "alert">
+                    {{ $errors->first('tscNo') }}
+                </div>
+            @endif
+            <div class="col-12">
+                <label for="tscNo" class=" form-label">TSC Number</label>
+                <input type="text" class="form-control" id="tscNo" name = "tscNo" value = "{{ $employee->tsc_number }}">
             </div>
         @endif
-        <div class="col-12">
-            <label for="tscNo" class=" form-label">TSC Number</label>
-            <input type="text" class="form-control" id="tscNo" name = "tscNo" value = "{{ $employee->tsc_number }}">
-        </div>
         
         <div class="col-12">
             @if($errors->has('status'))

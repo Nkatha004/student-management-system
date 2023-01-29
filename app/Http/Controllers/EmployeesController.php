@@ -59,7 +59,6 @@ class EmployeesController extends Controller
             'lname' => 'required',
             'email' => 'required | email',
             'telNo' => 'required',
-            'tscNo' => 'required',
             'status' => 'required'
         ]);
 

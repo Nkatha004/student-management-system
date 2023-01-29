@@ -44,7 +44,7 @@
         <div class="row">
             <div class="getting-started col">
                 <h3>Registration</h3>
-                <p>The first step to getting started is register your school with us and fill in the principal details. After which, you will proceed to the login page. Sign in with the principal's email address and the created password.</p>
+                <p>The first step to getting started is register your school with us and fill in the principal details. After which, you will proceed to the login page.</p>
             </div>
             <div class="getting-started col">
                 <h3>Make Payment</h3>
