@@ -10,7 +10,11 @@
                     Starting with the registration process of new students, their classes and their performance. 
                 </p>
                 <div class = "text-center">
+                    @if(Auth::check())
+                    <a href = "{{URL::to('/logout')}}"><button>Logout</button></a>
+                    @else
                     <a href = "{{URL::to('/register')}}"><button>Get Started</button></a>
+                    @endif
                 </div>
                 
             </div>
@@ -56,7 +60,11 @@
             </div>
             <p>Do not hesitate to <a href = "mailto: admin@admin.com">reach out</a> if you encounter any challenges or need any clarification. Thank you.</p>
             <div class = "text-center">
+                @if(Auth::check())
+                <a href = "{{URL::to('/logout')}}"><button>Logout</button></a>
+                @else
                 <a href = "{{URL::to('/register')}}"><button>Get Started</button></a>
+                @endif
             </div>
         </div>
     </div>

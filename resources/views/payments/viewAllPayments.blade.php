@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 <main>
 	<div class = "text-center table-schools">
 	<table class="table table-striped">

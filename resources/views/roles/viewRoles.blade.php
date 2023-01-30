@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 <main>
 	<div class = "text-center table-schools">
 
@@ -8,7 +8,6 @@
 					<th scope="col">Role ID</th>
 					<th scope="col">Role Name</th>
 					<th scope="col">Role Description</th>
-					<th scope="col">Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -18,7 +17,6 @@
 					<td>{{ $role->id }}</td>
 					<td>{{ $role->role_name }}</td>
                     <td>{{ $role->role_description }}</td>
-					<td>{{ $role->status }}</td>
 
 					<td>
 						<a href = "{{ url('/editrole/'.$role->id) }}" class = "btn btn-sm btn-warning">Update</a>

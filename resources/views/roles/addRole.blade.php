@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 
 <main>
     

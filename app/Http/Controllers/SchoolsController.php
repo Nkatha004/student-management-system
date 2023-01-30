@@ -52,7 +52,7 @@ class SchoolsController extends Controller
         return redirect('/login')->with('message', 'School registered successfully!');
     }
     public function viewSchools(){
-        $schools = School::all();
+        $schools = School::all()->where('status', 'Active');
 
         return view('schools/viewschools', ['schools'=> $schools]);
     }

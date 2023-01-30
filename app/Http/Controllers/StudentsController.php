@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\School;
 use App\Models\Classes;
+use Auth;
 
 class StudentsController extends Controller
 {
@@ -39,9 +40,26 @@ class StudentsController extends Controller
 
     }
     public function viewStudents(){
-        $students = Student::all();
-       
-        return view('students/viewStudents', ['students'=> $students]);
+         //SELECT first_name FROM `students` WHERE class_id IN 
+            //(SELECT id FROM classes WHERE school_id IN (SELECT id FROM schools WHERE id = 2));
+        if(Auth::user()->role_id == 1){
+            //display all students only when admin is logged in
+            $students = Student::all()->where('status', 'Active');
+            //find the school id in which student's class is in to display school name when admin is logged in
+            $schoolID = Classes::select('school_id')->where('id','=', $students[0]['class_id'])->get();
+            return view('students/viewStudents', ['students'=> $students, 'schoolID'=>$schoolID[0]['school_id']]);
+        }
+        else{
+            //display students specific to school of logged in user
+            //select all classes in logged in user's school
+            //select all students from the selected class
+            $students = Student::all()->where('status', 'Active')
+                                    ->where('class_id', Classes::select('id') ->where('school_id', Auth::user()->school_id));
+                                    
+            return $students;
+
+            return view('students/viewStudents', ['students'=> $students]);
+        }
     }
     public function edit($id){
         $student = Student::find($id);

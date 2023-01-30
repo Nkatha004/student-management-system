@@ -28,7 +28,7 @@
                         @if (Auth::check())
                             <div class="dropdown">
                                 <a id = "user" class="nav-link dropdown-toggle" data-bs-toggle= "dropdown" href = "" id = "dropdownMenuButton">
-                                    <i class="fa-solid fa-circle-user"></i>
+                                    <i class="uil uil-user-circle"></i>
                                     {{ Auth::user()->first_name.' '.Auth::user()->last_name }}
                                 </a>
                                 <ul class="dropdown-menu">

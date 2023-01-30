@@ -27,7 +27,7 @@ class SubjectsController extends Controller
         return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
     }
     public function viewSubjects(){
-        $subjects = Subject::all();
+        $subjects = Subject::all()->where('status', 'Active');
 
         return view('subjects/viewSubjects', ['subjects'=> $subjects]);
     }

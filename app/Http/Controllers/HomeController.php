@@ -36,18 +36,17 @@ class HomeController extends Controller
         if(Auth::attempt($credentials)){
             //Check the roles of users and redirect to the appropriate dashboard
             if(Auth::user()->role_id == 1){
-                return 'Admin';
+                return redirect('/admindashboard')->with('message', 'Admin Login successful');
             }else if(Auth::user()->role_id == 2){
                 $school = School::find(Auth::user()->school_id);
                 if($school->payment_status == 'Payment Complete'){
-                    return 'To dashboard';
+                    return redirect('/principaldashboard')->with('message', 'Principal Login successful');
                 }
                 return redirect('/payments')->with('message', 'Login successful');
             }else{
-                return 'Teacher';
+                return redirect('/teacherdashboard')->with('message', 'Teacher Login successful');
             }
             
-            // return redirect('/')->with('message', 'Login successful');
         }
 
         return redirect()->back()->with('message', 'Invalid login credentials');

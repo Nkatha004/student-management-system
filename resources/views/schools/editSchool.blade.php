@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 
 <main>
     <form method = "post" action = "{{ url('/updateschool/'.$school->id) }}" id = "addSchoolForm" class="row g-3 form">

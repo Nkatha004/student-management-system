@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard/dashboardSideNav')
 
 <main>
 	<div class = "text-center table-employees">
@@ -8,11 +8,8 @@
 					<th scope="col">TSC Number</th>
 					<th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
-					<th scope="col">Email</th>
-					<th scope="col">Phone Number</th>
                     <th scope="col">School Name</th>
                     <th scope="col">Role Name</th>
-					<th scope="col">Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,9 +23,7 @@
 
 					<td>{{ $employee->first_name }}</td>
                     <td>{{ $employee->last_name }}</td>
-					<td>{{ $employee->email }}</td>
-					<td>{{ $employee->telephone_number }}</td>
-
+				
 					@if ($employee->role_id == 1)
 						<td>Not Applicable</td>
 					@else
@@ -36,7 +31,6 @@
 					@endif
 
                     <td>{{App\Http\Controllers\RolesController::getRoleName($employee->role_id) }}</td>
-					<td>{{ $employee->status }}</td>
 					@if ($employee->role_id != 1)
 						<td>
 							<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Teaching Subjects</a>

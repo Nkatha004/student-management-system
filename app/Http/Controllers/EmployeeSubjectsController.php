@@ -10,7 +10,7 @@ class EmployeeSubjectsController extends Controller
 {
     public function index($id){
         $employee = Employee::find($id);
-        $employeesubjects = EmployeeSubject::all()->where('employee_id', $id);
+        $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('status', 'Active');
         $subjects = Subject::all()->where('status', 'Active');
     
         return view('employees/addEmployeeSubjects', ['employee'=> $employee, 'employeesubjects'=> $employeesubjects, 'subjects'=>$subjects]);

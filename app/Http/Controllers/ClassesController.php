@@ -35,7 +35,7 @@ class ClassesController extends Controller
 
     }
     public function viewclasses(){
-        $classes = Classes::all();
+        $classes = Classes::all()->where('status', 'Active');
        
         return view('classes/viewclasses', ['classes'=> $classes]);
     }

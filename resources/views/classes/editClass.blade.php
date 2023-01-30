@@ -1,8 +1,8 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 
 <main>
    
-    <form action = "{{ url('/updateclass/'.$class->id) }}" method = "post" id = "addEmployeeForm" class="row g-3 form">
+    <form action = "{{ url('/updateclass/'.$class->id) }}" method = "post" id = "addEmployeeForm" class = "edit"class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">

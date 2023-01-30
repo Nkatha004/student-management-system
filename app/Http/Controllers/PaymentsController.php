@@ -18,10 +18,11 @@ class PaymentsController extends Controller
         $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
         $this->gateway->setTestMode(true);
     }
+    //return the page that has payment instructions(for now only paypal)
     public function payment(){
         return view('payments/addPayment');
     }
-
+    //make payment using paypal
     public function pay(Request $request)
     {
         try {
@@ -87,11 +88,12 @@ class PaymentsController extends Controller
             return redirect('/cancelpayment')->with('message', 'Payment declined');
         }
     }
-
+    //redirect upon successful payment
     public function paymentSuccess(){
         return view('payments/success');
     }
 
+    //redirect upon error on payment
     public function errorOccured()
     {
         return redirect('/cancelpayment')->with('message', 'User declined the payment');
@@ -102,7 +104,7 @@ class PaymentsController extends Controller
         if(Auth::check()){
             $user = Auth::user()->id;
         }
-        $transactions = Payment::all()->where('paid_by', $user);
+        $transactions = Payment::all()->where('paid_by', $user)->where('status', 'Active');
 
         return view('payments/viewMyTransactions', ['transactions'=>$transactions]);
     }
@@ -113,7 +115,7 @@ class PaymentsController extends Controller
 
     //all users transactions/payments
     public function viewPayments(){
-        $transactions = Payment::all();
+        $transactions = Payment::all()->where('status', 'Active');
 
         return view('payments/ViewAllPayments', ['transactions'=>$transactions]);
     }

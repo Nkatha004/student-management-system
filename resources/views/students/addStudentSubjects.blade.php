@@ -2,48 +2,50 @@
 <main>
 	<div class = "text-center table-schools">
 
-	<table class="table table-striped">
+	    <table class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">First Name</th>
 					<th scope="col">Last Name</th>
-                    <th scope="col">Teaching Subjects</th>
+                    <th scope = "col">Class</th>
+                    <th scope="col">Student Subjects</th>
                     <th scope="col">Status</th>
 				</tr>
 			</thead>
 			<tbody>
-                @foreach($employeesubjects as $e_subject)
+                @foreach($studentsubjects as $s_subject)
 				<tr>
-					<td>{{ $employee->first_name }}</td>
-					<td>{{ $employee->last_name }}</td>
-                    <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
-					<td>{{$e_subject->status}}</td>
+					<td>{{ $student->first_name }}</td>
+					<td>{{ $student->last_name }}</td>
+                    <td>{{App\Http\Controllers\ClassesController::getClassName($student->class_id) }}</td>
+                    <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($s_subject->subject_id)}} </p></td>
+					<td>{{$s_subject->status}}</td>
                     <td>
-						<a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
-                        <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						<a href = "{{ url('/editstudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
+                        <a href = "{{ url('/deletestudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
                     </td>
 				</tr>
                 @endforeach
 			</tbody>
 		</table>
 	</div>
-    <form method = "post" action = "{{ url('/employeesubjects') }}" id = "teachingSubjects" class="row g-3 form">
+    <form method = "post" action = "{{ url('/studentsubjects') }}" id = "teachingSubjects" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">
                 {{ session()->get('message') }}
             </div>
         @endif
-        <h3 class = "text-center">Assign Teaching Subjects</h3>
+        <h3 class = "text-center">Assign Student Subjects</h3>
         
         <div class="col-12">
-            @if($errors->has('employee'))
+            @if($errors->has('student'))
                 <div class = "alert alert-danger" role = "alert">
-                    {{ $errors->first('employee') }}
+                    {{ $errors->first('student') }}
                 </div>
             @endif
-            <label for="employee" class="form-label">Employee ID</label>
-            <input type="text" class="form-control" id="employee" name = "employee" value = "{{$employee->id}}" readonly>
+            <label for="student" class="form-label">Student ID</label>
+            <input type="text" class="form-control" id="student" name = "student" value = "{{$student->id}}" readonly>
         </div>
         
         @if($errors->has('subject'))

@@ -1,5 +1,4 @@
-@include('common/header')
-
+@include('dashboard.dashboardSideNav')
 <main>
    
     <form action = "{{ url('/subjects') }}" method = "post" id = "addEmployeeForm" class="row g-3 form">

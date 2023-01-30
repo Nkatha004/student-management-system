@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 <main>
 	<div class = "text-center table-schools">
 	<table class="table table-striped">
@@ -7,7 +7,6 @@
 					<th scope="col">Subject Category ID</th>
 					<th scope="col">Subject Category Name</th>
 					<th scope="col">Subject Category Description</th>
-					<th scope="col">Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -17,7 +16,6 @@
 					<td>{{ $category->id }}</td>
 					<td>{{ $category->category_name }}</td>
                     <td>{{ $category->description }}</td>
-					<td>{{ $category->status }}</td>
 
 					<td>
 						<a href = "{{ url('/editsubjectcategory/'.$category->id) }}" class = "btn btn-sm btn-warning">Update</a>

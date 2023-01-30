@@ -1,5 +1,9 @@
-@include('common/header')
 
+@if(Auth::user()->role_id == 1)
+    @include('dashboard.dashboardSideNav')
+@else
+    @include('common/header')
+@endif
 <main>
     
     <form method = "post" action = "{{ url('/schools') }}" id = "addSchoolForm" class="row g-3 form">

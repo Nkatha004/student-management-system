@@ -39,7 +39,7 @@ class RolesController extends Controller
         return redirect('/viewroles')->with('message', 'Role added successfully!');
     }
     public function viewRoles(){
-        $roles = Role::all();
+        $roles = Role::all()->where('status', 'Active');
 
         return view('roles/viewroles', ['roles'=> $roles]);
     }

@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\School;
 use App\Models\Role;
 use Hash;
+use Auth;
 
 class EmployeesController extends Controller
 {
@@ -43,7 +44,12 @@ class EmployeesController extends Controller
 
     }
     public function viewEmployees(){
-        $employees = Employee::all();
+        if(Auth::user()->role_id == 1){
+            $employees = Employee::all()->where('status', 'Active');
+        }else if(Auth::user()->role_id == 2){
+            $employees = Employee::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+        }
+        
        
         return view('employees/viewEmployees', ['employees'=> $employees]);
     }

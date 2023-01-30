@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 
 <div>
     <form action = "{{ URL('/payments') }}" method = "post" id = "payments" class = "text-center">

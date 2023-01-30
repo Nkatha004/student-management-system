@@ -1,32 +1,32 @@
 @include('dashboard.dashboardSideNav')
 <main>
-    <form method = "post" action = "{{ url('/updateemployeesubject/'.$employeesubject->id) }}" id = "addRoleForm" class="row g-3 form">
+    <form method = "post" action = "{{ url('/updatestudentsubject/'.$studentsubject->id) }}" id = "addRoleForm" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">
                 {{ session()->get('message') }}
             </div>
         @endif
-        <h3 class = "text-center">Edit Teaching Subjects</h3>
+        <h3 class = "text-center">Edit Student Subjects</h3>
         
         <div class="col-12">
-            @if($errors->has('employeesubject'))
+            @if($errors->has('studentsubject'))
                 <div class = "alert alert-danger" role = "alert">
-                    {{ $errors->first('employeesubject') }}
+                    {{ $errors->first('studentsubject') }}
                 </div>
             @endif
-            <label for="employeesubject" class="form-label">Employee Subject ID</label>
-            <input type="text" class="form-control" id="employeesubject" name = "employeesubject" value = "{{$employeesubject->id}}" readonly>
+            <label for="studentsubject" class="form-label">Student Subject ID</label>
+            <input type="text" class="form-control" id="studentsubject" name = "studentsubject" value = "{{$studentsubject->id}}" readonly>
         </div>
 
         <div class="col-12">
-            @if($errors->has('employee'))
+            @if($errors->has('student'))
                 <div class = "alert alert-danger" role = "alert">
-                    {{ $errors->first('employee') }}
+                    {{ $errors->first('student') }}
                 </div>
             @endif
-            <label for="employee" class="form-label">Employee ID</label>
-            <input type="text" class="form-control" id="employee" name = "employee" value = "{{$employeesubject->employee_id}}" readonly>
+            <label for="student" class="form-label">Student ID</label>
+            <input type="text" class="form-control" id="student" name = "student" value = "{{$studentsubject->student_id}}" readonly>
         </div>
         
         @if($errors->has('subject'))

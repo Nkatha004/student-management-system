@@ -11,6 +11,11 @@ use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\EmployeeSubjectsController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PrincipalController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentSubjectsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +75,15 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::controller(HomeController::class)->group(function(){
         Route::get('/logout', 'logout');
+    });
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/admindashboard', 'adminDashboard');
+    });
+    Route::controller(PrincipalController::class)->group(function(){
+        Route::get('/principaldashboard', 'principalDashboard');
+    });
+    Route::controller(TeacherController::class)->group(function(){
+        Route::get('/teacherdashboard', 'teacherDashboard');
     });
     
     Route::controller(SchoolsController::class)->group(function(){
@@ -139,6 +153,14 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewstudents', 'viewStudents');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
+    });
+
+    Route::controller(StudentSubjectsController::class)->group(function(){
+        Route::get('/studentsubjects/{id}', 'index');
+        Route::post('/studentsubjects', 'store');
+        Route::get('/editstudentsubject/{id}', 'edit');
+        Route::post('/updatestudentsubject/{id}', 'update');
+        Route::get('/deletestudentsubject/{id}', 'destroy');
     });
     
 });

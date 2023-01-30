@@ -1,4 +1,4 @@
-@include('common/header')
+@include('dashboard.dashboardSideNav')
 <main>
 	<div class = "text-center table-employees">
 	<table class="table table-striped">
@@ -9,7 +9,6 @@
                     <th scope="col">Year</th>
 					<th scope="col">Class Teacher</th>
                     <th scope="col">School Name</th>
-					<th scope="col">Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -20,7 +19,6 @@
                     <td>{{ $class->year }}</td>
 					<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
                     <td>{{App\Http\Controllers\SchoolsController::getSchoolName($class->school_id) }}</td>
-					<td>{{ $class->status }}</td>
 
 					<td>
 						<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
