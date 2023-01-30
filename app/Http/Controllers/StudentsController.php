@@ -54,8 +54,8 @@ class StudentsController extends Controller
             //select all classes in logged in user's school
             //select all students from the selected class
             $students = Student::all()->where('status', 'Active')
-                                    ->where('class_id', Classes::select('id') ->where('school_id', Auth::user()->school_id));
-                                    
+                                    ->where('class_id', );
+
             return $students;
 
             return view('students/viewStudents', ['students'=> $students]);
