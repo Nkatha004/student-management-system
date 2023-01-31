@@ -2,31 +2,31 @@
 <main>
     <div class="cards">
     <div class="single-card">
-        <div>
+        <a href = "{{ URL::to('/viewpayments') }}"><div>
             <span>Total payments made</span>
             <h2>{{ $totalpayments. ' USD' }}</h2>
-        </div>
+        </div></a>
         <i class="uil uil-dollar-sign-alt"></i>
     </div>
     <div class="single-card">
-        <div>
+        <a href = "{{ URL::to('/viewschools') }}"><div>
             <span>Number of schools</span>
             <h2>{{$schoolsCount}}</h2>
-        </div>
+        </div></a>
         <i class="uil uil-bus"></i>
     </div>
     <div class="single-card">
-        <div>
+        <a href = "{{ URL::to('/viewemployees') }}"><div>
             <span>Number of employees</span>
             <h2>{{$employees}}</h2>
-        </div>
+        </div></a>
         <i class="uil uil-book-reader"></i>
     </div>
     <div class="single-card">
-        <div>
+        <a href = "{{ URL::to('/viewstudents') }}"><div>
             <span>Number of students</span>
             <h2>{{ $students }}</h2>
-        </div>
+        </div></a>
         <i class="uil uil-graduation-cap"></i>
     </div>
     </div>

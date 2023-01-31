@@ -67,16 +67,25 @@
                     <a href = "{{URL::to('/viewemployees')}}"><span>View Employees</span></a>
                 </div>
                 @endif
-                <a class = "dropdown-btn">
-                    <li>
-                        <i class="uil uil-book-reader"></i>
-                        <span>Students</span>
-                    </li>
-                </a>
-                <div class = "dropdown-container">
-                    <a href = "{{URL::to('/schools')}}">Add School</a>
-                    <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
-                </div>
+                @if(Auth::user()->role_id == 1)
+                    <a href = "{{URL::to('/viewstudents')}}">
+                        <li>
+                            <i class="uil uil-book-reader"></i>
+                            <span>Students</span>
+                        </li>
+                    </a>
+                @else
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-book-reader"></i>
+                            <span>Students</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/students')}}">Add Student</a>
+                        <a href = "{{URL::to('/viewstudents')}}"><span>View Students</span></a>
+                    </div>
+                @endif
                 @if (Auth::user()->role_id == 1)
                 <a class = "dropdown-btn">
                     <li>
@@ -85,8 +94,8 @@
                     </li>
                 </a>
                 <div class = "dropdown-container">
-                    <a href = "{{URL::to('/schools')}}">Add School</a>
-                    <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
+                    <a href = "{{URL::to('/roles')}}">Add Role</a>
+                    <a href = "{{URL::to('/viewroles')}}"><span>View Roles</span></a>
                 </div>
                 @endif
                 <a class = "dropdown-btn">
@@ -96,8 +105,8 @@
                     </li>
                 </a>
                 <div class = "dropdown-container">
-                    <a href = "{{URL::to('/schools')}}">Add School</a>
-                    <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
+                    <a href = "{{URL::to('/subjects')}}">Add Subject</a>
+                    <a href = "{{URL::to('/viewsubjects')}}"><span>View Subjects</span></a>
                 </div>
                 @if (Auth::user()->role_id != 3)
                 <a class = "dropdown-btn">
@@ -107,31 +116,39 @@
                     </li>
                 </a>
                 <div class = "dropdown-container">
-                    <a href = "{{URL::to('/schools')}}">Add School</a>
-                    <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
+                    <a href = "{{URL::to('/subjectcategories')}}">Add Category</a>
+                    <a href = "{{URL::to('/viewsubjectcategories')}}"><span>View Categories</span></a>
                 </div>
                 @endif
-                <a class = "dropdown-btn">
-                    <li>
-                        <i class="uil uil-presentation-edit"></i>
-                        <span>Classes</span>
-                    </li>
-                </a>
-                <div class = "dropdown-container">
-                    <a href = "{{URL::to('/schools')}}">Add School</a>
-                    <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
-                </div>
+                @if(Auth::user()->role_id == 1)
+                    <a href = "{{URL::to('/viewclasses')}}">
+                        <li>
+                            <i class="uil uil-presentation-edit"></i>
+                            <span>Classes</span>
+                        </li>
+                    </a>
+                @else
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-presentation-edit"></i>
+                            <span>Classes</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/classes')}}">Add Class</a>
+                        <a href = "{{URL::to('/viewclasses')}}"><span>View Classes</span></a>
+                    </div>
+                @endif
                 @if (Auth::user()->role_id != 3)
                     @if(Auth::user()->role_id == 1)
-                        <a class = "dropdown-btn">
+                        <a href = "{{URL::to('/viewpayments')}}">
                             <li>
                                 <i class="uil uil-dollar-sign"></i>
                                 <span>Payments</span>
                             </li>
                         </a>
                         <div class = "dropdown-container">
-                            <a href = "{{URL::to('/schools')}}">Add School</a>
-                            <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
+                            <a ><span>View Payments</span></a>
                         </div>
                     @elseif(Auth::user()->role_id == 2)
                         <a class = "dropdown-btn">
@@ -141,12 +158,12 @@
                             </li>
                         </a>
                         <div class = "dropdown-container">
-                            <a href = "{{URL::to('/schools')}}">Add School</a>
-                            <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
+                            <a href = "{{URL::to('/payments')}}">Add Payment</a>
+                            <a href = "{{URL::to('/mytransactions')}}"><span>View my Payments</span></a>
                         </div>  
                     @endif
                 @endif
-                <a class = "dropdown-btn">
+                <a href = "{{URL::to('/logout')}}">
                     <li>
                         <i class="uil uil-signin"></i>
                         <span>Logout</span>

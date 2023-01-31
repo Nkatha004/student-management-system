@@ -12,7 +12,7 @@ class AdminController extends Controller
 {
     public function adminDashboard(){
         $paymentsSum = Payment::all()->sum('amount');
-        $schools = School::all()->count('id');
+        $schools = School::all()->count('id') - 1;
         $employees = Employee::all()->count('id') - 1;
         $students = Student::all()->count('id');
 

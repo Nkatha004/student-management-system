@@ -17,7 +17,7 @@
 }
 
 .sidebar{
-  width: 270px;
+  width: 300px;
   height: 100%;
   position: fixed;
   left: 0;
@@ -85,7 +85,7 @@
     color: var(--main-color);
 }
 .main-content{
-  margin-left: 270px;
+  margin-left: 300px;
   transition: all .5s;
 }
 
@@ -158,6 +158,9 @@ main{
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+.single-card a{
+  text-decoration: none;
 }
 .single-card:nth-child(1){
   border-left: 5px solid royalblue;
@@ -324,7 +327,7 @@ thead :is(tr,td,th){
     width: 65px;
   }
   .sidebar:is(:hover,:active){
-    width: 270px;
+    width: 300px;
   }
   .main-content{
     margin-left: 65px;

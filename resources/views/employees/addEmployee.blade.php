@@ -81,11 +81,26 @@
         </div>
 
         @if (Auth::check())
-        <input value = '{{Auth::user()->school_id}}' name = "school" hidden>
+        <input value = '3' name = "role" hidden>
         @endif
 
-        @if (Auth::check())
-        <input value = '3' name = "role" hidden>
+        @if (Auth::user()->role_id != 1)
+        <input value = '{{Auth::user()->school_id}}' name = "school" hidden>
+        @else
+            @if($errors->has('school'))
+                <div class = "alert alert-danger" role = "alert">
+                    {{ $errors->first('school') }}
+                </div>
+            @endif
+            <div class="col-12">
+                <label for="inputState" class="form-label">School Name</label>
+                <select id="inputState" class="form-select" name = "school">
+                    <option selected disabled>Choose the school</option>
+                    @foreach($schools as $school)
+                    <option value = "{{ $school->id}} ">{{ $school->school_name}}</option>
+                    @endforeach
+                </select>
+            </div>
         @endif
         
         <div class="col-12 text-center">

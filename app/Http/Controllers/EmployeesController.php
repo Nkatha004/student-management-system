@@ -12,7 +12,7 @@ use Auth;
 class EmployeesController extends Controller
 {
     public function index(){
-        $schools = School::all()->where('status', 'Active');
+        $schools = School::all()->where('status', 'Active')->where('id', '!=', '1');
         $roles = Role::all()->where('status', 'Active');
 
         return view('employees/addEmployee', ['schools'=>$schools, 'roles'=>$roles]);
@@ -54,8 +54,9 @@ class EmployeesController extends Controller
     }
     public function edit($id){
         $employee = Employee::find($id);
+        $schools = School::all()->where('status', 'Active')->where('id', '!=', '1');
 
-        return view('employees/editEmployee', ['employee'=>$employee]);
+        return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools]);
     }
 
     public function update(Request $request, $id){

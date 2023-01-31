@@ -1,4 +1,8 @@
-@include('common.header')
+@if($message == "Payment Complete")
+    @include('dashboard.dashboardSideNav')
+@else
+    @include('common.header')
+@endif
 
 <div>
     <form action = "{{ URL('/payments') }}" method = "post" id = "payments" class = "text-center">

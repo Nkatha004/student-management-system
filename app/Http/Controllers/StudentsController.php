@@ -12,7 +12,7 @@ class StudentsController extends Controller
 {
     public function index(){
         $schools = School::all()->where('status', 'Active');
-        $classes = Classes::all()->where('status', 'Active');
+        $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
 
         return view('students/addStudent', ['schools'=>$schools, 'classes'=>$classes]);
     }

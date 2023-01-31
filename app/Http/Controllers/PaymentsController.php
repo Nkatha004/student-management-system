@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Omnipay\Omnipay;
 use Auth;
 use App\Models\School;
+use App\Models\Employee;
 
 class PaymentsController extends Controller
 {
@@ -20,7 +21,13 @@ class PaymentsController extends Controller
     }
     //return the page that has payment instructions(for now only paypal)
     public function payment(){
-        return view('payments/addPayment');
+        $school = School::find(Auth::user()->school_id);
+        if($school->payment_status == 'Payment Complete'){
+            return view('payments/addPayment', ['message'=>'Payment Complete']);
+        }else{
+            return view('payments/addPayment', ['message'=>'Payment Pending']);
+        }
+        
     }
     //make payment using paypal
     public function pay(Request $request)
@@ -117,6 +124,11 @@ class PaymentsController extends Controller
     public function viewPayments(){
         $transactions = Payment::all()->where('status', 'Active');
 
-        return view('payments/ViewAllPayments', ['transactions'=>$transactions]);
+        foreach($transactions as $transaction){
+            $userid = $transaction->paid_by;
+            $school_id = Employee::find($userid)->school_id;
+
+            return view('payments/ViewAllPayments', ['transactions'=>$transactions, 'school'=>$school_id]);
+        }
     }
 }
