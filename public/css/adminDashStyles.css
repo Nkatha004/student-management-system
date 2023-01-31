@@ -42,7 +42,7 @@
   align-items: center;
 }
 
-.sidebar-menu ul li{
+.sidebar-menu ul li, .sidebar-menu ul div a{
   width: 100%;
   font-size: 16px;
   color: var(--text-white);
@@ -68,6 +68,10 @@
 .sidebar-menu ul li:is(:hover){
   background-color: var(--text-white);
   color: var(--main-color);
+} 
+.sidebar-menu ul div a:is(:hover){
+	background-color: var(--text-white);
+	color: var(--main-color);
 } 
 /* #activeDash{
     background-color: var(--text-white);
@@ -374,4 +378,18 @@ thead :is(tr,td,th){
 
 .toggleContent{
   margin-left: 65px;
+}
+.dropdown-container{
+	display:none;
+	border-bottom: #000;
+}
+.dropdown-container a{
+	margin: 10px 5px 10px 30px;
+	text-align: right;
+}
+.sidebar a, .dropdown-btn{
+	text-decoration: none;
+	display: block;
+	border: none;
+	text-align: right;
 }

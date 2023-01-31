@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Classes;
 use App\Models\Employee;
+use Auth;
 
 class ClassesController extends Controller
 {
     public function index(){
         //exclude admin and principal from being class teachers
         $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2');
+        if(Auth::user()->role_id != 1){
+            $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2')->where('school_id', Auth::user()->school_id);
+        }
 
         return view('classes/addClass', ['teachers'=>$teachers]);
     }
@@ -35,8 +39,11 @@ class ClassesController extends Controller
 
     }
     public function viewclasses(){
-        $classes = Classes::all()->where('status', 'Active');
-       
+        if(Auth::user()->role_id == 1){
+            $classes = Classes::all()->where('status', 'Active');
+        }else{
+            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+        }
         return view('classes/viewclasses', ['classes'=> $classes]);
     }
     public function edit($id){

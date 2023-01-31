@@ -16,11 +16,13 @@
 					<td>{{ $subject->id }}</td>
 					<td>{{ $subject->subject_name }}</td>
                     <td>{{ App\Http\Controllers\SubjectCategoriesController::getSubjectCategoryName($subject->category_id) }}</td>
-
+					
+					@if(Auth::user()->role_id == 1)
 					<td>
 						<a href = "{{ url('/editsubject/'.$subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
 						<a href = "{{ url('/deletesubject/'.$subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 					</td>
+					@endif
 				</tr>
 				@endforeach
 			</tbody>

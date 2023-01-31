@@ -1,20 +1,20 @@
-#addSchoolForm, #addEmployeeForm, #addRoleForm{
+/* #addSchoolForm, #addEmployeeForm, #addRoleForm{
     margin: 10% 30% 5%;
 }
 form{
     box-shadow:1px 1px 5px;
     background-color: #ecfbff;
     padding: 20px 40px 40px;
-}
+} */
 table{
-    margin-top: 8%;
+    margin-top: 0%;
 }
 .thead{
     margin-left: 3%;
     margin-right: 3%;
 }
 #viewstudents{
-    margin: 0
+    margin: 0;
 }
 .fa-trash, .fa-times-circle-o{
     color: red;
@@ -24,7 +24,7 @@ table{
     background-color: #e06565;
 }
 #payments{
-    margin: 10% 30% 5%;
+    margin: 12% 30% 5%;
 }
 #paypal{
     color: #fff;
@@ -32,7 +32,7 @@ table{
     border-radius: 5px;
 }
 .successPay{
-    margin-top: 20%;
+    margin-top: 10%;
 }
 .fa-circle-check{
     font-size: 200px;
@@ -54,4 +54,7 @@ td p{
 }
 #teachingSubjects{
     margin: 0% 10% 2%;
+}
+div button{
+    border-radius: 25px;
 }

@@ -40,25 +40,35 @@ class StudentsController extends Controller
 
     }
     public function viewStudents(){
-         //SELECT first_name FROM `students` WHERE class_id IN 
-            //(SELECT id FROM classes WHERE school_id IN (SELECT id FROM schools WHERE id = 2));
         if(Auth::user()->role_id == 1){
             //display all students only when admin is logged in
             $students = Student::all()->where('status', 'Active');
-            //find the school id in which student's class is in to display school name when admin is logged in
+            //find the school id in which student's class is in... to display school name when admin is logged in
             $schoolID = Classes::select('school_id')->where('id','=', $students[0]['class_id'])->get();
             return view('students/viewStudents', ['students'=> $students, 'schoolID'=>$schoolID[0]['school_id']]);
         }
         else{
             //display students specific to school of logged in user
             //select all classes in logged in user's school
-            //select all students from the selected class
-            $students = Student::all()->where('status', 'Active')
-                                    ->where('class_id', );
-
-            return $students;
-
-            return view('students/viewStudents', ['students'=> $students]);
+            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+            //check if there are any classes
+            if(count($classes) == 0){
+                //if no classes - return no students found
+                return view('students/viewStudents', ['message'=>'No classes and students found yet!']);
+            }else{
+                //select all students from the selected class
+                foreach($classes as $class){
+                    $students = Student::all()->where('status', 'Active')->where('class_id', $class->id);
+                    
+                    //if no students - return no students found
+                    if(count($students) == 0){
+                        return view('students/viewStudents', ['message'=>'No students found!']);
+                    }else{
+                        //return list of students in the school
+                        return view('students/viewStudents', ['students'=> $students]);
+                    }
+                }
+            }
         }
     }
     public function edit($id){

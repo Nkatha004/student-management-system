@@ -4,28 +4,28 @@
     <div class="single-card">
         <div>
             <span>Total payments made</span>
-            <h2>$40,000</h2>
+            <h2>{{ $totalpayments. ' USD' }}</h2>
         </div>
         <i class="uil uil-dollar-sign-alt"></i>
     </div>
     <div class="single-card">
         <div>
             <span>Number of schools</span>
-            <h2>$215,000</h2>
+            <h2>{{$schoolsCount}}</h2>
         </div>
         <i class="uil uil-bus"></i>
     </div>
     <div class="single-card">
         <div>
-            <span>Number of teachers</span>
-            <h2>$47k</h2>
+            <span>Number of employees</span>
+            <h2>{{$employees}}</h2>
         </div>
         <i class="uil uil-book-reader"></i>
     </div>
     <div class="single-card">
         <div>
             <span>Number of students</span>
-            <h2>18</h2>
+            <h2>{{ $students }}</h2>
         </div>
         <i class="uil uil-graduation-cap"></i>
     </div>
@@ -36,7 +36,7 @@
     <div class="projects">
         <div class="card-header flex">
             <h4>Pending Payments</h4>
-            <button>See all <i class="uil uil-angle-right"></i></button>
+            <!-- <button>See all <i class="uil uil-angle-right"></i></button> -->
         </div>
 
         <table>
@@ -44,87 +44,20 @@
                 <th>
                 <tr>
                     <td>School Name</td>
-                    <td>Date Registered</td>
+                    <td>Registration Date</td>
+                    <td>Registration Time</td>
                 </tr>
                 </th>
             </thead>
 
-            <tbody> 
+            <tbody>
+                @foreach ($pendingpayments as $pending) 
                 <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status review"></span>review
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
+                    <td>{{$pending->school_name}}</td>
+                    <td>{{date('d/m/Y' ,strtotime($pending->created_at))}}</td>
+                    <td>{{date('h:i a' ,strtotime($pending->created_at))}}</td>
                 </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status progress"></span>progress
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status pending"></span>pending
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status review"></span>review
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status progress"></span>progress
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status pending"></span>pending
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status review"></span>review
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status progress"></span>progress
-                </td>
-                <td><i class="uil uil-envelope"></i></td>
-                </tr>
-                <tr>
-                <td>UI/UX Designer</td>
-                <td>UI Team</td>
-                <td class="status-box">
-                    <span class="status pending"></span>pending
-                </td>
-                <td>
-                    <i class="uil uil-envelope"></i>
-                    <i class="uil uil-phone-volume"></i>
-                </td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -132,116 +65,26 @@
     <div class="customers">
         <div class="card-header flex">
             <h4>Recent Payments</h4>
-            <button>See all <i class="uil uil-angle-right"></i></button>
+            <!-- <button>See all <i class="uil uil-angle-right"></i></button> -->
         </div>
 
         <table>
-            
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
-            <tr class="flex">
-                <td class="flex">
-                <img src="images/user.jpeg" width="30px" height="30px" alt="">
-                <div>
-                    <h5>Naseem Khan</h5>
-                    <small>CEO Expert</small>
-                </div>
-                </td>
-
-                <td>
-                <i class="uil uil-user-circle"></i>
-                <i class="uil uil-calender"></i>
-                <i class="uil uil-phone-alt"></i>
-                </td>
-            </tr>
+            <thead>
+                <th>
+                    <tr>
+                        <td>School Name</td>
+                        <td>Payment Date</td>
+                    </tr>
+                </th>
+            </thead>
+            <tbody>
+                @foreach ($recentpayments as $recent) 
+                <tr>
+                    <td>{{App\Http\Controllers\SchoolsController::getSchoolName($recent->paid_by)}}</td>
+                    <td>{{date('d/m/Y' ,strtotime($recent->created_at))}}</td>
+                </tr>
+                @endforeach
+            </tbody>
         </table>
     </div>
     </div>

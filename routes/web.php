@@ -150,7 +150,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::controller(StudentsController::class)->group(function(){
         Route::get('/editstudent/{id}', 'edit');
-        Route::get('/viewstudents', 'viewStudents');
+        Route::get('/viewstudents', 'viewStudents')->name('viewstudents');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
     });

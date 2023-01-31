@@ -104,7 +104,7 @@ class PaymentsController extends Controller
         if(Auth::check()){
             $user = Auth::user()->id;
         }
-        $transactions = Payment::all()->where('paid_by', $user)->where('status', 'Active');
+        $transactions = Payment::orderBy('created_at', 'desc')->where('paid_by', $user)->where('status', 'Active')->get();
 
         return view('payments/viewMyTransactions', ['transactions'=>$transactions]);
     }
