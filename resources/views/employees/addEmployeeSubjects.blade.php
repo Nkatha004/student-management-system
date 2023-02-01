@@ -8,7 +8,9 @@
 					<th scope="col">First Name</th>
 					<th scope="col">Last Name</th>
                     <th scope="col">Teaching Subjects</th>
+                    @if(Auth::user()->role_id != 3)
                     <th scope="col">Status</th>
+                    @endif
 				</tr>
 			</thead>
 			<tbody>
@@ -17,16 +19,19 @@
 					<td>{{ $employee->first_name }}</td>
 					<td>{{ $employee->last_name }}</td>
                     <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
-					<td>{{$e_subject->status}}</td>
+					@if(Auth::user()->role_id != 3)
+                    <td>{{$e_subject->status}}</td>
                     <td>
 						<a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
                         <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
                     </td>
+                    @endif
 				</tr>
                 @endforeach
 			</tbody>
 		</table>
 	</div>
+    @if(Auth::user()->role_id != 3)
     <form method = "post" action = "{{ url('/employeesubjects') }}" id = "teachingSubjects" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
@@ -65,4 +70,5 @@
             <button type="submit">Assign Subject</button>
         </div>
     </form>
+    @endif
 </main>

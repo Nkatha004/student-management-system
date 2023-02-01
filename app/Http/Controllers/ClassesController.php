@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Classes;
 use App\Models\Employee;
+use App\Models\Role;
 use Auth;
 
 class ClassesController extends Controller
@@ -14,7 +15,9 @@ class ClassesController extends Controller
         //exclude admin and principal from being class teachers
         $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2');
         if(Auth::user()->role_id != 1){
-            $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2')->where('school_id', Auth::user()->school_id);
+            $teachers = Employee::all()->where('status', 'Active')
+                                        ->where('role_id', '==', '3')
+                                        ->where('school_id', Auth::user()->school_id);
         }
 
         return view('classes/addClass', ['teachers'=>$teachers]);
@@ -34,6 +37,13 @@ class ClassesController extends Controller
             'school_id' => request('school'),
             'class_teacher'=>request('teacher')
         ]);
+
+        //find the employee whose id is sent from the form and promote their role to a classteacher
+        $employee = Employee::find(request('teacher'));
+        $role = Role::all()->where('role_name', 'Class Teacher')->first();
+        $employee->role_id = $role['id'];
+
+        $employee->save();
 
         return redirect('/viewclasses')->with('message', 'Class added successfully!');
 

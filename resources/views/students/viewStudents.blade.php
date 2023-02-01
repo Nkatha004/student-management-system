@@ -60,12 +60,11 @@
 						
 						<td><a href = "{{ url('/studentsubjects/'.$student->id) }}" class = "btn btn-sm btn-info">Student Subjects</a></td>
 						<td>
-							<a href = "{{ url('/editstudent/'.$student->id) }}" class = "btn btn-sm btn-warning">Update
-							</a>
-							<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete
-							</a>
+							@if (Auth::user()->role_id != 3)
+							<a href = "{{ url('/editstudent/'.$student->id) }}" class = "btn btn-sm btn-warning">Update</a>
+							<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+							@endif
 						</td>
-						
 					</tr>
 					@endforeach
 				@endif

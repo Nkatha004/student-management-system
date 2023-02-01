@@ -18,6 +18,7 @@ class AdminController extends Controller
 
         $pendingpayments = School::all()->where('payment_status', 'Payment Pending')->where('id', '!=', 1)->take(5);
         $recentpayments = Payment::orderBy('created_at','desc')->take(5)->get();
+        
         foreach($recentpayments as $recent){
             $userid = $recent->paid_by;
             $school_id = Employee::find($userid)->school_id;

@@ -78,13 +78,13 @@ class PaymentsController extends Controller
                 if (Auth::check()){
                     $payment->paid_by = Auth::user()->id;
 
-                    $school = School::find(Auth::user()->id);
+                    $school = School::find(Auth::user()->school_id);
+
+                    $school->payment_status = 'Payment Complete';
+
+                    $payment->save();
+                    $school->save();
                 }
-                $school->payment_status = 'Payment Complete';
-
-                $payment->save();
-                $school->save();
-
                 return redirect('/paymentsuccess')->with('message', 'Payment is Successful');
             }
             else{
