@@ -9,5 +9,5 @@ class EmployeeSubject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'employee_id', 'subject_id'];
+    protected $fillable = ['id', 'employee_id', 'subject_id', 'class_id'];
 }

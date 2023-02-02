@@ -34,10 +34,10 @@ class SchoolsController extends Controller
         ]);
 
         //select the inserted school
-        $school = School::select('id')->where('school_name', '=', request('schoolname'))->get();
-        $role = Role::select('id')->where('role_name', '=', 'Principal')->get();
+        $school = School::select('id')->where('school_name', '=', request('schoolname'))->get()->first();
+        $role = Role::select('id')->where('role_name', '=', 'Principal')->get()->first();
 
-        //create an employee whose school id is the inserted school above
+       // create an employee whose school id is the inserted school above
         Employee::create([
             'first_name' => request('principal_fname'), 
             'last_name' => request('principal_lname'),
@@ -45,8 +45,8 @@ class SchoolsController extends Controller
             'email' => request('principal_email'),
             'password' => Hash::make(request('password')),
             'telephone_number' => request('principal_telNo'),
-            'school_id' => $school[0]['id'],
-            'role_id' => $role[0]['id']
+            'school_id' => $school->id,
+            'role_id' => $role->id
         ]);
 
         return redirect('/login')->with('message', 'School registered successfully!');
@@ -93,6 +93,9 @@ class SchoolsController extends Controller
     }
 
     public static function getSchoolName($id){
+        if($id == NULL){
+            return "Not found";
+        }
         $school = School::find($id);
 
         return $school->school_name;

@@ -55,8 +55,9 @@ class EmployeesController extends Controller
     public function edit($id){
         $employee = Employee::find($id);
         $schools = School::all()->where('status', 'Active')->where('id', '!=', '1');
+        $roles = Role::all()->where('status', 'Active')->where('id' ,'!=' ,'1')->where('id', '!=' ,'2');
 
-        return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools]);
+        return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools, 'roles'=>$roles]);
     }
 
     public function update(Request $request, $id){
@@ -76,7 +77,7 @@ class EmployeesController extends Controller
         $employee->telephone_number = $request->input('telNo');
         $employee->tsc_number = $request->input('tscNo');
         $employee->status= $request->input('status');
-
+    
         $employee->save();
 
         return redirect('/viewemployees')->with('message', 'Employee updated successfully!');
@@ -93,6 +94,9 @@ class EmployeesController extends Controller
     }
 
     public static function getEmployeeName($id){
+        if($id == NULL){
+            return "Not found";
+        }
         $employee = Employee::find($id);
 
         return $employee->first_name.' '.$employee->last_name;

@@ -76,7 +76,7 @@ class PaymentsController extends Controller
                 $payment->currency = env('PAYPAL_CURRENCY');
                 $payment->payment_status = $arr['state'];
                 if (Auth::check()){
-                    $payment->paid_by = Auth::user()->id;
+                    $payment->paid_by = Auth::user()->school_id;
 
                     $school = School::find(Auth::user()->school_id);
 
@@ -109,9 +109,9 @@ class PaymentsController extends Controller
     //specific user transactions/payments
     public function myTransactions(){
         if(Auth::check()){
-            $user = Auth::user()->id;
+            $school = Auth::user()->school_id;
         }
-        $transactions = Payment::orderBy('created_at', 'desc')->where('paid_by', $user)->where('status', 'Active')->get();
+        $transactions = Payment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
 
         return view('payments/viewMyTransactions', ['transactions'=>$transactions]);
     }
@@ -123,12 +123,6 @@ class PaymentsController extends Controller
     //all users transactions/payments
     public function viewPayments(){
         $transactions = Payment::all()->where('status', 'Active');
-
-        foreach($transactions as $transaction){
-            $userid = $transaction->paid_by;
-            $school_id = Employee::find($userid)->school_id;
-
-            return view('payments/ViewAllPayments', ['transactions'=>$transactions, 'school'=>$school_id]);
-        }
+        return view('payments/ViewAllPayments', ['transactions'=>$transactions]);
     }
 }

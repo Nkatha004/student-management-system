@@ -15,7 +15,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentSubjectsController;
-
+use App\Http\Controllers\ExamMarksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,6 +151,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::controller(StudentsController::class)->group(function(){
         Route::get('/editstudent/{id}', 'edit');
         Route::get('/viewstudents', 'viewStudents')->name('viewstudents');
+        Route::get('/viewstudents/{id}', 'viewStudentsTaughtByEmployee');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
     });
@@ -161,6 +162,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/editstudentsubject/{id}', 'edit');
         Route::post('/updatestudentsubject/{id}', 'update');
         Route::get('/deletestudentsubject/{id}', 'destroy');
+    });
+
+    Route::controller(ExamMarksController::class)->group(function(){
+        Route::get('/marks/{id}', 'index');
     });
     
 });

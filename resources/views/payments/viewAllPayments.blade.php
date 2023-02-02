@@ -16,7 +16,7 @@
 				<tr>
 					<td>{{ date('d/m/Y' ,strtotime($transaction->created_at)) }}</td>
 					<td>{{ $transaction->transaction_id }}</td>
-					<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($school) }}</td>
+					<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($transaction->paid_by) }}</td>
 					<td>{{ $transaction->amount }}</td>
                     <td>{{ $transaction->currency }}</td>
 				</tr>

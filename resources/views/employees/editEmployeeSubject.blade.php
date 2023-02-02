@@ -43,6 +43,22 @@
                 @endforeach
             </select>
         </div>
+
+        @if($errors->has('class'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('class') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="inputState" class="form-label">Class Name</label>
+            <select id="inputState" class="form-select" name = "class">
+                <option selected disabled>Choose the Class</option>
+                @foreach($classes as $class)
+                <option value = "{{ $class->id}} ">{{ $class->class_name}}</option>
+                @endforeach
+            </select>
+        </div>
+        
         <div class="col-12">
             @if($errors->has('status'))
                 <div class = "alert alert-danger" role = "alert">

@@ -62,6 +62,9 @@ class SubjectCategoriesController extends Controller
     }
 
     public static function getSubjectCategoryName($id){
+        if($id == NULL){
+            return "Not found";
+        }
         $category = SubjectCategories::find($id);
 
         return $category->category_name;

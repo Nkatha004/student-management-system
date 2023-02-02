@@ -51,6 +51,8 @@ class ClassesController extends Controller
     public function viewclasses(){
         if(Auth::user()->role_id == 1){
             $classes = Classes::all()->where('status', 'Active');
+        }elseif (Auth::user()->role_id == 4){
+            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id);
         }else{
             $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
         }

@@ -62,7 +62,12 @@
 						<td>
 							@if (Auth::user()->role_id != 3)
 							<a href = "{{ url('/editstudent/'.$student->id) }}" class = "btn btn-sm btn-warning">Update</a>
-							<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+								@if (Auth::user()->role_id != 4)
+								<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+								@endif
+							@endif
+							@if (Auth::user()->role_id == 4)
+								<a href = "{{ url('/marks/'.$student->id) }}" class = "btn btn-sm btn-danger">Add Marks</a>
 							@endif
 						</td>
 					</tr>

@@ -20,7 +20,7 @@
 					<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
                     <td>{{App\Http\Controllers\SchoolsController::getSchoolName($class->school_id) }}</td>
 
-					@if(Auth::user()->role_id != 1)
+					@if(Auth::user()->role_id != 1 and Auth::user()->role_id != 4 )
 					<td>
 						<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
 						<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>

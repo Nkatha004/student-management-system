@@ -16,13 +16,11 @@ class AdminController extends Controller
         $employees = Employee::all()->count('id') - 1;
         $students = Student::all()->count('id');
 
+        //select the pending payments
         $pendingpayments = School::all()->where('payment_status', 'Payment Pending')->where('id', '!=', 1)->take(5);
+        //select the recently made payments
         $recentpayments = Payment::orderBy('created_at','desc')->take(5)->get();
         
-        foreach($recentpayments as $recent){
-            $userid = $recent->paid_by;
-            $school_id = Employee::find($userid)->school_id;
-            return view('dashboard/adminDashboard', ['totalpayments'=>$paymentsSum, 'schoolsCount'=>$schools, 'employees'=>$employees, 'students'=>$students, 'pendingpayments'=>$pendingpayments, 'recentpayments'=>$recentpayments, 'school'=> $school_id]);
-        }
+        return view('dashboard/adminDashboard', ['totalpayments'=>$paymentsSum, 'schoolsCount'=>$schools, 'employees'=>$employees, 'students'=>$students, 'pendingpayments'=>$pendingpayments, 'recentpayments'=>$recentpayments]);
     }
 }

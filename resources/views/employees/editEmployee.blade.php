@@ -65,7 +65,7 @@
                 <input type="text" class="form-control" id="tscNo" name = "tscNo" value = "{{ $employee->tsc_number }}">
             </div>
         @endif
-        
+
         <div class="col-12">
             @if($errors->has('status'))
                 <div class = "alert alert-danger" role = "alert">

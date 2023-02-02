@@ -67,6 +67,9 @@ class SubjectsController extends Controller
     }
 
     public static function getSubjectName($id){
+        if($id == NULL){
+            return "Not found";
+        }
         $subject = Subject::find($id);
 
         return $subject->subject_name;

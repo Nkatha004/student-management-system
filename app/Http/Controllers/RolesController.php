@@ -90,6 +90,9 @@ class RolesController extends Controller
     }
 
     public static function getRoleName($id){
+        if($id == NULL){
+            return "Not found";
+        }
         $role = Role::find($id);
 
         return $role->role_name;
