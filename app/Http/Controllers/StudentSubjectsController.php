@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
+use App\Models\Classes;
 
 class StudentSubjectsController extends Controller
 {
@@ -63,5 +64,17 @@ class StudentSubjectsController extends Controller
         $studentsubject->save();
 
         return redirect("/studentsubjects/".$studentsubject->student_id)->with("Student Subject deleted successfully");
+    }
+    public static function getStudentName($id){
+        $student = Student::find(StudentSubject::find($id)->student_id);
+        return $student->first_name. ' '. $student->last_name;
+    }
+    public static function getSubject($id){
+        $subject = Subject::find(StudentSubject::find($id)->subject_id);
+        return $subject->subject_name;
+    }
+    public static function getClass($id){
+        $class = Student::find(StudentSubject::find($id)->student_id)->class_id;
+        return Classes::find($class)->class_name;
     }
 }

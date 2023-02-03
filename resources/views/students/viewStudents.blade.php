@@ -13,11 +13,11 @@
 						<th scope="col">Phone Number</th>
 					@endif
 					
-					<th scope="col">Class Name</th>
+					<th scope="col">Class</th>
 
 					<!-- Display school name to admin only -->
 					@if (Auth::user()->role_id == 1)
-					<th scope="col">School Name</th>
+					<th scope="col">School</th>
 					@endif
 				</tr>
 			</thead>
@@ -55,7 +55,7 @@
 
 						<!-- Display school name only when admin is logged in -->
 						@if (Auth::user()->role_id == 1)
-						<td>{{App\Http\Controllers\SchoolsController::getSchoolName($schoolID) }}</td>
+							<td>{{App\Http\Controllers\SchoolsController::getSchoolNameByClassID($student->class_id) }}</td>
 						@endif
 						
 						<td><a href = "{{ url('/studentsubjects/'.$student->id) }}" class = "btn btn-sm btn-info">Student Subjects</a></td>
@@ -65,9 +65,6 @@
 								@if (Auth::user()->role_id != 4)
 								<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 								@endif
-							@endif
-							@if (Auth::user()->role_id == 4)
-								<a href = "{{ url('/marks/'.$student->id) }}" class = "btn btn-sm btn-danger">Add Marks</a>
 							@endif
 						</td>
 					</tr>

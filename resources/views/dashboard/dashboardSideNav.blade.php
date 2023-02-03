@@ -107,6 +107,18 @@
                         <span>My Teaching Subjects</span>
                     </li>
                 </a>
+                @elseif(Auth::user()->role_id == 2)
+                <a class = "dropdown-btn">
+                    <li>
+                        <i class="uil uil-books"></i>
+                        <span>Subjects</span>
+                    </li>
+                </a>
+                <div class = "dropdown-container">
+                    <a href = "{{URL::to('/subjects')}}">Add Subject</a>
+                    <a href = "{{URL::to('/viewsubjects')}}"><span>View Subjects</span></a>
+                    <a href = "{{URL::to('/employeesubjects/'.Auth::user()->id)}}"><span>My Teaching Subjects</span></a>
+                </div>
                 @else
                 <a class = "dropdown-btn">
                     <li>

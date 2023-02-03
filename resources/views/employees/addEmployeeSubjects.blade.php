@@ -25,7 +25,14 @@
                     @endif
                     <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
                     <td>{{App\Http\Controllers\ClassesController::getClassName($e_subject->class_id)}}</td>
-                    @if(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
+                    
+                    @if(Auth::user()->role_id == 2)
+                    <td>
+                        <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
+                        <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">View Students</a>
+                    </td>
+                    @elseif(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
                     <td>{{$e_subject->status}}</td>
                     <td>
 						<a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
@@ -33,7 +40,7 @@
                     </td>
                     @else
                     <td>
-						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">View Students</a>
+						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
                     </td>
                     @endif
 				</tr>
@@ -45,7 +52,7 @@
     <form method = "post" action = "{{ url('/employeesubjects') }}" id = "teachingSubjects" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="text-center alert alert-info">
                 {{ session()->get('message') }}
             </div>
         @endif

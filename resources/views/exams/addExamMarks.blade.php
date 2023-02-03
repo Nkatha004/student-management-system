@@ -22,10 +22,10 @@
 			</tbody>
 		</table>
 	</div>
-    <form method = "post" action = "{{ url('/viewmarks/'.$student->id) }}" id = "teachingSubjects" class="row g-3 form">
+    <form method = "post" action = "{{ url('/marks') }}" id = "teachingSubjects" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-warning text-center">
                 {{ session()->get('message') }}
             </div>
         @endif
@@ -35,7 +35,8 @@
         </div>
 
         <input type="text" class="form-control" id="student_id" name = "student_id" value = "{{$student->id}}" hidden>
-
+        <input type="text" class="form-control" id="studentSubject" name = "studentSubject" value = "{{$studentsubjects->id}}" hidden>
+        
         <div class="col-12">
             @if($errors->has('admission'))
                 <div class = "alert alert-danger" role = "alert">
@@ -45,7 +46,7 @@
             <label for="admission" class="form-label">Student Admission Number</label>
             <input type="text" class="form-control" id="admission" name = "admission" value = "{{$student->admission_number}}" readonly>
         </div>
-        
+
         @if($errors->has('subject'))
             <div class = "alert alert-danger" role = "alert">
                 {{ $errors->first('subject') }}
@@ -53,11 +54,22 @@
         @endif
         <div class="col-12">
             <label for="inputState" class="form-label">Subject Name</label>
-            <select id="inputState" class="form-select" name = "subject">
-                <option selected disabled>Choose the subject</option>
-                @foreach($studentsubjects as $studentsubject)
-                <option value = "{{ $studentsubject->id}} ">{{ App\Http\Controllers\SubjectsController::getSubjectName($studentsubject->subject_id)}}</option>
-                @endforeach
+            <input type="text" class="form-control" id="subject" name = "subject" value = "{{$subject->subject_name}}" readonly>
+        </div>
+
+        
+        @if($errors->has('term'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('term') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="inputState" class="form-label">Marks for Term:</label>
+            <select id="inputState" class="form-select" name = "term">
+                <option selected disabled>Choose the term</option>
+                <option value = "Term 1">Term 1</option>
+                <option value = "Term 2">Term 2</option>
+                <option value = "Term 3">Term 3</option>
             </select>
         </div>
 

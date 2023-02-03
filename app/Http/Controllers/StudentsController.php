@@ -50,9 +50,8 @@ class StudentsController extends Controller
         //display all students only when admin is logged in
         if(Auth::user()->role_id == 1){
             $students = Student::all()->where('status', 'Active');
-            //find the school id in which student's class is in... to display school name when admin is logged in
-            $schoolID = Classes::select('school_id')->where('id','=', $students->first->class_id)->get();
-            return view('students/viewStudents', ['students'=> $students, 'schoolID'=> $schoolID]);
+           
+            return view('students/viewStudents', ['students'=> $students]);
         }
         //display students in the class where the logged in teacher is a classteacher only
         elseif(Auth::user()->role_id == 4){
@@ -87,8 +86,47 @@ class StudentsController extends Controller
     public function viewStudentsTaughtByEmployee($id){
         //select all students who are in the class and do the subject taught by the teacher
         $students = Student::select('*')->where('class_id', EmployeeSubject::find($id)->class_id)->whereIn('id', StudentSubject::select('student_id')->where('subject_id', EmployeeSubject::find($id)->subject_id)->get())->get();
-        return view('students/viewStudents', ['students'=>$students]);
+        return view('students/viewStudentsToAddMarks', ['students'=>$students, 'subject'=>EmployeeSubject::find($id)->subject_id]);
     }
+    public function viewStudentsToAddMarks($id){
+        //display all students only when admin is logged in
+        if(Auth::user()->role_id == 1){
+            $students = Student::all()->where('status', 'Active');
+           
+            return view('students/viewStudents', ['students'=> $students]);
+        }
+        //display students in the class where the logged in teacher is a classteacher only
+        elseif(Auth::user()->role_id == 4){
+            $students = Student::select("*")
+                    ->whereIn('class_id', Classes::select('id')->where('status', 'Active')->where('class_teacher', Auth::user()->id)->get())
+                    ->get();
+                    
+            if(count($students) == 0){
+                return view('students/viewStudents', ['message'=>'No students found!']);
+            }else{
+                //return list of students in the school
+                return view('students/viewStudents', ['students'=> $students]);
+            }
+            
+        }
+        else{
+            //display students specific to school of logged in user
+            $students = Student::select("*")
+                    ->whereIn('class_id', Classes::select('id')
+                    ->where('status', 'Active')
+                    ->where('school_id', Auth::user()->school_id)->get())
+                    ->get();
+    
+            if(count($students) == 0){
+                return view('students/viewStudents', ['message'=>'No students found!']);
+            }else{
+                //return list of students in the school
+                return view('students/viewStudents', ['students'=> $students]);
+            }
+        }
+        return view('students/viewStudentstoAddMarks', ['students'=>$students, 'subject'=>EmployeeSubject::find($id)->subject_id]);
+    }
+    
     public function edit($id){
         $student = Student::find($id);
         $classes = Classes::all()->where('status', 'Active');

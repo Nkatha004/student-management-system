@@ -152,6 +152,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/editstudent/{id}', 'edit');
         Route::get('/viewstudents', 'viewStudents')->name('viewstudents');
         Route::get('/viewstudents/{id}', 'viewStudentsTaughtByEmployee');
+        Route::get('/addstudentmarks', 'viewStudentsToAddMarks');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
     });
@@ -165,7 +166,9 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     Route::controller(ExamMarksController::class)->group(function(){
-        Route::get('/marks/{id}', 'index');
+        Route::get('/marks/{student}/{subject}', 'index');
+        Route::post('/marks', 'store');
+        Route::get('/viewmarks', 'viewMarks');
     });
     
 });

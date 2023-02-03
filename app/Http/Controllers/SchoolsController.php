@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\School;
+use App\Models\Classes;
 use App\Models\Role;
 use App\Models\Employee;
 use Hash;
@@ -97,6 +98,14 @@ class SchoolsController extends Controller
             return "Not found";
         }
         $school = School::find($id);
+
+        return $school->school_name;
+    }
+    public static function getSchoolNameByClassID($id){
+        if($id == NULL){
+            return "Not found";
+        }
+        $school = School::select('*')->whereIn('id', Classes::select('school_id')->where('id', $id)->get())->get()->first();
 
         return $school->school_name;
     }

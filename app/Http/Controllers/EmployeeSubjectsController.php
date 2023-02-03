@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\SubjectsController;
+
 use App\Models\Employee;
 use App\Models\Subject;
 use App\Models\Classes;
@@ -25,6 +27,14 @@ class EmployeeSubjectsController extends Controller
             'class' => 'required'
         ]);
 
+        $empsubjects = EmployeeSubject::all()->where('subject_id', request('subject'))->where('class_id', request('class'));
+
+        foreach($empsubjects as $empsubject){
+            if($empsubject->class_id == request('class') && $empsubject->subject_id == request('subject')){
+                return redirect("/employeesubjects/".request('employee'))->with("message", "There already exists ".SubjectsController::getSubjectName(request('subject'))." teacher for ".ClassesController::getClassName(request('class')));
+            }
+        }
+        return;
         EmployeeSubject::create([
             'employee_id' => request('employee'), 
             'subject_id' => request('subject'),

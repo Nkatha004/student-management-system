@@ -17,6 +17,8 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('student_subject_id')->unsigned();
             $table -> foreign('student_subject_id') -> references('id') -> on('student_subjects');
+            $table->string('term');
+            $table->integer('year');
             $table->integer('mark');
             $table->integer('added_by')->unsigned();
             $table -> foreign('added_by') -> references('id') -> on('employees');

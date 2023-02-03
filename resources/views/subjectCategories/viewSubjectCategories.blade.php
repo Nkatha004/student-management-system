@@ -4,9 +4,9 @@
 	<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Subject Category ID</th>
-					<th scope="col">Subject Category Name</th>
-					<th scope="col">Subject Category Description</th>
+					<th scope="col">Category ID</th>
+					<th scope="col">Category Name</th>
+					<th scope="col">Category Description</th>
 				</tr>
 			</thead>
 			<tbody>
