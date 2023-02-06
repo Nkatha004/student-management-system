@@ -55,6 +55,7 @@
         <div class="col-12">
             <label for="inputState" class="form-label">Subject Name</label>
             <input type="text" class="form-control" id="subject" name = "subject" value = "{{$subject->subject_name}}" readonly>
+            <input type="text" class="form-control" id="subject" name = "subjectID" value = "{{$subject->id}}" hidden>
         </div>
 
         

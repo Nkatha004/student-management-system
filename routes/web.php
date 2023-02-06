@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::controller(HomeController::class)->group(function(){
         Route::get('/logout', 'logout');
     });
-    
+
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/teacherdashboard', 'teacherDashboard');
         Route::get('/principaldashboard', 'principalDashboard');
@@ -163,7 +163,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::controller(ExamMarksController::class)->group(function(){
         Route::get('/marks/{student}/{subject}', 'index');
         Route::post('/marks', 'store');
-        Route::get('/viewmarks', 'viewMarks');
+        Route::get('/viewmarks/{id}', 'viewMarks');
     });
     
 });
