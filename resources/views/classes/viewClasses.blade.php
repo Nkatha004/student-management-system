@@ -26,6 +26,11 @@
 						<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 					</td>
 					@endif
+					<!-- @if(Auth::user()->role_id == 4 )
+					<td>
+						<a href = "{{ url('/viewmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
+					</td>
+					@endif -->
 				</tr>
 				@endforeach
 			</tbody>

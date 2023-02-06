@@ -73,10 +73,6 @@
 	background-color: var(--text-white);
 	color: var(--main-color);
 } 
-/* #activeDash{
-    background-color: var(--text-white);
-    color: var(--main-color);
-} */
 .fa-circle-user{
     margin-right: 5px;
 }
@@ -148,6 +144,12 @@ main{
   display: grid;
   grid-template-columns: repeat(4,1fr);
   grid-gap: 20px;
+}
+
+.cards-teachers{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-gap: 50px;
 }
 
 .single-card{

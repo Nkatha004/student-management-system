@@ -12,7 +12,6 @@
 					@if (Auth::user()->role_id != 1)
 						<th scope="col">Phone Number</th>
 					@endif
-					
 					<th scope="col">Class</th>
 
 					<!-- Display school name to admin only -->

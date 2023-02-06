@@ -11,9 +11,7 @@ use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\EmployeeSubjectsController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PrincipalController;
-use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentSubjectsController;
 use App\Http\Controllers\ExamMarksController;
 
@@ -76,16 +74,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::controller(HomeController::class)->group(function(){
         Route::get('/logout', 'logout');
     });
-    Route::controller(AdminController::class)->group(function(){
+    
+    Route::controller(DashboardController::class)->group(function(){
+        Route::get('/teacherdashboard', 'teacherDashboard');
+        Route::get('/principaldashboard', 'principalDashboard');
         Route::get('/admindashboard', 'adminDashboard');
     });
-    Route::controller(PrincipalController::class)->group(function(){
-        Route::get('/principaldashboard', 'principalDashboard');
-    });
-    Route::controller(TeacherController::class)->group(function(){
-        Route::get('/teacherdashboard', 'teacherDashboard');
-    });
-    
+
     Route::controller(SchoolsController::class)->group(function(){
         Route::get('/editschool/{id}', 'edit');
         Route::get('/viewschools', 'viewSchools');

@@ -6,13 +6,15 @@
 			<thead>
 				<tr>
                     @if(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
-					<th scope="col">First Name</th>
-					<th scope="col">Last Name</th>
+    					<th scope="col">First Name</th>
+    					<th scope="col">Last Name</th>
                     @endif
+                    
                     <th scope="col">Teaching Subjects</th>
                     <th scope="col">Class</th>
+
                     @if(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
-                    <th scope="col">Status</th>
+                        <th scope="col">Status</th>
                     @endif
 				</tr>
 			</thead>
@@ -20,18 +22,18 @@
                 @foreach($employeesubjects as $e_subject)
 				<tr>
                     @if(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
-					<td>{{ $employee->first_name }}</td>
-					<td>{{ $employee->last_name }}</td>
+    					<td>{{ $employee->first_name }}</td>
+    					<td>{{ $employee->last_name }}</td>
                     @endif
                     <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
                     <td>{{App\Http\Controllers\ClassesController::getClassName($e_subject->class_id)}}</td>
                     
                     @if(Auth::user()->role_id == 2)
-                    <td>
-                        <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
-                        <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">View Students</a>
-                    </td>
+                        <td>
+                            <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
+                            <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+    						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
+                        </td>
                     @elseif(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
                     <td>{{$e_subject->status}}</td>
                     <td>
