@@ -5,8 +5,6 @@
 			<thead>
 				<tr>
 					<th scope="col">Student Name</th>
-					<th scope="col">Class</th>
-                    <th scope="col">Year</th>
                     <th scope="col">Term</th>
                     <th scope="col">Subject</th>
                     <th scope="col">Mark</th>
@@ -17,8 +15,7 @@
 				@foreach($marks as $mark)
 					<tr>
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getStudentName($mark->student_subject_id) }}</td>
-						<td>{{ App\Http\Controllers\StudentSubjectsController::getClass($mark->student_subject_id) }}</td>
-						<td>{{ $mark->year }}</td>
+						
 						<td>{{ $mark->term }}</td>
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getSubject($mark->student_subject_id) }}</td>
 						<td>{{ $mark->mark }}</td>

@@ -24,13 +24,14 @@
 					<td>
 						<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
 						<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						<a href = "{{ url('/viewclassmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
 					</td>
 					@endif
-					<!-- @if(Auth::user()->role_id == 4 )
+					@if(Auth::user()->role_id == 4 )
 					<td>
-						<a href = "{{ url('/viewmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
+						<a href = "{{ url('/viewclassmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
 					</td>
-					@endif -->
+					@endif
 				</tr>
 				@endforeach
 			</tbody>

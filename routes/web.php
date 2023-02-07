@@ -164,6 +164,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/marks/{student}/{subject}', 'index');
         Route::post('/marks', 'store');
         Route::get('/viewmarks/{id}', 'viewMarks');
+        Route::get('/viewclassmarks', 'viewClassMarks');
+        Route::get('/viewschoolmarks', 'viewSchoolMarks');
+        Route::get('/editmark/{id}', 'edit');
+        Route::post('/updatemark/{id}', 'update');
     });
     
 });

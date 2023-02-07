@@ -33,9 +33,24 @@ table{
     margin: 8% 30% 5%;
 }
 #paypal{
+    background-color: gold;
+}
+
+#mpesa{
+    margin-top: 5px;
+    background-color: #136207;
+}
+#mpesa:hover{
     color: #fff;
-    background-color: #000;
-    border-radius: 5px;
+}
+#payWith{
+    color: #000;
+}
+#Pay{
+    color: darkblue;
+}
+#Pal{
+    color: royalblue;
 }
 .successPay{
     margin-top: 10%;

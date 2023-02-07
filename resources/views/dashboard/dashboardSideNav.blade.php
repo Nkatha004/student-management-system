@@ -165,6 +165,18 @@
 
                     @endif
                 @endif
+                @if(Auth::user()->role_id == 2)
+                    <a class = "dropdown-btn">
+                            <li>
+                                <i class="uil uil-chart"></i>
+                                <span>Exam Performance</span>
+                            </li>
+                        </a>
+                        <div class = "dropdown-container">
+                            <a href = "{{URL::to('/viewclasses')}}">Classes Performance</a>
+                            <a href = "{{URL::to('/viewschoolmarks')}}"><span>School Performance</span></a>
+                        </div>
+                @endif
                 @if (Auth::user()->role_id != 3)
                     @if (Auth::user()->role_id == 1)
                         <a href = "{{URL::to('/viewpayments')}}">
@@ -189,6 +201,7 @@
                         </div>
                     @endif
                 @endif
+                
                 <a href = "{{URL::to('/logout')}}">
                     <li>
                         <i class="uil uil-signin"></i>
