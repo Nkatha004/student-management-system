@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('paypal_payments', function (Blueprint $table) {
             $table->id();
             $table->string('transaction_id');
             $table->string('payer_id');
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('paypal_payments');
     }
 };

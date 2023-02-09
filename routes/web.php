@@ -106,13 +106,16 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::controller(PaymentsController::class)->group(function(){
         Route::get('/payments', 'payment');
+        Route::get('/mpesapayment', [PaymentsController::class,'mpesaPayment']);
         Route::post('/payments', 'pay');
         Route::get('/success', 'success');
-        Route::get('/paymentsuccess', 'paymentSuccess');
         Route::get('/error', 'errorOccured');
-        Route::get('/mytransactions', 'myTransactions');
+        Route::get('/paymentsuccess', 'paymentSuccess');
         Route::get('/cancelpayment', 'cancelPayment');
+        Route::get('/mytransactions', 'myTransactions');
         Route::get('/viewpayments', 'viewPayments');
+        Route::get('/mpesaconfirmation', 'mpesaConfirmation');
+        Route::post('/checktransaction', 'checkTransaction');
     });
 
     Route::controller(RolesController::class)->group(function(){
@@ -169,5 +172,4 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/editmark/{id}', 'edit');
         Route::post('/updatemark/{id}', 'update');
     });
-    
 });

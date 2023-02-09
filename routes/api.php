@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/mpesa/password', 'App\Http\Controllers\PaymentsController@lipaNaMpesaPassword');
+Route::post('/mpesa/new/access/token','App\Http\Controllers\PaymentsController@newAccessToken');
+Route::post('/mpesa/stk/push', 'App\Http\Controllers\PaymentsController@stkPush')->name('lipa');
+Route::post('/stk/push/callback/url', 'App\Http\Controllers\PaymentsController@mpesaResponse');

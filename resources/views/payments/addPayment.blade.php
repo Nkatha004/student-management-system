@@ -6,8 +6,11 @@
 <body>
     <main>
         <div>
+            @if($message == "Payment Complete")
+            <div class = "text-center">
+            @else
             <div id = "payments" class = "text-center">
-                @csrf
+            @endif
                 <h5 class = "text-center">Making Payments</h5>
                 <p>Hello. Thank you for registering with us!</p>
 
@@ -22,14 +25,11 @@
                         <button id = "paypal" type = "submit"><span id = 'payWith'>Pay with </span><b><span id = "Pay">Pay</span><span id = "Pal">Pal</span></b></button>
                     </div>
                 </form>
-                <form action = "{{ URL::to('/payments') }}" method = "POST">
-                    @csrf
-                    <div class = "text-center">
-                        <input hidden type = "number" value = 50 name = "amount">
-                        <button id = "mpesa" type = "submit"><b>Pay with Mpesa</b></button>
-                    </div>
-                </form>
-
+                
+                <div class = "text-center">
+                    <input hidden type = "number" value = 50 name = "amount">
+                    <a href = "{{URL::to('/mpesapayment')}}"><button id = "mpesa" type = "submit"><b>Pay with Mpesa</b></button></a>
+                </div>
             </div>
         </div>
     </main>
