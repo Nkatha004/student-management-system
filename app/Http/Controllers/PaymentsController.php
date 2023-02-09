@@ -235,7 +235,6 @@ class PaymentsController extends Controller
             $transaction->paid_by = Auth::user()->school_id;
         }
         $transaction->save();
-        Log::info($transaction);
     }
 
     public function mpesaConfirmation(){
