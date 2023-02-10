@@ -14,12 +14,12 @@
                 @csrf
                 <h3 class = "text-center">MPESA Payment</h3>
                 @if(session()->has('message'))
-                    <div class="alert alert-sucess">
+                    <div class="alert alert-success">
                         {{ session()->get('message') }}
                     </div>
                 @endif
                 <div class="alert alert-info">
-                    After entering your mpesa number and submitting, you will receive a pop-up on your phone. Kindly input your MPESA pin ato complete the transaction.
+                    After entering your mpesa number and submitting, you will receive a pop-up on your phone. Kindly input your MPESA pin to complete the transaction.
                 </div>
                 
                 <div class="col-12">
@@ -29,7 +29,7 @@
                         </div>
                     @endif
                     <label for="amount" class="form-label">Transaction Amount</label>
-                    <input type="number" class="form-control" id="amount" name = "amount" value="1" readonly>
+                    <input type="number" class="form-control" id="amount" name = "amount" value="5000.00" readonly>
                 </div>
                 <div class="col-12">
                     @if($errors->has('phoneNo'))
@@ -38,7 +38,7 @@
                         </div>
                     @endif
                     <label for="phoneNo" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phoneNo" name = "phoneNo" value = "{{ $phoneNumber }}">
+                    <input type="text" class="form-control" id="phoneNo" name = "phoneNo" value = "{{ '0'.$phoneNumber }}">
                 </div>
                 
                 <div class="col-12 text-center">

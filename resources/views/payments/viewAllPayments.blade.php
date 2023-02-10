@@ -1,7 +1,7 @@
 @include('dashboard.dashboardSideNav')
 <main>
 	<div class = "text-center table-schools">
-	<table class="table table-striped">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Payment Date</th>

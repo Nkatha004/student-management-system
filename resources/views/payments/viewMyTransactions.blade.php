@@ -1,12 +1,11 @@
 @include('dashboard.dashboardSideNav')
 <main>
 	<div class = "text-center table-schools">
-	<table class="table table-striped">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Payment Date</th>
 					<th scope="col">Transaction ID</th>
-					<th scope="col">Payer Email</th>
 					<th scope="col">Amount</th>
                     <th scope="col">Currency</th> 
 				</tr>
@@ -16,12 +15,12 @@
 				<tr>
 					<td>{{ date('d/m/Y' ,strtotime($transaction->created_at)) }}</td>
 					<td>{{ $transaction->transaction_id }}</td>
-                    <td>{{ $transaction->payer_email }}</td>
-					<td>{{ $transaction->amount }}</td>
-                    <td>{{ $transaction->currency }}</td> 
+					<td>{{ App\Http\Controllers\PaymentsController::exchangeRates($transaction->amount, 'USD') }}</td>
+                    <td>KES</td> 
 				</tr>
 				@endforeach
 			</tbody>
 		</table>
+		
 	</div>
 </main>

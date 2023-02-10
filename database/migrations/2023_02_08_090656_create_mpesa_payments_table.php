@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('transaction_id');
             $table->string('transaction_date');
             $table->decimal('amount', 8,2);
+            $table->string('currency')->default('Kshs');
             $table->string('phone_number');
             $table->integer('paid_by')->unsigned()->nullable();
             $table -> foreign('paid_by') -> references('id') -> on('schools');

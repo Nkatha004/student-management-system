@@ -14,7 +14,7 @@
                 @csrf
                 <h3 class = "text-center">MPESA Confirmation</h3>
                 @if(session()->has('message'))
-                    <div class="alert alert-sucess">
+                    <div class="alert alert-danger">
                         {{ session()->get('message') }}
                     </div>
                 @endif

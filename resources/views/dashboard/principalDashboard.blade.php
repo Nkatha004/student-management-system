@@ -5,7 +5,7 @@
     	<div class="single-card">
 	        <a href = "{{ URL::to('/mytransactions') }}"><div>
 	            <span>Total payments made</span>
-	            <h2>{{$payments}}</h2>
+	            <h2>{{$payments. ' Kshs'}}</h2>
 	        </div></a>
 	        <i class="uil uil-dollar-sign-alt"></i>
 	    </div>

@@ -119,15 +119,22 @@ class PaymentsController extends Controller
         if(Auth::check()){
             $school = Auth::user()->school_id;
         }
-        $transactions = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+        $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+        $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
 
-        return view('payments/viewMyTransactions', ['transactions'=>$transactions]);
+        $transaction = $paypal->merge($mpesa);
+
+        return view('payments/viewMyTransactions', ['transactions'=>$transaction]); 
     }
 
     //all users transactions/payments
     public function viewPayments(){
-        $transactions = PaypalPayment::all()->where('status', 'Active');
-        return view('payments/ViewAllPayments', ['transactions'=>$transactions]);
+        $paypal = PaypalPayment::all()->where('status', 'Active');
+        $mpesa = MpesaPayment::all()->where('status', 'Active');
+
+        $transaction = $paypal->merge($mpesa);
+
+        return view('payments/ViewAllPayments', ['transactions'=>$transaction]);
     }
     //C2B MPESA 
 
@@ -199,7 +206,7 @@ class PaymentsController extends Controller
             'PartyB' => 174379,
             'PhoneNumber' => $phoneNumber,
             //mpesa sends transaction response to this callback url
-            'CallBackURL' => 'https://add0-197-237-85-14.ngrok.io/api/stk/push/callback/url',
+            'CallBackURL' => 'https://490e-105-162-23-59.ngrok.io/api/stk/push/callback/url',
             'AccountReference' => "Student Management System Payment",
             'TransactionDesc' => "Lipa Na M-PESA"
         ];
@@ -222,7 +229,7 @@ class PaymentsController extends Controller
         $responseData = $response->Body->stkCallback->CallbackMetadata;
         $amount = $responseData->Item[0]->Value;
         $transactionID = $responseData->Item[1]->Value;
-        $transactionDate = date("Y-m-d H:i:s",$responseData->Item[3]->Value);
+        $transactionDate = date("Y-m-d H:i:s", strtotime($responseData->Item[3]->Value));
         $phoneNumber = $responseData->Item[4]->Value;
 
         $transaction = new MpesaPayment();
@@ -266,5 +273,33 @@ class PaymentsController extends Controller
         }else{
             return redirect()->back()->with('message', 'Transaction not found. Please try again');
         }
+    }
+    //convert kenyan shillings to USD and vice versa to use in paypal
+    public static function exchangeRates($amount, $from){
+        // Fetching JSON
+        $req_url = 'https://v6.exchangerate-api.com/v6/bb190d74f640fa30bf8c5b35/latest/'.$from;
+        $response_json = file_get_contents($req_url);
+
+        // Continuing if we got a result
+        if(false !== $response_json) {
+            // Decoding
+            $response = json_decode($response_json);
+
+            // Check for success
+            if('success' === $response->result) {
+                // YOUR APPLICATION CODE HERE, e.g.
+                $base_price = $amount; // Your price to convert from
+
+                //From KES to USD
+                if($from == 'KES'){
+                    $intended_price = round(($base_price * $response->conversion_rates->USD), 2);
+                }
+                //From USD to KES
+                else if($from == 'USD'){
+                    $intended_price = round(($base_price * $response->conversion_rates->KES), 2);
+                }
+            }
+        }
+        return $intended_price;
     }
 }

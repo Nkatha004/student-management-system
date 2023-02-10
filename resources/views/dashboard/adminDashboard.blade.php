@@ -4,13 +4,13 @@
     <div class="single-card">
         <a href = "{{ URL::to('/mytransactions') }}"><div>
             <span>Total payments made</span>
-            <h2>{{ $totalpayments. ' USD' }}</h2>
+            <h2>{{ $totalpayments. ' Kshs' }}</h2>
         </div></a>
         <i class="uil uil-dollar-sign-alt"></i>
     </div>
     <div class="single-card">
         <a href = "{{ URL::to('/viewschools') }}"><div>
-            <span>Number of schools</span>
+        <span>Number of schools</span>
             <h2>{{$schoolsCount}}</h2>
         </div></a>
         <i class="uil uil-bus"></i>
@@ -30,7 +30,6 @@
         <i class="uil uil-graduation-cap"></i>
     </div>
     </div>
-
 
     <div class="wrapper flex">
     <div class="projects">
@@ -78,10 +77,16 @@
                 </th>
             </thead>
             <tbody>
-                @foreach ($recentpayments as $recent) 
+                @foreach ($mpesarecentpayments as $mpesarecent) 
                 <tr>
-                    <td>{{App\Http\Controllers\SchoolsController::getSchoolName($recent->paid_by)}}</td>
-                    <td>{{date('d/m/Y' ,strtotime($recent->created_at))}}</td>
+                    <td>{{App\Http\Controllers\SchoolsController::getSchoolName($mpesarecent->paid_by)}}</td>
+                    <td>{{date('d/m/Y' ,strtotime($mpesarecent->created_at))}}</td>
+                </tr>
+                @endforeach
+                @foreach ($paypalrecentpayments as $paypalrecent) 
+                <tr>
+                    <td>{{App\Http\Controllers\SchoolsController::getSchoolName($paypalrecent->paid_by)}}</td>
+                    <td>{{date('d/m/Y' ,strtotime($paypalrecent->created_at))}}</td>
                 </tr>
                 @endforeach
             </tbody>

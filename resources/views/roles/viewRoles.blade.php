@@ -2,7 +2,7 @@
 <main>
 	<div class = "text-center table-schools">
 
-	<table class="table table-striped">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Role ID</th>
@@ -26,5 +26,9 @@
 				@endforeach
 			</tbody>
 		</table>
+		<div class="paginate d-flex justify-content-center">
+			{{ $roles->links() }}
+		</div>
 	</div>
+
 </main>
