@@ -106,7 +106,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::controller(PaymentsController::class)->group(function(){
         Route::get('/payments', 'payment');
-        Route::get('/mpesapayment', [PaymentsController::class,'mpesaPayment']);
+        Route::get('/mpesapayment', 'mpesaPayment');
         Route::post('/payments', 'pay');
         Route::get('/success', 'success');
         Route::get('/error', 'errorOccured');

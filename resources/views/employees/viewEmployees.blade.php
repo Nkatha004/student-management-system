@@ -71,5 +71,9 @@
 				@endforeach
 			</tbody>
 		</table>
+
+		<div class="d-flex justify-content-center">
+            {{ $employees->links() }}
+        </div>
 	</div>
 </main>

@@ -26,9 +26,9 @@
 				@endforeach
 			</tbody>
 		</table>
-		<div class="paginate d-flex justify-content-center">
-			{{ $roles->links() }}
-		</div>
+        <div class="d-flex justify-content-center">
+            {{ $roles->links() }}
+        </div>
 	</div>
 
 </main>

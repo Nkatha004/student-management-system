@@ -68,6 +68,9 @@
 						</td>
 					</tr>
 					@endforeach
+					<div class="d-flex justify-content-center">
+			            {{ $students->links() }}
+			        </div>
 				@endif
 			</tbody>
 		</table>

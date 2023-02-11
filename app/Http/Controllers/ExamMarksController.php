@@ -55,7 +55,7 @@ class ExamMarksController extends Controller
     public function viewMarks($id){
         
         $subject = SubjectsController::getSubjectName($id);
-        $marks = ExamMark::all()->where('status', 'Active')->where('added_by', Auth::user()->id);
+        $marks = ExamMark::where('status', 'Active')->where('added_by', Auth::user()->id)->paginate(15);
     
         return view('exams/viewMarks', ['marks'=>$marks, 'subject'=>$subject]);
     }
@@ -68,13 +68,13 @@ class ExamMarksController extends Controller
                                         ->whereIn('class_id', Classes::select('id')
                                         ->where('status', 'Active')
                                         ->where('class_teacher', Auth::user()->id)->get())))
-                                        ->get();
+                                        ->paginate(15);
         }else{
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")
                                         ->whereIn('class_id', Classes::select('id')
                                         ->where('status', 'Active')->get())))
-                                        ->get();
+                                        ->paginate(15);
         }
 
         return view('exams/viewAllMarks', ['marks'=>$marks]);
@@ -88,7 +88,7 @@ class ExamMarksController extends Controller
                                         ->where('status', 'Active')
                                         ->whereIn('school_id', School::select('id')->where('id', Auth::user()->school_id)->get())
                                         ->get())))
-                                        ->get();
+                                        ->paginate(15);
         }
 
         return view('exams/viewAllMarks', ['marks'=>$marks]);

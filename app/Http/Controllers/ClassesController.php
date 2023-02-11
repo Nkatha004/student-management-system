@@ -50,11 +50,11 @@ class ClassesController extends Controller
     }
     public function viewclasses(){
         if(Auth::user()->role_id == 1){
-            $classes = Classes::all()->where('status', 'Active');
+            $classes = Classes::where('status', 'Active')->paginate(10);
         }elseif (Auth::user()->role_id == 4){
-            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id);
+            $classes = Classes::where('status', 'Active')->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id)->paginate(10);
         }else{
-            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+            $classes = Classes::where('status', 'Active')->where('school_id', Auth::user()->school_id)->paginate(10);
         }
         return view('classes/viewclasses', ['classes'=> $classes]);
     }

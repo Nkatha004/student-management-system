@@ -1,11 +1,3 @@
-/* #addSchoolForm, #addEmployeeForm, #addRoleForm{
-    margin: 10% 30% 5%;
-}
-form{
-    box-shadow:1px 1px 5px;
-    background-color: #ecfbff;
-    padding: 20px 40px 40px;
-} */
 #addForm{
     margin: 10% 30% 5%;
     box-shadow:1px 1px 5px;
@@ -35,7 +27,6 @@ table{
 #paypal{
     background-color: gold;
 }
-
 #mpesa{
     margin-top: 5px;
     background-color: #136207;
@@ -78,4 +69,19 @@ td p{
 }
 div button{
     border-radius: 25px;
+}
+#forgot-password:hover, .footer_links ul li a:hover, #haveAccount:hover{
+    color:rgb(230, 100, 100);
+    cursor: pointer;
+}
+a#haveAccount, a#forgot-password{
+    text-decoration: none;
+}
+.green-color{
+    color: #088264;
+}
+button:hover{
+    background-color: transparent;
+    color: rgb(230, 100, 100);
+    border: solid 2px #000;
 }
