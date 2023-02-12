@@ -17,8 +17,14 @@
 					<td>{{ date('d/m/Y' ,strtotime($transaction->created_at)) }}</td>
 					<td>{{ $transaction->transaction_id }}</td>
 					<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($transaction->paid_by) }}</td>
-					<td>{{ $transaction->amount }}</td>
-                    <td>{{ $transaction->currency }}</td>
+
+					@if($transaction->currency == 'USD')
+						<td>{{ App\Http\Controllers\PaymentsController::exchangeRates($transaction->amount, 'USD') }}</td>
+					@else
+						<td>{{ $transaction->amount }}</td>
+					@endif
+
+                    <td>KES</td>
 				</tr>
 				@endforeach
 			</tbody>

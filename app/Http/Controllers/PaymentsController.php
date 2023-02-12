@@ -114,28 +114,6 @@ class PaymentsController extends Controller
         return view('payments/cancelled');
     }
 
-    //specific user transactions/payments
-    public function myTransactions(){
-        if(Auth::check()){
-            $school = Auth::user()->school_id;
-        }
-        $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
-        $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
-
-        $transaction = $paypal->merge($mpesa);
-
-        return view('payments/viewMyTransactions', ['transactions'=>$transaction]); 
-    }
-
-    //all users transactions/payments
-    public function viewPayments(){
-        $paypal = PaypalPayment::all()->where('status', 'Active');
-        $mpesa = MpesaPayment::all()->where('status', 'Active');
-
-        $transaction = $paypal->merge($mpesa);
-
-        return view('payments/ViewAllPayments', ['transactions'=>$transaction]);
-    }
     //C2B MPESA 
 
     //return the page with mpesa form
@@ -223,6 +201,7 @@ class PaymentsController extends Controller
         return redirect('/mpesaconfirmation');
     }
 
+    //Save MPESA data to database
     public function mpesaResponse(Request $request){
         $response = json_decode($request->getContent());
 
@@ -301,5 +280,30 @@ class PaymentsController extends Controller
             }
         }
         return $intended_price;
+    }
+
+    //specific user transactions/payments
+    public function myTransactions(){
+        if(Auth::check()){
+            $school = Auth::user()->school_id;
+        }
+        $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+        $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+
+        $transaction = $paypal->merge($mpesa)->paginate(10);
+
+        return view('payments/viewMyTransactions', ['transactions'=>$transaction]); 
+    }
+
+    //all users transactions/payments
+    public function viewPayments(){
+        // $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('status', 'Active')->get();
+        // $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('status', 'Active')->get();
+
+        $paypal = PaypalPayment::where('status', 'Active')->get();
+        $mpesa = MpesaPayment::where('status', 'Active')->get();
+        $transaction = $mpesa->concat($paypal)->paginate(10);
+
+        return view('payments/ViewAllPayments', ['transactions'=>$transaction]);
     }
 }
