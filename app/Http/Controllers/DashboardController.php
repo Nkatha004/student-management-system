@@ -42,7 +42,6 @@ class DashboardController extends Controller
     }
 
     public function adminDashboard(){
-        //PaymentsController::exchangeRates(
         $mpesaSum = MpesaPayment::all()->sum('amount');
         $paypalSum = PaymentsController::exchangeRates(PaypalPayment::all()->sum('amount'), 'USD');
         $paymentsSum = $paypalSum + $mpesaSum;  

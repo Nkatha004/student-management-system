@@ -14,6 +14,7 @@ use App\Http\Controllers\EmployeeSubjectsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentSubjectsController;
 use App\Http\Controllers\ExamMarksController;
+use App\Http\Controllers\FiltersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewpayments', 'viewPayments');
         Route::get('/mpesaconfirmation', 'mpesaConfirmation');
         Route::post('/checktransaction', 'checkTransaction');
+        Route::post('/filtermypaymentsbymethod', 'filterMyPaymentsByMethod');
+        Route::post('/filterpaymentsbymethod', 'filterAllPaymentsByMethod');
     });
 
     Route::controller(RolesController::class)->group(function(){
@@ -168,8 +171,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/marks', 'store');
         Route::get('/viewmarks/{id}', 'viewMarks');
         Route::get('/viewclassmarks', 'viewClassMarks');
-        Route::get('/viewschoolmarks', 'viewSchoolMarks');
         Route::get('/editmark/{id}', 'edit');
         Route::post('/updatemark/{id}', 'update');
+        Route::post('/filterclassbyterm', 'filterClassMarksByTerm');
     });
 });

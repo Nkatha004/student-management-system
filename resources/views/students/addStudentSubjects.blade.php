@@ -32,7 +32,7 @@
     <form method = "post" action = "{{ url('/studentsubjects') }}" id = "teachingSubjects" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-info">
                 {{ session()->get('message') }}
             </div>
         @endif

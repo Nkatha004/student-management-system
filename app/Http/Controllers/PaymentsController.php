@@ -290,20 +290,48 @@ class PaymentsController extends Controller
         $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
         $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
 
-        $transaction = $paypal->merge($mpesa)->paginate(10);
+        $transaction = $paypal->concat($mpesa)->paginate(10);
 
         return view('payments/viewMyTransactions', ['transactions'=>$transaction]); 
     }
 
     //all users transactions/payments
     public function viewPayments(){
-        // $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('status', 'Active')->get();
-        // $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('status', 'Active')->get();
-
         $paypal = PaypalPayment::where('status', 'Active')->get();
         $mpesa = MpesaPayment::where('status', 'Active')->get();
         $transaction = $mpesa->concat($paypal)->paginate(10);
 
         return view('payments/ViewAllPayments', ['transactions'=>$transaction]);
+    }
+
+    public function filterAllPaymentsByMethod(){
+        if(request('paymentMethod') == 'all'){
+            $paypal = PaypalPayment::where('status', 'Active')->get();
+            $mpesa = MpesaPayment::where('status', 'Active')->get();
+            $transaction = $mpesa->concat($paypal)->paginate(10);
+        }else if(request('paymentMethod') == 'mpesa'){
+            $transaction = MpesaPayment::where('status', 'Active')->paginate(10);
+        }else{
+            $transaction = PaypalPayment::where('status', 'Active')->paginate(10);
+        }
+        return view('payments/ViewAllPayments', ['transactions'=>$transaction]);
+    }
+
+    public function filterMyPaymentsByMethod(){
+        if(Auth::check()){
+            $school = Auth::user()->school_id;
+        }
+
+        if(request('myPaymentMethod') == 'all'){
+            $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+            $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+
+            $transaction = $paypal->concat($mpesa)->paginate(10);
+        }else if(request('myPaymentMethod') == 'mpesa'){
+            $transaction = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->paginate(10);
+        }else{
+            $transaction = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->paginate(10);
+        }
+        return view('payments/viewMyTransactions', ['transactions'=>$transaction]);
     }
 }

@@ -166,16 +166,12 @@
                     @endif
                 @endif
                 @if(Auth::user()->role_id == 2)
-                    <a class = "dropdown-btn">
-                            <li>
-                                <i class="uil uil-chart"></i>
-                                <span>Exam Performance</span>
-                            </li>
-                        </a>
-                        <div class = "dropdown-container">
-                            <a href = "{{URL::to('/viewclasses')}}">Classes Performance</a>
-                            <a href = "{{URL::to('/viewschoolmarks')}}"><span>School Performance</span></a>
-                        </div>
+                    <a href = "{{URL::to('/viewclasses')}}">
+                        <li>
+                            <i class="uil uil-chart"></i>
+                            <span>Exam Performance</span>
+                        </li>
+                    </a>
                 @endif
                 @if (Auth::user()->role_id != 3)
                     @if (Auth::user()->role_id == 1)

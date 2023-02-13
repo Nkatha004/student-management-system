@@ -24,13 +24,19 @@ class StudentSubjectsController extends Controller
             'subject' => 'required'
         ]);
 
-        StudentSubject::create([
-            'student_id' => request('student'), 
-            'subject_id' => request('subject')
-        ]);
+        //check if student subject exists
+        $studentsubject = StudentSubject::all()->where('status', 'Active')->where('student_id', request('student'))->where('subject_id', request('subject'));
 
-        //request('student') gives the id of the student and then redirects with id as query parameter
-        return redirect("/studentsubjects/".request('student'))->with("message", "Student Subject added successfully");
+        if($studentsubject){
+            //request('student') gives the id of the student and then redirects with id as query parameter
+            return redirect("/studentsubjects/".request('student'))->with("message", "Student Subject already exists!");
+        }else{
+            StudentSubject::create([
+                'student_id' => request('student'), 
+                'subject_id' => request('subject')
+            ]);
+            return redirect("/studentsubjects/".request('student'))->with("message", "Student Subject added successfully");
+        }
     }
 
     public function edit($id){

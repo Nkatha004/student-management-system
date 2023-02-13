@@ -1,5 +1,23 @@
 @include('dashboard.dashboardSideNav')
 <main>
+	<form method="POST" action = "{{ URL::to('/filterpaymentsbymethod') }}">
+    	@csrf
+	    <div class = "col-12">
+	        <b><label for="inputState" class="form-label">Filter by Payment Method</label></b>
+	    </div>
+	    <div class="input-group">
+	    	<div class = "col-md-6">
+				<select id="inputState" class="form-select col-md-6" name = "paymentMethod">
+					<option selected value = "all">All Payments</option>
+					<option value = "mpesa">MPESA</option>
+		            <option value = "paypal">PayPal</option>
+				</select>
+			</div>
+			<div class="input-group-append">
+				<button class="btn btn-success">Filter</button>
+			</div>
+		</div>
+	</form><br/><br/>
 	<div class = "text-center table-schools">
 		<table class="table table-striped">
 			<thead>
