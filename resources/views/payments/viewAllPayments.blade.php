@@ -1,32 +1,14 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<form method="POST" action = "{{ URL::to('/filterpaymentsbymethod') }}">
-    	@csrf
-	    <div class = "col-12">
-	        <b><label for="inputState" class="form-label">Filter by Payment Method</label></b>
-	    </div>
-	    <div class="input-group">
-	    	<div class = "col-md-6">
-				<select id="inputState" class="form-select col-md-6" name = "paymentMethod">
-					<option selected value = "all">All Payments</option>
-					<option value = "mpesa">MPESA</option>
-		            <option value = "paypal">PayPal</option>
-				</select>
-			</div>
-			<div class="input-group-append">
-				<button class="btn btn-success">Filter</button>
-			</div>
-		</div>
-	</form><br/><br/>
-	<div class = "text-center table-schools">
-		<table class="table table-striped">
+	<div>
+		<table id = "viewPayments" class="stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">Payment Date</th>
 					<th scope="col">Transaction ID</th>
 					<th scope="col">School Name</th>
 					<th scope="col">Amount</th>
-                    <th scope="col">Currency</th>
+                    <th scope="col">Payment Method</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,18 +19,20 @@
 					<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($transaction->paid_by) }}</td>
 
 					@if($transaction->currency == 'USD')
-						<td>{{ App\Http\Controllers\PaymentsController::exchangeRates($transaction->amount, 'USD') }}</td>
+						<td>{{ App\Http\Controllers\PaymentsController::exchangeRates($transaction->amount, 'USD'). ' KES' }}</td>
+						<td>Paypal</td>
 					@else
-						<td>{{ $transaction->amount }}</td>
+						<td>{{ $transaction->amount.' KES' }}</td>
+						<td>MPESA</td>
 					@endif
-
-                    <td>KES</td>
 				</tr>
 				@endforeach
 			</tbody>
 		</table>
-		<div class="d-flex justify-content-center">
-            {{ $transactions->links() }}
-        </div>
+		<script>
+			$(document).ready( function () {
+    			$('#viewPayments').DataTable();
+			} );
+		</script>
 	</div>
 </main>

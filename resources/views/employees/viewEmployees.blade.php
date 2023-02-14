@@ -1,14 +1,15 @@
 @include('dashboard/dashboardSideNav')
 
 <main>
-	<div class = "text-center table-employees">
-	<table class="table table-striped">
+	<div>
+		<table id = "employeesView" class="compact stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">TSC Number</th>
 					<th scope="col">Name</th>
                     <th scope="col">School Name</th>
                     <th scope="col">Role Name</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -72,8 +73,10 @@
 			</tbody>
 		</table>
 
-		<div class="d-flex justify-content-center">
-            {{ $employees->links() }}
-        </div>
+		<script>
+			$(document).ready( function () {
+    			$('#employeesView').DataTable();
+			} );
+		</script>
 	</div>
 </main>

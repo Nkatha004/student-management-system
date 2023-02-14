@@ -1,13 +1,16 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center table-employees">
-	<table class="table table-striped">
+	<div>
+		<table id = "classesView" class="compact stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">Class Name</th>
                     <th scope="col">Year</th>
-					<th scope="col">Class Teacher</th>
+					@if(Auth::user()->id == 1)
                     <th scope="col">School Name</th>
+					@endif
+					<th scope="col">Class Teacher</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -15,17 +18,23 @@
 				<tr>
 					<td>{{ $class->class_name }}</td>
                     <td>{{ $class->year }}</td>
-					<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
-                    <td>{{App\Http\Controllers\SchoolsController::getSchoolName($class->school_id) }}</td>
 
-					@if(Auth::user()->role_id != 1 and Auth::user()->role_id != 4 )
+					@if(Auth::user()->id == 1)
+					<td>{{App\Http\Controllers\SchoolsController::getSchoolName($class->school_id) }}</td>
+					@endif
+
+					<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
+                
+					@if(Auth::user()->role_id != 4)
 					<td>
 						<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
 						<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						@if (Auth::user()->role_id != 1)
 						<a href = "{{ url('/viewclassmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
+						@endif
 					</td>
 					@endif
-					@if(Auth::user()->role_id == 4 )
+					@if(Auth::user()->role_id == 4)
 					<td>
 						<a href = "{{ url('/viewclassmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
 					</td>
@@ -34,8 +43,10 @@
 				@endforeach
 			</tbody>
 		</table>
-		<div class="d-flex justify-content-center">
-            {{ $classes->links() }}
-        </div>
+		<script>
+			$(document).ready( function () {
+    			$('#classesView').DataTable();
+			} );
+		</script>
 	</div>
 </main>

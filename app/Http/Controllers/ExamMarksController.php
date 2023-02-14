@@ -54,7 +54,7 @@ class ExamMarksController extends Controller
     public function viewMarks($id){
         
         $subject = SubjectsController::getSubjectName($id);
-        $marks = ExamMark::where('status', 'Active')->where('added_by', Auth::user()->id)->paginate(15);
+        $marks = ExamMark::where('status', 'Active')->where('added_by', Auth::user()->id)->get();
     
         return view('exams/viewMarks', ['marks'=>$marks, 'subject'=>$subject]);
     }
@@ -76,7 +76,7 @@ class ExamMarksController extends Controller
                                         ->paginate(15);
         }
 
-        return view('exams/viewAllMarks', ['marks'=>$marks, 'term'=>'all', 'category'=>'class']);
+        return view('exams/viewAllMarks', ['marks'=>$marks]);
     }
 
     public function edit($id){
@@ -109,45 +109,5 @@ class ExamMarksController extends Controller
         $mark->save();
 
         return redirect('/viewclassmarks')->with('message', 'Mark deleted successfully!');
-    }
-
-    public function filterClassMarksByTerm(){
-        if(Auth::user()->role_id == 4){
-            //marks of all students in the class
-            if(request('term') == 'all'){
-                $marks = ExamMark::select('*')
-                                        ->whereIn('student_subject_id', StudentSubject::select('id')
-                                        ->whereIn('student_id', Student::select("id")
-                                        ->whereIn('class_id', Classes::select('id')
-                                        ->where('status', 'Active')
-                                        ->where('class_teacher', Auth::user()->id)->get())))
-                                        ->paginate(15);
-            }else{
-                $marks = ExamMark::select('*')->where('term', request('term'))
-                                        ->whereIn('student_subject_id', StudentSubject::select('id')
-                                        ->whereIn('student_id', Student::select("id")
-                                        ->whereIn('class_id', Classes::select('id')
-                                        ->where('status', 'Active')
-                                        ->where('class_teacher', Auth::user()->id)->get())))
-                                        ->paginate(15);
-            }
-        }else{
-            if(request('term') == 'all'){
-                $marks = ExamMark::select('*')
-                                        ->whereIn('student_subject_id', StudentSubject::select('id')
-                                        ->whereIn('student_id', Student::select("id")
-                                        ->whereIn('class_id', Classes::select('id')
-                                        ->where('status', 'Active')->get())))
-                                        ->paginate(15);
-            }else{
-                $marks = ExamMark::select('*')->where('term', request('term'))
-                                        ->whereIn('student_subject_id', StudentSubject::select('id')
-                                        ->whereIn('student_id', Student::select("id")
-                                        ->whereIn('class_id', Classes::select('id')
-                                        ->where('status', 'Active')->get())))
-                                        ->paginate(15);
-            }   
-        }
-        return view('exams/viewAllMarks', ['marks'=>$marks, 'term'=>request('term'), 'category'=>'class']);
     }
 }

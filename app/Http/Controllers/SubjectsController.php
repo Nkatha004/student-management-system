@@ -27,7 +27,7 @@ class SubjectsController extends Controller
         return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
     }
     public function viewSubjects(){
-        $subjects = Subject::where('status', 'Active')->paginate(10);
+        $subjects = Subject::where('status', 'Active')->get();
 
         return view('subjects/viewSubjects', ['subjects'=> $subjects]);
     }

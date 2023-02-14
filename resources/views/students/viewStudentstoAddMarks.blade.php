@@ -1,8 +1,8 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center table-employees">
-	<table class="table table-striped">
-			<thead id = "viewstudents">
+	<div>
+	<table id = "studentstoAddMarks" class="compact stripe row-border">
+			<thead>
 				<tr>
 					<th scope="col">Admission Number</th>
 					<th scope="col">Name</th>
@@ -17,6 +17,7 @@
 					@if (Auth::user()->role_id == 1)
 					<th scope="col">School</th>
 					@endif
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,10 +55,12 @@
 						@if (Auth::user()->role_id == 1)
 							<td>{{App\Http\Controllers\SchoolsController::getSchoolNameByClassID($student->class_id) }}</td>
 						@endif
-						@if (Auth::user()->role_id != 3)
-						<td><a href = "{{ url('/studentsubjects/'.$student->id) }}" class = "btn btn-sm btn-info">Student Subjects</a></td>
-						@endif
-                        <td>
+						
+						<td>
+							@if (Auth::user()->role_id != 3)
+							<a href = "{{ url('/studentsubjects/'.$student->id) }}" class = "btn btn-sm btn-info">Subjects</a>
+							@endif
+                        
                         	@if (Auth::user()->role_id != 1)
 								<a href = "{{ url('/marks/'.$student->id.'/'.$subject) }}" class = "btn btn-sm btn-secondary">Add Mark</a>
 							@endif
@@ -70,12 +73,13 @@
 						</td>
 					</tr>
 					@endforeach
-					<div class="d-flex justify-content-center">
-			            {{ $students->links() }}
-			        </div>
 				@endif
 			</tbody>
 		</table>
-		
+		<script>
+			$(document).ready( function () {
+				$('#studentstoAddMarks').DataTable();
+			} );
+		</script>
 	</div>
 </main>

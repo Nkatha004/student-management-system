@@ -1,11 +1,14 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center table-schools">
-	<table class="table table-striped">
+	<div>
+		<table id = "subjectsView" class="stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">Subject Name</th>
 					<th scope="col">Subject Category</th>
+					@if(Auth::user()->role_id == 1)
+					<th scope="col">Actions</th>
+					@endif
 				</tr>
 			</thead>
 			<tbody>
@@ -24,8 +27,10 @@
 				@endforeach
 			</tbody>
 		</table>
-		<div class="d-flex justify-content-center">
-            {{ $subjects->links() }}
-        </div>
+		<script>
+			$(document).ready( function () {
+    			$('#subjectsView').DataTable();
+			} );
+		</script>
 	</div>
 </main>

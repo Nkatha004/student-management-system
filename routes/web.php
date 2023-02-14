@@ -89,7 +89,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/deleteschool/{id}', 'destroy');
     });
 
-
     Route::controller(EmployeesController::class)->group(function(){
         Route::get('/editemployee/{id}', 'edit');
         Route::get('/viewemployees', 'viewEmployees');
@@ -117,8 +116,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewpayments', 'viewPayments');
         Route::get('/mpesaconfirmation', 'mpesaConfirmation');
         Route::post('/checktransaction', 'checkTransaction');
-        Route::post('/filtermypaymentsbymethod', 'filterMyPaymentsByMethod');
-        Route::post('/filterpaymentsbymethod', 'filterAllPaymentsByMethod');
     });
 
     Route::controller(RolesController::class)->group(function(){

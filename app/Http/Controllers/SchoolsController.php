@@ -53,7 +53,7 @@ class SchoolsController extends Controller
         return redirect('/login')->with('message', 'School registered successfully!');
     }
     public function viewSchools(){
-        $schools = School::where('status', 'Active')->where('id', '!=', '1')->paginate(10);
+        $schools = School::where('status', 'Active')->where('id', '!=', '1')->get();
 
         return view('schools/viewschools', ['schools'=> $schools]);
     }

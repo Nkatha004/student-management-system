@@ -1,13 +1,14 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center table-schools">
-	<table class="table table-striped">
+	<div>
+		<table id = "marksView" class="stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">Student Name</th>
                     <th scope="col">Term</th>
                     <th scope="col">Subject</th>
                     <th scope="col">Mark</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,14 +28,18 @@
 						@endif
 					</tr>
 				@endforeach
-                @if (Auth::user()->role_id != 1)
-                <tr>
-                    <td colspan = "6">
-                        <a href = "{{ url('/employeesubjects/'.Auth::user()->id) }}" class = "btn btn-sm btn-secondary">Back to Students</a>
-                    </td>
-                </tr>
-                @endif
 			</tbody>
 		</table>
+		@if (Auth::user()->role_id != 1)
+			<div class = "text-center">
+				<a href = "{{ url('/employeesubjects/'.Auth::user()->id) }}"><button>Continue Adding Marks</button></a>
+			</div>
+			
+		@endif
+		<script>
+			$(document).ready( function () {
+				$('#marksView').DataTable();
+			});
+		</script>
 	</div>
 </main>

@@ -7,13 +7,6 @@
 table{
     margin-top: 0%;
 }
-.thead{
-    margin-left: 3%;
-    margin-right: 3%;
-}
-#viewstudents{
-    margin: 0;
-}
 .fa-trash, .fa-times-circle-o{
     color: red;
 }

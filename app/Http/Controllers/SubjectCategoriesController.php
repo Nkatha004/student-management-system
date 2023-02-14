@@ -23,7 +23,7 @@ class SubjectCategoriesController extends Controller
         return redirect('/viewsubjectcategories')->with('message', 'Subject category added successfully!');
     }
     public function viewSubjectCategories(){
-        $categories = SubjectCategories::where('status', 'Active')->paginate(10);
+        $categories = SubjectCategories::where('status', 'Active')->get();
 
         return view('subjectCategories/viewSubjectCategories', ['categories'=> $categories]);
     }

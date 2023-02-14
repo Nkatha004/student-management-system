@@ -45,10 +45,10 @@ class EmployeesController extends Controller
     }
     public function viewEmployees(){
         if(Auth::user()->role_id == 1){
-            $employees = Employee::orderBy('role_id')->where('status', 'Active')->paginate(10);
+            $employees = Employee::orderBy('role_id')->where('status', 'Active')->get();
         }else if(Auth::user()->role_id == 2){
             //display employees in the same school as logged in user
-            $employees = Employee::orderBy('role_id')->where('status', 'Active')->where('school_id', Auth::user()->school_id)->paginate(10);
+            $employees = Employee::orderBy('role_id')->where('status', 'Active')->where('school_id', Auth::user()->school_id)->get();
         }
         return view('employees/viewEmployees', ['employees'=> $employees]);
     }

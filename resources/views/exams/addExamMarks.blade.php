@@ -68,9 +68,9 @@
             <label for="inputState" class="form-label">Marks for Term:</label>
             <select id="inputState" class="form-select" name = "term">
                 <option selected disabled>Choose the term</option>
-                <option value = "Term 1">Term 1</option>
-                <option value = "Term 2">Term 2</option>
-                <option value = "Term 3">Term 3</option>
+                <option value = "First Term">Term 1</option>
+                <option value = "Second Term">Term 2</option>
+                <option value = "Third Term">Term 3</option>
             </select>
         </div>
 

@@ -1,12 +1,12 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center table-schools">
-
-		<table class="table table-striped">
+	<div>
+		<table id= "rolesView" class="stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">Role Name</th>
 					<th scope="col">Role Description</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,5 +27,9 @@
             {{ $roles->links() }}
         </div>
 	</div>
-
+	<script>
+		$(document).ready( function () {
+			$('#rolesView').DataTable();
+		} );
+	</script>
 </main>

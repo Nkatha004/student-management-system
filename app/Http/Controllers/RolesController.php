@@ -39,7 +39,7 @@ class RolesController extends Controller
         return redirect('/viewroles')->with('message', 'Role added successfully!');
     }
     public function viewRoles(){
-        $roles = Role::where('status', 'Active')->paginate(10);
+        $roles = Role::where('status', 'Active')->get();
 
         return view('roles/viewroles', ['roles'=> $roles]);
     }

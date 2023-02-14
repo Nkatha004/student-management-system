@@ -1,12 +1,13 @@
 @include('dashboard.dashboardSideNav')
 <main>	
-	<div class = "text-center table-schools">
-	<table class="table table-striped">
+	<div>
+		<table id = "schoolsView" class="stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">School Name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Phone Number</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -23,8 +24,10 @@
 				@endforeach
 			</tbody>
 		</table>
-		<div class="d-flex justify-content-center">
-            {{ $schools->links() }}
-        </div>
+		<script>
+			$(document).ready( function () {
+    			$('#schoolsView').DataTable();
+			} );
+		</script>
 	</div>
 </main>

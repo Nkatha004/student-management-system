@@ -2,7 +2,7 @@
 
 <main>
    
-    <form action = "{{ url('/updateclass/'.$class->id) }}" method = "post" id = "addEmployeeForm" class = "edit"class="row g-3 form">
+    <form action = "{{ url('/updateclass/'.$class->id) }}" method = "post" class = "edit" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">
@@ -81,6 +81,7 @@
                 <option value = "Archived">Archived</option>
             </select>
         </div>
+        <br/>
         <div class="col-12 text-center">
             <button type="submit">Save</button>
         </div>
