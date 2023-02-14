@@ -32,7 +32,9 @@
                         <td>
                             <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
                             <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+                            @if($employee->role_id == 2)
     						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
+                            @endif
                         </td>
                     @elseif(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
                     <td>{{$e_subject->status}}</td>

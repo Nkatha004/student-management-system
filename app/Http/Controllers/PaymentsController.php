@@ -109,7 +109,7 @@ class PaymentsController extends Controller
         return redirect('/cancelpayment')->with('message', 'User declined the payment');
     }
 
-
+    //cancel payment
     public function cancelPayment(){
         return view('payments/cancelled');
     }

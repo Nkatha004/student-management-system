@@ -5,7 +5,6 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Role ID</th>
 					<th scope="col">Role Name</th>
 					<th scope="col">Role Description</th>
 				</tr>
@@ -13,8 +12,6 @@
 			<tbody>
 				@foreach($roles as $role)
 				<tr>
-			
-					<td>{{ $role->id }}</td>
 					<td>{{ $role->role_name }}</td>
                     <td>{{ $role->role_description }}</td>
 

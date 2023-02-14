@@ -4,7 +4,6 @@
 	<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">School ID</th>
 					<th scope="col">School Name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Phone Number</th>
@@ -13,8 +12,6 @@
 			<tbody>
 				@foreach($schools as $school)
 				<tr>
-			
-					<td>{{ $school->id }}</td>
 					<td>{{ $school->school_name }}</td>
 					<td>{{ $school->email }}</td>
 					<td>{{ $school->phone_number }}</td>

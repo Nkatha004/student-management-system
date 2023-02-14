@@ -33,7 +33,7 @@
                                     {{ Auth::user()->first_name.' '.Auth::user()->last_name }}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">My Profile</a></li>
+                                    <!-- <li><a class="dropdown-item" href="#">My Profile</a></li> -->
                                     <li><a class="dropdown-item" href="{{URL::to('/logout')}}">Log out</a></li>
                                 </ul>
                             </div>

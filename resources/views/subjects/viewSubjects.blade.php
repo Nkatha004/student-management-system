@@ -4,7 +4,6 @@
 	<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Subject ID</th>
 					<th scope="col">Subject Name</th>
 					<th scope="col">Subject Category</th>
 				</tr>
@@ -12,8 +11,6 @@
 			<tbody>
 				@foreach($subjects as $subject)
 				<tr>
-			
-					<td>{{ $subject->id }}</td>
 					<td>{{ $subject->subject_name }}</td>
                     <td>{{ App\Http\Controllers\SubjectCategoriesController::getSubjectCategoryName($subject->category_id) }}</td>
 					

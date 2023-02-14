@@ -4,7 +4,6 @@
 	<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Category ID</th>
 					<th scope="col">Category Name</th>
 					<th scope="col">Category Description</th>
 				</tr>
@@ -12,7 +11,6 @@
 			<tbody>
 				@foreach($categories as $category)
 				<tr>
-					<td>{{ $category->id }}</td>
 					<td>{{ $category->category_name }}</td>
                     <td>{{ $category->description }}</td>
 
