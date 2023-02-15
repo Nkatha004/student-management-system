@@ -19,7 +19,7 @@ return new class extends Migration
             $table -> foreign('student_id') -> references('id') -> on('students');
             $table->integer('subject_id')->unsigned();
             $table -> foreign('subject_id') -> references('id') -> on('subjects');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

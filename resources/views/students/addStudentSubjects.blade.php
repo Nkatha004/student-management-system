@@ -9,7 +9,6 @@
 					<th scope="col">Last Name</th>
                     <th scope = "col">Class</th>
                     <th scope="col">Student Subjects</th>
-                    <th scope="col">Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,7 +18,6 @@
 					<td>{{ $student->last_name }}</td>
                     <td>{{App\Http\Controllers\ClassesController::getClassName($student->class_id) }}</td>
                     <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($s_subject->subject_id)}} </p></td>
-					<td>{{$s_subject->status}}</td>
                     <td>
 						<a href = "{{ url('/editstudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
                         <a href = "{{ url('/deletestudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>

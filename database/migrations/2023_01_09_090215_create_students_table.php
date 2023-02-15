@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('guardian_email');
             $table->integer('class_id')->unsigned()->nullable();
             $table -> foreign('class_id') -> references('id') -> on('classes');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

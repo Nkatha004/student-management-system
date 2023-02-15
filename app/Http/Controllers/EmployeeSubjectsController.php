@@ -14,9 +14,9 @@ class EmployeeSubjectsController extends Controller
 {
     public function index($id){
         $employee = Employee::find($id);
-        $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('status', 'Active');
-        $subjects = Subject::all()->where('status', 'Active');
-        $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+        $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('deleted_at', NULL);
+        $subjects = Subject::all()->where('deleted_at', NULL);
+        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
         return view('employees/addEmployeeSubjects', ['employee'=> $employee, 'employeesubjects'=> $employeesubjects, 'subjects'=>$subjects, 'classes'=>$classes]);
     }
 
@@ -46,8 +46,8 @@ class EmployeeSubjectsController extends Controller
 
     public function edit($id){
         $employeesubject = EmployeeSubject::find($id);
-        $subjects = Subject::all()->where('status', 'Active');
-        $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+        $subjects = Subject::all()->where('deleted_at', NULL);
+        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
 
         return view('employees/editEmployeeSubject', ['employeesubject'=>$employeesubject, 'subjects'=>$subjects, 'classes'=>$classes]);
     }
@@ -62,7 +62,6 @@ class EmployeeSubjectsController extends Controller
         
         $employeesubject->subject_id= $request->input('subject');
         $employeesubject->class_id= $request->input('class');
-        $employeesubject->status= $request->input('status');
 
         $employeesubject->save();
 
@@ -71,10 +70,7 @@ class EmployeeSubjectsController extends Controller
 
     public function destroy($id)
     {
-        $employeesubject = EmployeeSubject::find($id);
-
-        $employeesubject->status = "Deleted";
-        $employeesubject->save();
+        $employeesubject = EmployeeSubject::find($id)->delete();
 
         return redirect("/employeesubjects/".$employeesubject->employee_id)->with("Employee Subject deleted successfully");
     }

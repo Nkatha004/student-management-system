@@ -9,7 +9,7 @@ use App\Models\Subject;
 class SubjectsController extends Controller
 {
     public function index(){
-        $categories = SubjectCategories::all()->where('status', 'Active');
+        $categories = SubjectCategories::all()->where('deleted_at', NULL);
 
         return view('subjects/addSubject', ['categories'=> $categories ]);
     }
@@ -27,14 +27,14 @@ class SubjectsController extends Controller
         return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
     }
     public function viewSubjects(){
-        $subjects = Subject::where('status', 'Active')->get();
+        $subjects = Subject::where('deleted_at', NULL)->get();
 
         return view('subjects/viewSubjects', ['subjects'=> $subjects]);
     }
 
     public function edit($id){
         $subject = Subject::find($id);
-        $categories = SubjectCategories::all()->where('status', 'Active');
+        $categories = SubjectCategories::all()->where('deleted_at', NULL);
 
         return view('subjects/editSubject', ['subject'=> $subject,'categories'=> $categories]);
     }
@@ -50,7 +50,6 @@ class SubjectsController extends Controller
         
         $subject->subject_name= $request->input('name');
         $subject->category_id = $request->input('category');
-        $subject->status= $request->input('status');
         $subject->save();
 
         return redirect('/viewsubjects')->with('message', 'Subject updated successfully!');
@@ -58,11 +57,8 @@ class SubjectsController extends Controller
 
     public function destroy($id)
     {
-        $subject = Subject::find($id);
-
-        $subject->status = "Deleted";
-        $subject->save();
-
+        $subject = Subject::find($id)->delete();
+        
         return redirect('/viewsubjects')->with('message', 'Subject deleted successfully!');
     }
 

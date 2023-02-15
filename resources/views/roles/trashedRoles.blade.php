@@ -1,7 +1,10 @@
 @include('dashboard.dashboardSideNav')
 <main>
+    <div>
+        <a href = "{{URL::to('/restoreroles')}}"class = "btn btn-success">Restore all</a>
+    </div><br>
 	<div>
-		<table id= "rolesView" class="stripe row-border">
+		<table id= "deletedRolesView" class="stripe row-border">
 			<thead>
 				<tr>
 					<th scope="col">Role Name</th>
@@ -16,8 +19,7 @@
                     <td>{{ $role->role_description }}</td>
 
 					<td>
-						<a href = "{{ url('/editrole/'.$role->id) }}" class = "btn btn-sm btn-warning">Update</a>
-						<a href = "{{ url('/deleterole/'.$role->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						<a href = "{{ url('/restorerole/'.$role->id) }}" class = "btn btn-sm btn-success">Restore</a>
 					</td>
 				</tr>
 				@endforeach
@@ -26,7 +28,7 @@
 	</div>
 	<script>
 		$(document).ready( function () {
-			$('#rolesView').DataTable();
+			$('#deletedRolesView').DataTable();
 		} );
 	</script>
 </main>

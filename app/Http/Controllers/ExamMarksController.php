@@ -16,7 +16,7 @@ class ExamMarksController extends Controller
 {
     public function index($studentID, $subjectID){
         //find the student subject done by the student
-        $studentsubjects = StudentSubject::select('*')->where('status', 'Active')
+        $studentsubjects = StudentSubject::select('*')->where('deleted_at', NULL)
                                                 ->where('student_id', Student::find($studentID)->id)
                                                 ->where('subject_id', Subject::find($subjectID)->id)
                                                 ->get()
@@ -54,7 +54,7 @@ class ExamMarksController extends Controller
     public function viewMarks($id){
         
         $subject = SubjectsController::getSubjectName($id);
-        $marks = ExamMark::where('status', 'Active')->where('added_by', Auth::user()->id)->get();
+        $marks = ExamMark::where('deleted_at', NULL)->where('added_by', Auth::user()->id)->get();
     
         return view('exams/viewMarks', ['marks'=>$marks, 'subject'=>$subject]);
     }
@@ -65,14 +65,14 @@ class ExamMarksController extends Controller
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")
                                         ->whereIn('class_id', Classes::select('id')
-                                        ->where('status', 'Active')
+                                        ->where('deleted_at', NULL)
                                         ->where('class_teacher', Auth::user()->id)->get())))
                                         ->paginate(15);
         }else{
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")
                                         ->whereIn('class_id', Classes::select('id')
-                                        ->where('status', 'Active')->get())))
+                                        ->where('deleted_at', NULL)->get())))
                                         ->paginate(15);
         }
 
@@ -95,18 +95,14 @@ class ExamMarksController extends Controller
         
         $mark = ExamMark::find($id);
         $mark->mark= $request->input('mark');
-        $mark->status= $request->input('status');
 
         $mark->save();
 
         return redirect('/viewclassmarks')->with('message', 'Marks updated successfully!');
     }
 
-    public function delete(){
-        $mark = ExamMark::find($id);
-
-        $mark->status = "Deleted";
-        $mark->save();
+    public function destroy($id){
+        $mark = ExamMark::find($id)->delete();
 
         return redirect('/viewclassmarks')->with('message', 'Mark deleted successfully!');
     }

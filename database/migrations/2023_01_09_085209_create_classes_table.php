@@ -21,7 +21,7 @@ return new class extends Migration
             $table -> foreign('school_id') -> references('id') -> on('schools');
             $table->integer('class_teacher')->unsigned();
             $table -> foreign('class_teacher') -> references('id') -> on('employees');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

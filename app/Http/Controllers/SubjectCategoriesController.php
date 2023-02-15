@@ -23,7 +23,7 @@ class SubjectCategoriesController extends Controller
         return redirect('/viewsubjectcategories')->with('message', 'Subject category added successfully!');
     }
     public function viewSubjectCategories(){
-        $categories = SubjectCategories::where('status', 'Active')->get();
+        $categories = SubjectCategories::where('deleted_at', NULL)->get();
 
         return view('subjectCategories/viewSubjectCategories', ['categories'=> $categories]);
     }
@@ -45,7 +45,6 @@ class SubjectCategoriesController extends Controller
         
         $category->category_name= $request->input('category_name');
         $category->description = $request->input('description');
-        $category->status= $request->input('status');
         $category->save();
 
         return redirect('/viewsubjectcategories')->with('message', 'Subject category updated successfully!');
@@ -53,10 +52,7 @@ class SubjectCategoriesController extends Controller
 
     public function destroy($id)
     {
-        $category = SubjectCategories::find($id);
-
-        $category->status = "Deleted";
-        $category->save();
+        $category = SubjectCategories::find($id)->delete();
 
         return redirect('/viewsubjectcategories')->with('message', 'Subject category deleted successfully!');
     }

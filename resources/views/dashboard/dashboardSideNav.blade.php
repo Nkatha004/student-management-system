@@ -101,6 +101,7 @@
                 <div class = "dropdown-container">
                     <a href = "{{URL::to('/roles')}}">Add Role</a>
                     <a href = "{{URL::to('/viewroles')}}"><span>View Roles</span></a>
+                    <a href = "{{URL::to('/trashedroles')}}">Deleted Roles</a>
                 </div>
                 @endif
                 @if (Auth::user()->role_id == 3 or Auth::user()->role_id == 4)
@@ -146,7 +147,18 @@
                     <a href = "{{URL::to('/viewsubjectcategories')}}"><span>View Categories</span></a>
                 </div>
                 @endif    
-                @if (Auth::user()->role_id != 3)
+                @if(Auth::user()->role_id == 1)
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-presentation-edit"></i>
+                            <span>Classes</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/viewclasses')}}"><span>View Classes</span></a>
+                        <a href = "{{URL::to('/trashedclasses')}}"><span>Trashed Classes</span></a>
+                    </div>
+                @elseif (Auth::user()->role_id != 3)
                     @if(Auth::user()->role_id != 2)
                         <a href = "{{URL::to('/viewclasses')}}">
                             <li>
@@ -164,6 +176,7 @@
                         <div class = "dropdown-container">
                             <a href = "{{URL::to('/classes')}}">Add Class</a>
                             <a href = "{{URL::to('/viewclasses')}}"><span>View Classes</span></a>
+                            <a href = "{{URL::to('/trashedclasses')}}"><span>Trashed Classes</span></a>
                         </div>
 
                     @endif

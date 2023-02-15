@@ -51,19 +51,6 @@
             <label for="mark" class="form-label">Subject Mark</label>
             <input type="number" class="form-control" id="mark" name = "mark" value = "{{$marks->mark}}">
         </div>
-
-        <div class="col-12">
-            @if($errors->has('status'))
-                <div class = "alert alert-danger" role = "alert">
-                    {{ $errors->first('status') }}
-                </div>
-            @endif
-            <label for="status" class=" form-label">Status</label>
-            <select id="inputState" class="form-select" name = "status">
-                <option value = "Active">Active</option>
-                <option value = "Archived">Archived</option>
-            </select>
-        </div>
         
         <div class="col-12 text-center">
             <button type="submit">Save</button>

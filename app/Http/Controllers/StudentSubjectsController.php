@@ -12,8 +12,8 @@ class StudentSubjectsController extends Controller
 {
     public function index($id){
         $student = Student::find($id);
-        $studentsubjects = StudentSubject::all()->where('student_id', $id)->where('status', 'Active');
-        $subjects = Subject::all()->where('status', 'Active');
+        $studentsubjects = StudentSubject::all()->where('student_id', $id)->where('deleted_at', NULL);
+        $subjects = Subject::all()->where('deleted_at', NULL);
     
         return view('students/addStudentSubjects', ['student'=> $student, 'studentsubjects'=> $studentsubjects, 'subjects'=>$subjects]);
     }
@@ -25,7 +25,7 @@ class StudentSubjectsController extends Controller
         ]);
 
         //check if student subject exists
-        $studentsubject = StudentSubject::all()->where('status', 'Active')->where('student_id', request('student'))->where('subject_id', request('subject'));
+        $studentsubject = StudentSubject::all()->where('deleted_at', NULL)->where('student_id', request('student'))->where('subject_id', request('subject'));
 
         if($studentsubject){
             //request('student') gives the id of the student and then redirects with id as query parameter
@@ -41,7 +41,7 @@ class StudentSubjectsController extends Controller
 
     public function edit($id){
         $studentsubject = StudentSubject::find($id);
-        $subjects = Subject::all()->where('status', 'Active');
+        $subjects = Subject::all()->where('deleted_at', NULL);
 
         return view('students/editstudentsubject', ['studentsubject'=>$studentsubject, 'subjects'=>$subjects]);
     }
@@ -54,8 +54,6 @@ class StudentSubjectsController extends Controller
         $studentsubject = StudentSubject::find($id);
         
         $studentsubject->subject_id= $request->input('subject');
-        $studentsubject->status= $request->input('status');
-
         $studentsubject->save();
 
         //request('student') gives the id of the student and then redirects with id as query parameter
@@ -64,10 +62,7 @@ class StudentSubjectsController extends Controller
 
     public function destroy($id)
     {
-        $studentsubject = StudentSubject::find($id);
-
-        $studentsubject->status = "Deleted";
-        $studentsubject->save();
+        $studentsubject = StudentSubject::find($id)->delete();
 
         return redirect("/studentsubjects/".$studentsubject->student_id)->with("Student Subject deleted successfully");
     }

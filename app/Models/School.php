@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class School extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id', 'school_name', 'email', 'phone_number','payment_status', 'status'];
+    protected $fillable = ['id', 'school_name', 'email', 'phone_number','payment_status'];
 }

@@ -41,18 +41,6 @@
             <label for="telNo" class=" form-label">Telephone Number</label>
             <input type="text" class="form-control" id="telNo" name = "telNo" value = "{{$school->phone_number}}">
         </div>
-        <div class="col-12">
-            @if($errors->has('status'))
-                <div class = "alert alert-danger" role = "alert">
-                    {{ $errors->first('status') }}
-                </div>
-            @endif
-            <label for="status" class=" form-label">Status</label>
-            <select id="inputState" class="form-select" name = "status">
-                <option value = "Active">Active</option>
-                <option value = "Archived">Archived</option>
-            </select>
-        </div>
         
         <div class="col-12 text-center">
             <button type="submit">Save</button>

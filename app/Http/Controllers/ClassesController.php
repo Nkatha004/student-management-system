@@ -13,9 +13,9 @@ class ClassesController extends Controller
 {
     public function index(){
         //exclude admin and principal from being class teachers
-        $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2');
+        $teachers = Employee::all()->where('deleted_at', NULL)->where('role_id', '!=', '1')->where('role_id', '!=', '2');
         if(Auth::user()->role_id != 1){
-            $teachers = Employee::all()->where('status', 'Active')
+            $teachers = Employee::all()->where('deleted_at', NULL)
                                         ->where('role_id', '==', '3')
                                         ->where('school_id', Auth::user()->school_id);
         }
@@ -50,18 +50,18 @@ class ClassesController extends Controller
     }
     public function viewclasses(){
         if(Auth::user()->role_id == 1){
-            $classes = Classes::where('status', 'Active')->get();
+            $classes = Classes::where('deleted_at', NULL)->get();
         }elseif (Auth::user()->role_id == 4){
-            $classes = Classes::where('status', 'Active')->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id)->get();
+            $classes = Classes::where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id)->get();
         }else{
-            $classes = Classes::where('status', 'Active')->where('school_id', Auth::user()->school_id)->get();
+            $classes = Classes::where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->get();
         }
         return view('classes/viewclasses', ['classes'=> $classes]);
     }
     public function edit($id){
         $class = Classes::find($id);
-        $schools = School::all()->where('status', 'Active');
-        $teachers = Employee::all()->where('status', 'Active')->where('role_id', '!=', '1')->where('role_id', '!=', '2');
+        $schools = School::all()->where('deleted_at', NULL);
+        $teachers = Employee::all()->where('deleted_at', NULL)->where('role_id', '!=', '1')->where('role_id', '!=', '2');
 
         return view('classes/editclass', ['class'=>$class, 'schools'=>$schools, 'teachers'=>$teachers]);
     }
@@ -80,7 +80,6 @@ class ClassesController extends Controller
         $class->year = $request->input('year');
         $class->school_id = $request->input('school');
         $class->class_teacher = $request->input('teacher');
-        $class->status= $request->input('status');
 
         $class->save();
 
@@ -89,12 +88,27 @@ class ClassesController extends Controller
 
     public function destroy($id)
     {
-        $class = Classes::find($id);
-
-        $class->status = "Deleted";
-        $class->save();
+        $class = Classes::find($id)->delete();
 
         return redirect('/viewclasses')->with('message', 'Class deleted successfully!');
+    }
+
+    //softDeletes classes
+    public function trashedClasses(){
+        $classes = Classes::onlyTrashed()->get();
+        return view('classes/trashedClasses', compact('classes'));
+    }
+
+    //restore deleted classes
+    public function restoreClass($id){
+        Classes::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted classes
+    public function restoreClasses(){
+        Classes::onlyTrashed()->restore();
+        return back();
     }
 
     public static function getClassName($id){

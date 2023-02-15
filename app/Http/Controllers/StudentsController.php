@@ -13,12 +13,12 @@ use Auth;
 class StudentsController extends Controller
 {
     public function index(){
-        $schools = School::all()->where('status', 'Active');
+        $schools = School::all()->where('deleted_at', NULL);
         if(Auth::user()->role_id != 4){
-            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id);
+            $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
         }else{
             //allow class teacher to add students belonging to their class only
-            $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id);
+            $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id);
         }
         return view('students/addStudent', ['schools'=>$schools, 'classes'=>$classes]);
     }
@@ -48,14 +48,14 @@ class StudentsController extends Controller
     public function viewStudents(){
         //display all students only when admin is logged in
         if(Auth::user()->role_id == 1){
-            $students = Student::where('status', 'Active')->get();
+            $students = Student::where('deleted_at', NULL)->get();
            
             return view('students/viewStudents', ['students'=> $students]);
         }
         //display students in the class where the logged in teacher is a classteacher only
         elseif(Auth::user()->role_id == 4){
             $students = Student::select("*")
-                    ->whereIn('class_id', Classes::select('id')->where('status', 'Active')->where('class_teacher', Auth::user()->id)->get())
+                    ->whereIn('class_id', Classes::select('id')->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->get())
                     ->get();
                     
             if(count($students) == 0){
@@ -70,7 +70,7 @@ class StudentsController extends Controller
             //display students specific to school of logged in user
             $students = Student::select("*")
                     ->whereIn('class_id', Classes::select('id')
-                    ->where('status', 'Active')
+                    ->where('deleted_at', NULL)
                     ->where('school_id', Auth::user()->school_id)->get())
                     ->get();
     
@@ -90,14 +90,14 @@ class StudentsController extends Controller
     public function viewStudentsToAddMarks($id){
         //display all students only when admin is logged in
         if(Auth::user()->role_id == 1){
-            $students = Student::where('status', 'Active')->get();
+            $students = Student::where('deleted_at', NULL)->get();
            
             return view('students/viewStudents', ['students'=> $students]);
         }
         //display students in the class where the logged in teacher is a classteacher only
         elseif(Auth::user()->role_id == 4){
             $students = Student::select("*")
-                    ->whereIn('class_id', Classes::select('id')->where('status', 'Active')->where('class_teacher', Auth::user()->id)->get())
+                    ->whereIn('class_id', Classes::select('id')->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->get())
                     ->get();
                     
             if(count($students) == 0){
@@ -112,7 +112,7 @@ class StudentsController extends Controller
             //display students specific to school of logged in user
             $students = Student::select("*")
                     ->whereIn('class_id', Classes::select('id')
-                    ->where('status', 'Active')
+                    ->where('deleted_at', NULL)
                     ->where('school_id', Auth::user()->school_id)->get())
                     ->get();
     
@@ -128,7 +128,7 @@ class StudentsController extends Controller
     
     public function edit($id){
         $student = Student::find($id);
-        $classes = Classes::all()->where('status', 'Active');
+        $classes = Classes::all()->where('deleted_at', NULL);
 
         return view('students/editstudent', ['student'=>$student, 'classes' => $classes]);
     }
@@ -153,7 +153,6 @@ class StudentsController extends Controller
         $student->guardian_phone_number = $request->input('phoneNo');
         $student->admission_number = $request->input('admNo');
         $student->class_id = $request->input('class');
-        $student->status= $request->input('status');
 
         $student->save();
 
@@ -162,10 +161,7 @@ class StudentsController extends Controller
 
     public function destroy($id)
     {
-        $student = Student::find($id);
-
-        $student->status = "Deleted";
-        $student->save();
+        $student = Student::find($id)->delete();
 
         return redirect('/viewstudents')->with('message', 'Student deleted successfully!');
     }

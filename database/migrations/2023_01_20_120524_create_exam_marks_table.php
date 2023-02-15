@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('mark');
             $table->integer('added_by')->unsigned();
             $table -> foreign('added_by') -> references('id') -> on('employees');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

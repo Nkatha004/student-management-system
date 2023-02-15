@@ -12,8 +12,8 @@ use Auth;
 class EmployeesController extends Controller
 {
     public function index(){
-        $schools = School::all()->where('status', 'Active')->where('id', '!=', '1');
-        $roles = Role::all()->where('status', 'Active');
+        $schools = School::all()->where('deleted_at', NULL)->where('id', '!=', '1');
+        $roles = Role::all()->where('deleted_at', NULL);
 
         return view('employees/addEmployee', ['schools'=>$schools, 'roles'=>$roles]);
     }
@@ -45,17 +45,17 @@ class EmployeesController extends Controller
     }
     public function viewEmployees(){
         if(Auth::user()->role_id == 1){
-            $employees = Employee::orderBy('role_id')->where('status', 'Active')->get();
+            $employees = Employee::orderBy('role_id')->where('deleted_at', NULL)->get();
         }else if(Auth::user()->role_id == 2){
             //display employees in the same school as logged in user
-            $employees = Employee::orderBy('role_id')->where('status', 'Active')->where('school_id', Auth::user()->school_id)->get();
+            $employees = Employee::orderBy('role_id')->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->get();
         }
         return view('employees/viewEmployees', ['employees'=> $employees]);
     }
     public function edit($id){
         $employee = Employee::find($id);
-        $schools = School::all()->where('status', 'Active')->where('id', '!=', '1');
-        $roles = Role::all()->where('status', 'Active')->where('id' ,'!=' ,'1')->where('id', '!=' ,'2');
+        $schools = School::all()->where('deleted_at', NULL)->where('id', '!=', '1');
+        $roles = Role::all()->where('deleted_at', NULL)->where('id' ,'!=' ,'1')->where('id', '!=' ,'2');
 
         return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools, 'roles'=>$roles]);
     }
@@ -76,7 +76,6 @@ class EmployeesController extends Controller
         $employee->email = $request->input('email');
         $employee->telephone_number = $request->input('telNo');
         $employee->tsc_number = $request->input('tscNo');
-        $employee->status= $request->input('status');
     
         $employee->save();
 
@@ -85,10 +84,7 @@ class EmployeesController extends Controller
 
     public function destroy($id)
     {
-        $employee = Employee::find($id);
-
-        $employee->status = "Deleted";
-        $employee->save();
+        $employee = Employee::find($id)->delete();
 
         return redirect('/viewemployees')->with('message', 'Employee deleted successfully!');
     }

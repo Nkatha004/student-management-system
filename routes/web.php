@@ -123,6 +123,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewroles', 'viewRoles');
         Route::post('/updaterole/{id}', 'update');
         Route::get('/deleterole/{id}', 'destroy');
+        Route::get('/trashedroles', 'trashedRoles');
+        Route::get('/restorerole/{id}', 'restoreRole');
+        Route::get('/restoreroles', 'restoreRoles');
     });
 
     Route::controller(SubjectCategoriesController::class)->group(function(){
@@ -144,6 +147,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewclasses', 'viewClasses');
         Route::post('/updateclass/{id}', 'update');
         Route::get('/deleteclass/{id}', 'destroy');
+        Route::get('/trashedclasses', 'trashedClasses');
+        Route::get('/restoreclass/{id}', 'restoreClass');
+        Route::get('/restoreclasses', 'restoreClasses');
     });
     
     Route::controller(StudentsController::class)->group(function(){
@@ -170,6 +176,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewclassmarks', 'viewClassMarks');
         Route::get('/editmark/{id}', 'edit');
         Route::post('/updatemark/{id}', 'update');
-        Route::post('/filterclassbyterm', 'filterClassMarksByTerm');
+        Route::post('/deletestudentmark/{id}', 'destroy');
     });
 });

@@ -287,8 +287,8 @@ class PaymentsController extends Controller
         if(Auth::check()){
             $school = Auth::user()->school_id;
         }
-        $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
-        $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('status', 'Active')->get();
+        $paypal = PaypalPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('deleted_at', NULL)->get();
+        $mpesa = MpesaPayment::orderBy('created_at', 'desc')->where('paid_by', $school)->where('deleted_at', NULL)->get();
         $transaction = $paypal->concat($mpesa);
 
         return view('payments/viewMyTransactions', ['transactions'=>$transaction]); 
@@ -296,8 +296,8 @@ class PaymentsController extends Controller
 
     //all users transactions/payments
     public function viewPayments(){
-        $paypal = PaypalPayment::where('status', 'Active')->get();
-        $mpesa = MpesaPayment::where('status', 'Active')->get();
+        $paypal = PaypalPayment::where('deleted_at', NULL)->get();
+        $mpesa = MpesaPayment::where('deleted_at', NULL)->get();
         $transaction = $mpesa->concat($paypal);
 
         return view('payments/ViewAllPayments', ['transactions'=>$transaction]);

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email');
             $table->integer('phone_number');
             $table->enum('payment_status', ['Payment Complete', 'Payment Pending'])->default('Payment Pending');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('subject_name');
             $table->integer('category_id')->unsigned();
             $table -> foreign('category_id') -> references('id') -> on('subject_categories');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

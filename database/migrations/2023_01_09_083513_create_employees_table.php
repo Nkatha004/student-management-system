@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('telephone_number');
-            $table->integer('school_id')->unsigned();
+            $table->integer('school_id')->unsigned()->nullable();
             $table -> foreign('school_id') -> references('id') -> on('schools');
             $table->integer('role_id')->unsigned();
             $table -> foreign('role_id') -> references('id') -> on('roles');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

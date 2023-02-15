@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('role_name');
             $table->string('role_description');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -53,7 +53,7 @@ class SchoolsController extends Controller
         return redirect('/login')->with('message', 'School registered successfully!');
     }
     public function viewSchools(){
-        $schools = School::where('status', 'Active')->where('id', '!=', '1')->get();
+        $schools = School::where('deleted_at', NULL)->where('id', '!=', '1')->get();
 
         return view('schools/viewschools', ['schools'=> $schools]);
     }
@@ -77,7 +77,6 @@ class SchoolsController extends Controller
         $school->school_name= $request->input('schoolname');
         $school->email = $request->input('email');
         $school->phone_number= $request->input('telNo');
-        $school->status= $request->input('status');
         $school->save();
 
         return redirect('/viewschools')->with('message', 'School updated successfully!');
@@ -85,11 +84,8 @@ class SchoolsController extends Controller
 
     public function destroy($id)
     {
-        $school = School::find($id);
-
-        $school->status = "Deleted";
-        $school->save();
-
+        $school = School::find($id)->delete();
+        
         return redirect('/viewschools')->with('message', 'School deleted successfully!');
     }
 

@@ -16,26 +16,26 @@ use Auth;
 class DashboardController extends Controller
 {
     public function teacherDashboard(){
-        $classes = Classes::all()->where('status', 'Active')->where('class_teacher', Auth::user()->id)->first();
-        $assignedClasses = EmployeeSubject::all()->where('status', 'Active')->where('employee_id', Auth::user()->id)->count('id');
+        $classes = Classes::all()->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->first();
+        $assignedClasses = EmployeeSubject::all()->where('deleted_at', NULL)->where('employee_id', Auth::user()->id)->count('id');
         $students = Student::select("*")
-                    ->whereIn('class_id', Classes::select('id')->where('status', 'Active')->where('class_teacher', Auth::user()->id)->get())
+                    ->whereIn('class_id', Classes::select('id')->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->get())
                     ->get()->count('id');
 
         return view('dashboard/teacherDashboard', ['classes'=>$classes, 'assignedClasses'=>$assignedClasses, 'students'=>$students]);
     }
 
     public function principalDashboard(){
-        $classes = Classes::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id)->count('id');
-        $teachers = Employee::all()->where('status', 'Active')->where('school_id', Auth::user()->school_id)->count('id');
+        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->count('id');
+        $teachers = Employee::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->count('id');
         $students = Student::select("*")
                     ->whereIn('class_id', Classes::select('id')
-                    ->where('status', 'Active')
+                    ->where('deleted_at', NULL)
                     ->where('school_id', Auth::user()->school_id)->get())
                     ->get()->count('id');
 
-        $mpesapayments = MpesaPayment::all()->where('status', 'Active')->where('paid_by', Auth::user()->school_id)->sum('amount');
-        $paypalpayments = PaymentsController::exchangeRates(PaypalPayment::all()->where('status', 'Active')->where('paid_by', Auth::user()->school_id)->sum('amount'), 'USD');
+        $mpesapayments = MpesaPayment::all()->where('deleted_at', NULL)->where('paid_by', Auth::user()->school_id)->sum('amount');
+        $paypalpayments = PaymentsController::exchangeRates(PaypalPayment::all()->where('deleted_at', NULL)->where('paid_by', Auth::user()->school_id)->sum('amount'), 'USD');
 
         $payments = $mpesapayments + $paypalpayments;
         return view('dashboard/principalDashboard', ['classes'=>$classes, 'teachers'=>$teachers, 'students'=>$students, 'payments'=>$payments]);
@@ -50,11 +50,11 @@ class DashboardController extends Controller
         $students = Student::all()->count('id');
 
         //select the pending payments
-        $pendingpayments = School::all()->where('payment_status', 'Payment Pending')->where('id', '!=', 1)->take(5);
+        $pendingpayments = School::all()->where('payment_status', 'Payment Pending')->where('id', '!=', 1)->take(4);
 
         //select the recently made payments
-        $paypalrecentpayments = PaypalPayment::orderBy('created_at','desc')->take(5)->get();
-        $mpesarecentpayments = MpesaPayment::orderBy('created_at','desc')->take(5)->get();
+        $paypalrecentpayments = PaypalPayment::orderBy('created_at','desc')->take(2)->get();
+        $mpesarecentpayments = MpesaPayment::orderBy('created_at','desc')->take(3)->get();
 
         return view('dashboard/adminDashboard', ['totalpayments'=>$paymentsSum, 'schoolsCount'=>$schools, 'employees'=>$employees, 'students'=>$students, 'pendingpayments'=>$pendingpayments, 'paypalrecentpayments'=>$paypalrecentpayments, 'mpesarecentpayments'=>$mpesarecentpayments]);
     }

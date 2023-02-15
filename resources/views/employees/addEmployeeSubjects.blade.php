@@ -12,10 +12,6 @@
                     
                     <th scope="col">Teaching Subjects</th>
                     <th scope="col">Class</th>
-
-                    @if(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
-                        <th scope="col">Status</th>
-                    @endif
 				</tr>
 			</thead>
 			<tbody>
@@ -37,15 +33,14 @@
                             @endif
                         </td>
                     @elseif(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
-                    <td>{{$e_subject->status}}</td>
-                    <td>
-						<a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
-                        <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-                    </td>
+                        <td>
+                            <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
+                            <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+                        </td>
                     @else
-                    <td>
-						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
-                    </td>
+                        <td>
+                            <a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
+                        </td>
                     @endif
 				</tr>
                 @endforeach

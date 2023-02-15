@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->integer('paid_by')->unsigned()->nullable();
             $table -> foreign('paid_by') -> references('id') -> on('schools');
-            $table->enum('status', ['Active', 'Archived', 'Deleted'])->default('Active');
+            $table->softDeletes();            
             $table->timestamps();
         });
     }

@@ -39,7 +39,7 @@ class RolesController extends Controller
         return redirect('/viewroles')->with('message', 'Role added successfully!');
     }
     public function viewRoles(){
-        $roles = Role::where('status', 'Active')->get();
+        $roles = Role::where('deleted_at', NULL)->get();
 
         return view('roles/viewroles', ['roles'=> $roles]);
     }
@@ -73,7 +73,6 @@ class RolesController extends Controller
 
         $role->role_name= $input['rolename'];
         $role->role_description = $input['roleDesc'];
-        $role->status = $input['status'];
         $role->save();
 
         return redirect('/viewroles')->with('message', 'Role updated successfully!');
@@ -81,12 +80,26 @@ class RolesController extends Controller
 
     public function destroy($id)
     {
-        $role = Role::find($id);
-
-        $role->status = "Deleted";
-        $role->save();
-
+        $role = Role::find($id)->delete();
         return redirect('/viewroles')->with('message', 'Role deleted successfully!');
+    }
+
+    //softDeletes roles
+    public function trashedRoles(){
+        $roles = Role::onlyTrashed()->get();
+        return view('roles/trashedRoles', compact('roles'));
+    }
+
+    //restore deleted role
+    public function restoreRole($id){
+        Role::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted roles
+    public function restoreRoles(){
+        Role::onlyTrashed()->restore();
+        return back();
     }
 
     public static function getRoleName($id){
