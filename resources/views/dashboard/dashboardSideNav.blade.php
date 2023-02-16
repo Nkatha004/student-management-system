@@ -70,6 +70,7 @@
                     <a href = "{{URL::to('/employees')}}">Add Employee</a>
                     <a href = "{{URL::to('/viewemployees')}}"><span>View Employees</span></a>
                     <a href = "{{URL::to('/trashedemployees')}}"><span>Trashed Employees</span></a>
+                    <a href = "{{URL::to('/trashedemployeesubjects')}}"><span>Trashed Employee Subjects</span></a>                
                 </div>
                 @endif
                 @if(Auth::user()->role_id == 1)
@@ -82,6 +83,7 @@
                     <div class = "dropdown-container">
                         <a href = "{{URL::to('/viewstudents')}}"><span>View Students</span></a>
                         <a href = "{{URL::to('/trashedstudents')}}"><span>Trashed Students</span></a>
+                        <a href = "{{URL::to('/trashedstudentsubjects')}}"><span>Trashed Student Subjects</span></a>
                     </div>
                 @elseif (Auth::user()->role_id == 4)
                     <a class = "dropdown-btn">
@@ -105,6 +107,7 @@
                         <a href = "{{URL::to('/students')}}">Add Student</a>
                         <a href = "{{URL::to('/viewstudents')}}"><span>View Students</span></a>
                         <a href = "{{URL::to('/trashedstudents')}}"><span>Trashed Students</span></a>
+                        <a href = "{{URL::to('/trashedstudentsubjects')}}"><span>Trashed Student Subjects</span></a>
                     </div>
                 @endif
 

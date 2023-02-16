@@ -74,4 +74,22 @@ class EmployeeSubjectsController extends Controller
 
         return redirect("/employeesubjects/".$employeesubject->employee_id)->with("Employee Subject deleted successfully");
     }
+
+    //softDeletes employeesubjects
+    public function trashedEmployeeSubjects(){
+        $employeesubjects = EmployeeSubject::onlyTrashed()->get();
+        return view('employees/trashedEmployeeSubjects', compact('employeesubjects'));
+    }
+
+    //restore deleted employeesubject
+    public function restoreEmployeeSubject($id){
+        EmployeeSubject::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted employeesubjects
+    public function restoreEmployeeSubjects(){
+        EmployeeSubject::onlyTrashed()->restore();
+        return back();
+    }
 }

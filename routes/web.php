@@ -108,6 +108,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/editemployeesubject/{id}', 'edit');
         Route::post('/updateemployeesubject/{id}', 'update');
         Route::get('/deleteemployeesubject/{id}', 'destroy');
+        Route::get('/restoreemployeesubject/{id}', 'restoreEmployeeSubject');
+        Route::get('/restoreemployeesubjects', 'restoreEmployeeSubjects');
+        Route::get('/trashedemployeesubjects', 'trashedEmployeeSubjects');
     });
 
     Route::controller(PaymentsController::class)->group(function(){
@@ -183,6 +186,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/editstudentsubject/{id}', 'edit');
         Route::post('/updatestudentsubject/{id}', 'update');
         Route::get('/deletestudentsubject/{id}', 'destroy');
+        Route::get('/restorestudentsubject/{id}', 'restoreStudentSubject');
+        Route::get('/restorestudentsubjects', 'restoreStudentSubjects');
+        Route::get('/trashedstudentsubjects', 'trashedStudentSubjects');
     });
 
     Route::controller(ExamMarksController::class)->group(function(){

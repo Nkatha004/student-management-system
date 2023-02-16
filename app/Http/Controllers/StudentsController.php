@@ -160,6 +160,16 @@ class StudentsController extends Controller
         return redirect('/viewstudents')->with('message', 'Student deleted successfully!');
     }
 
+    public static function getStudentName($id){
+
+        if($id == NULL){
+            return "Not found";
+        }
+        
+        $student = Student::find($id);
+        return $student->first_name.' '.$student->last_name;
+    }
+
     //softDeletes students
     public function trashedStudents(){
         $students = Student::onlyTrashed()->get();

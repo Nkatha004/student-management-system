@@ -79,4 +79,22 @@ class StudentSubjectsController extends Controller
         $class = Student::find(StudentSubject::find($id)->student_id)->class_id;
         return Classes::find($class)->class_name;
     }
+
+    //softDeletes studentsubjects
+    public function trashedStudentSubjects(){
+        $studentsubjects = StudentSubject::onlyTrashed()->get();
+        return view('students/trashedStudentSubjects', compact('studentsubjects'));
+    }
+
+    //restore deleted studentsubject
+    public function restoreStudentSubject($id){
+        StudentSubject::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted studentsubjects
+    public function restoreStudentSubjects(){
+        StudentSubject::onlyTrashed()->restore();
+        return back();
+    }
 }
