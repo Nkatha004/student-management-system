@@ -25,20 +25,15 @@
 
 					<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
                 
-					@if(Auth::user()->role_id != 4)
 					<td>
+						@if(Auth::user()->role_id != 4)
 						<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
 						<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-						@if (Auth::user()->role_id != 1)
-						<a href = "{{ url('/viewclassmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
 						@endif
+
+						<a href = "{{ url('/viewclassmarks/'.$class->id) }}" class = "btn btn-sm btn-success">View Class Performance</a>
 					</td>
-					@endif
-					@if(Auth::user()->role_id == 4)
-					<td>
-						<a href = "{{ url('/viewclassmarks') }}" class = "btn btn-sm btn-success">View Class Performane</a>
-					</td>
-					@endif
+
 				</tr>
 				@endforeach
 			</tbody>

@@ -87,6 +87,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewschools', 'viewSchools');
         Route::post('/updateschool/{id}', 'update');
         Route::get('/deleteschool/{id}', 'destroy');
+        Route::get('/trashedschools', 'trashedSchools');
+        Route::get('/restoreschool/{id}', 'restoreSchool');
+        Route::get('/restoreschools', 'restoreSchools');
     });
 
     Route::controller(EmployeesController::class)->group(function(){
@@ -94,6 +97,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewemployees', 'viewEmployees');
         Route::post('/updateemployee/{id}', 'update');
         Route::get('/deleteemployee/{id}', 'destroy');
+        Route::get('/restoreemployee/{id}', 'restoreEmployee');
+        Route::get('/restoreemployees', 'restoreEmployees');
+        Route::get('/trashedemployees', 'trashedEmployees');
     });
 
     Route::controller(EmployeeSubjectsController::class)->group(function(){
@@ -114,6 +120,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/cancelpayment', 'cancelPayment');
         Route::get('/mytransactions', 'myTransactions');
         Route::get('/viewpayments', 'viewPayments');
+        Route::get('/pendingpayments', 'pendingPayments');
         Route::get('/mpesaconfirmation', 'mpesaConfirmation');
         Route::post('/checktransaction', 'checkTransaction');
     });
@@ -133,6 +140,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewsubjectcategories', 'viewSubjectCategories');
         Route::post('/updatesubjectcategory/{id}', 'update');
         Route::get('/deletesubjectcategory/{id}', 'destroy');
+        Route::get('/trashedcategories', 'trashedCategories');
+        Route::get('/restorecategory/{id}', 'restoreCategory');
+        Route::get('/restorecategories', 'restoreCategories');
     });
 
     Route::controller(SubjectsController::class)->group(function(){
@@ -140,6 +150,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewsubjects', 'viewSubjects');
         Route::post('/updatesubject/{id}', 'update');
         Route::get('/deletesubject/{id}', 'destroy');
+        Route::get('/trashedsubjects', 'trashedSubjects');
+        Route::get('/restoresubject/{id}', 'restoreSubject');
+        Route::get('/restoresubjects', 'restoreSubjects');
     });
     
     Route::controller(ClassesController::class)->group(function(){
@@ -159,6 +172,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/addstudentmarks', 'viewStudentsToAddMarks');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
+        Route::get('/trashedstudents', 'trashedStudents');
+        Route::get('/restorestudent/{id}', 'restoreStudent');
+        Route::get('/restorestudents', 'restoreStudents');
     });
 
     Route::controller(StudentSubjectsController::class)->group(function(){
@@ -172,10 +188,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::controller(ExamMarksController::class)->group(function(){
         Route::get('/marks/{student}/{subject}', 'index');
         Route::post('/marks', 'store');
-        Route::get('/viewmarks/{id}', 'viewMarks');
-        Route::get('/viewclassmarks', 'viewClassMarks');
-        Route::get('/editmark/{id}', 'edit');
-        Route::post('/updatemark/{id}', 'update');
-        Route::post('/deletestudentmark/{id}', 'destroy');
+        Route::get('/viewclassmarks/{id}', 'viewClassMarks');
+        Route::get('/editmark/{id}/{class}', 'edit');
+        Route::post('/updatemark/{id}/{class}', 'update');
+        Route::get('/deletemark/{id}/{class}', 'destroy');
+        Route::get('/restoremark/{id}', 'restoreExamMark');
+        Route::get('/restoremarks', 'restoreExamMarks');
+        Route::get('/trashedmarks', 'trashedExamMarks');
     });
 });

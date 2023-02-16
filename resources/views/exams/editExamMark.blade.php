@@ -1,7 +1,7 @@
 @include('dashboard.dashboardsideNav')
 
 <main>
-    <form method = "post" action = "{{ url('/updatemark/'.$marks->id) }}" id = "teachingSubjects" class="row g-3 form">
+    <form method = "post" action = "{{ url('/updatemark/'.$marks->id.'/'.$class) }}" id = "teachingSubjects" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-info text-center">

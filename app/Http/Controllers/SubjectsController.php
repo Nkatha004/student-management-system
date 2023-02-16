@@ -70,4 +70,22 @@ class SubjectsController extends Controller
 
         return $subject->subject_name;
     }
+
+    //softDeletes subjects
+    public function trashedSubjects(){
+        $subjects = Subject::onlyTrashed()->get();
+        return view('subjects/trashedSubjects', compact('subjects'));
+    }
+
+    //restore deleted subjects
+    public function restoreSubject($id){
+        Subject::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted subjects
+    public function restoreSubjects(){
+        Subject::onlyTrashed()->restore();
+        return back();
+    }
 }

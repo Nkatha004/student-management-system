@@ -30,9 +30,11 @@
             </div>
         @endif
         <h3 class = "text-center">Add Marks</h3>
+        @if(Auth::user()->role_id != 2)
         <div class = "alert alert-info" role = "alert">
             Ensure marks entered are correct before submitting. Marks submitted cannot be edited!
         </div>
+        @endif
 
         <input type="text" class="form-control" id="student_id" name = "student_id" value = "{{$student->id}}" hidden>
         <input type="text" class="form-control" id="studentSubject" name = "studentSubject" value = "{{$studentsubjects->id}}" hidden>

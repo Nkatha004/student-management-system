@@ -27,7 +27,7 @@ class StudentSubjectsController extends Controller
         //check if student subject exists
         $studentsubject = StudentSubject::all()->where('deleted_at', NULL)->where('student_id', request('student'))->where('subject_id', request('subject'));
 
-        if($studentsubject){
+        if(count($studentsubject) > 0){
             //request('student') gives the id of the student and then redirects with id as query parameter
             return redirect("/studentsubjects/".request('student'))->with("message", "Student Subject already exists!");
         }else{
@@ -62,7 +62,8 @@ class StudentSubjectsController extends Controller
 
     public function destroy($id)
     {
-        $studentsubject = StudentSubject::find($id)->delete();
+        $studentsubject = StudentSubject::find($id);
+        $studentsubject->delete();
 
         return redirect("/studentsubjects/".$studentsubject->student_id)->with("Student Subject deleted successfully");
     }

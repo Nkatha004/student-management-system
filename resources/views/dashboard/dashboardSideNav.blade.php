@@ -55,6 +55,7 @@
                 <div class = "dropdown-container">
                     <a href = "{{URL::to('/schools')}}">Add School</a>
                     <a href = "{{URL::to('/viewschools')}}"><span>View Schools</span></a>
+                    <a href = "{{URL::to('/trashedschools')}}"><span>Trashed Schools</span></a>
                 </div>
 
                 @endif
@@ -68,17 +69,21 @@
                 <div class = "dropdown-container">
                     <a href = "{{URL::to('/employees')}}">Add Employee</a>
                     <a href = "{{URL::to('/viewemployees')}}"><span>View Employees</span></a>
+                    <a href = "{{URL::to('/trashedemployees')}}"><span>Trashed Employees</span></a>
                 </div>
                 @endif
                 @if(Auth::user()->role_id == 1)
-                    <a href = "{{URL::to('/viewstudents')}}">
+                    <a class = "dropdown-btn">
                         <li>
                             <i class="uil uil-book-reader"></i>
                             <span>Students</span>
                         </li>
                     </a>
-                @else
-                    @if (Auth::user()->role_id != 3)
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/viewstudents')}}"><span>View Students</span></a>
+                        <a href = "{{URL::to('/trashedstudents')}}"><span>Trashed Students</span></a>
+                    </div>
+                @elseif (Auth::user()->role_id == 4)
                     <a class = "dropdown-btn">
                         <li>
                             <i class="uil uil-book-reader"></i>
@@ -89,8 +94,20 @@
                         <a href = "{{URL::to('/students')}}">Add Student</a>
                         <a href = "{{URL::to('/viewstudents')}}"><span>View Students</span></a>
                     </div>
-                    @endif
+                @elseif (Auth::user()->role_id == 2)
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-book-reader"></i>
+                            <span>Students</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/students')}}">Add Student</a>
+                        <a href = "{{URL::to('/viewstudents')}}"><span>View Students</span></a>
+                        <a href = "{{URL::to('/trashedstudents')}}"><span>Trashed Students</span></a>
+                    </div>
                 @endif
+
                 @if (Auth::user()->role_id == 1)
                 <a class = "dropdown-btn">
                     <li>
@@ -104,6 +121,7 @@
                     <a href = "{{URL::to('/trashedroles')}}">Deleted Roles</a>
                 </div>
                 @endif
+
                 @if (Auth::user()->role_id == 3 or Auth::user()->role_id == 4)
                 <a href = "{{URL::to('/employeesubjects/'.Auth::user()->id)}}">
                     <li>
@@ -133,8 +151,10 @@
                 <div class = "dropdown-container">
                     <a href = "{{URL::to('/subjects')}}">Add Subject</a>
                     <a href = "{{URL::to('/viewsubjects')}}"><span>View Subjects</span></a>
+                    <a href = "{{URL::to('/trashedsubjects')}}"><span>Trashed Subjects</span></a>
                 </div>
                 @endif
+
                 @if (Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
                 <a class = "dropdown-btn">
                     <li>
@@ -145,7 +165,11 @@
                 <div class = "dropdown-container">
                     <a href = "{{URL::to('/subjectcategories')}}">Add Category</a>
                     <a href = "{{URL::to('/viewsubjectcategories')}}"><span>View Categories</span></a>
+                    @if (Auth::user()->role_id == 1)
+                        <a href = "{{URL::to('/trashedcategories')}}"><span>Trashed Categories</span></a>
+                    @endif
                 </div>
+
                 @endif    
                 @if(Auth::user()->role_id == 1)
                     <a class = "dropdown-btn">
@@ -181,13 +205,26 @@
 
                     @endif
                 @endif
-                @if(Auth::user()->role_id == 2)
-                    <a href = "{{URL::to('/viewclasses')}}">
-                        <li>
-                            <i class="uil uil-chart"></i>
-                            <span>Exam Performance</span>
-                        </li>
-                    </a>
+                @if(Auth::user()->role_id != 3)
+                    @if(Auth::user()->role_id != 4)
+                        <a class = "dropdown-btn">
+                            <li>
+                                <i class="uil uil-dollar-sign"></i>
+                                <span>Exam Performance</span>
+                            </li>
+                        </a>
+                        <div class = "dropdown-container">
+                            <a href = "{{URL::to('/viewclasses')}}">Class Performance</a>
+                            <a href = "{{URL::to('/trashedmarks')}}"><span>Trashed Exam Marks</span></a>
+                        </div>
+                    @else
+                        <a href = "{{URL::to('/viewclasses')}}">
+                            <li>
+                                <i class="uil uil-chart"></i>
+                                <span>Exam Performance</span>
+                            </li>
+                        </a>
+                    @endif
                 @endif
                 @if (Auth::user()->role_id != 3)
                     @if (Auth::user()->role_id == 1)

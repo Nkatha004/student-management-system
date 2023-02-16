@@ -1,6 +1,9 @@
 @include('dashboard.dashboardSideNav')
 <main>
 	<div>
+        <a href = "{{URL::to('/restoremarks')}}"class = "btn btn-success">Restore all</a>
+    </div><br>
+	<div>
 		<h4 class = "text-center">Student Marks</h4>
 		<table id = "viewAllMarks" class="stripe row-border">
 			<thead>
@@ -9,9 +12,7 @@
 					<th scope="col">Subject</th>
 					<th scope="col">Term</th>
 					<th scope="col">Mark</th>
-					@if (Auth::user()->role_id == 2 or Auth::user()->role_id == 1)
-						<th scope="col">Actions</th>
-					@endif
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,12 +23,7 @@
 						<td>{{ $mark->term }}</td>
 						<td>{{ $mark->mark }}</td>
 						<td>
-							@if (Auth::user()->role_id == 2)
-								<a href = "{{ url('/editmark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-warning">Update</a>
-								<a href = "{{ url('/deletemark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-danger">Delete</a>
-							@elseif(Auth::user()->role_id == 1) 
-								<a href = "{{ url('/deletemark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-danger">Delete</a>
-							@endif
+							<a href = "{{ url('/restoremark/'.$mark->id) }}" class = "btn btn-sm btn-success">Restore</a>
 						</td>
 					</tr>
 				@endforeach

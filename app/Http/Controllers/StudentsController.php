@@ -58,13 +58,8 @@ class StudentsController extends Controller
                     ->whereIn('class_id', Classes::select('id')->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->get())
                     ->get();
                     
-            if(count($students) == 0){
-                return view('students/viewStudents', ['message'=>'No students found!']);
-            }else{
-                //return list of students in the school
-                return view('students/viewStudents', ['students'=> $students]);
-            }
-            
+           
+            return view('students/viewStudents', ['students'=> $students]);
         }
         else{
             //display students specific to school of logged in user
@@ -75,7 +70,7 @@ class StudentsController extends Controller
                     ->get();
     
             if(count($students) == 0){
-                return view('students/viewStudents', ['message'=>'No students found!']);
+                return view('students/viewStudents', ['students'=> $students]);
             }else{
                 //return list of students in the school
                 return view('students/viewStudents', ['students'=> $students]);
@@ -162,8 +157,25 @@ class StudentsController extends Controller
     public function destroy($id)
     {
         $student = Student::find($id)->delete();
-
         return redirect('/viewstudents')->with('message', 'Student deleted successfully!');
+    }
+
+    //softDeletes students
+    public function trashedStudents(){
+        $students = Student::onlyTrashed()->get();
+        return view('students/trashedStudents', compact('students'));
+    }
+
+    //restore deleted students
+    public function restoreStudent($id){
+        Student::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted students
+    public function restoreStudents(){
+        Student::onlyTrashed()->restore();
+        return back();
     }
     
 }

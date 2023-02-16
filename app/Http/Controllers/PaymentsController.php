@@ -302,4 +302,11 @@ class PaymentsController extends Controller
 
         return view('payments/ViewAllPayments', ['transactions'=>$transaction]);
     }
+
+    public function pendingPayments(){
+        //select the pending payments
+        $pendingpayments = School::all()->where('payment_status', 'Payment Pending')->where('id', '!=', 1);
+
+        return view('payments/pendingPayments', ['pendingpayments'=>$pendingpayments]);
+    }
 }

@@ -65,4 +65,22 @@ class SubjectCategoriesController extends Controller
 
         return $category->category_name;
     }
+
+    //softDeletes categories
+    public function trashedCategories(){
+        $categories = SubjectCategories::onlyTrashed()->get();
+        return view('subjectCategories/trashedSubjectCategories', compact('categories'));
+    }
+
+    //restore deleted categories
+    public function restoreCategory($id){
+        SubjectCategories::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted categories
+    public function restoreCategories(){
+        SubjectCategories::onlyTrashed()->restore();
+        return back();
+    }
 }

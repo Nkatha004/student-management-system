@@ -39,7 +39,7 @@
 						<!-- If the current employee is not an admin perform all CRUD and assign teaching subjects-->
 						@if ($employee->role_id != 1)
 							<td>
-								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Teaching Subjects</a>
+								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Subjects</a>
 								<a href = "{{ url('/editemployee/'.$employee->id) }}" class = "btn btn-sm btn-warning">Update</a>
 								<a href = "{{ url('/deleteemployee/'.$employee->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 							
@@ -55,7 +55,7 @@
 						<!-- If the current employee is not an admin perform all CRUD and assign teaching subjects-->
 						@if ($employee->role_id != 2)
 							<td>
-								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Teaching Subjects</a>
+								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Subjects</a>
 								<a href = "{{ url('/editemployee/'.$employee->id) }}" class = "btn btn-sm btn-warning">Update</a>
 								<a href = "{{ url('/deleteemployee/'.$employee->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 							
@@ -63,7 +63,7 @@
 						<!-- If the current employee is a principal, block delete functionality-->
 						@else
 							<td>
-								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Teaching Subjects</a>
+								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Subjects</a>
 								<a href = "{{ url('/editemployee/'.$employee->id) }}" class = "btn btn-sm btn-warning">Update</a>
 							</td>
 						@endif

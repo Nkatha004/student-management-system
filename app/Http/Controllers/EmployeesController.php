@@ -97,5 +97,23 @@ class EmployeesController extends Controller
 
         return $employee->first_name.' '.$employee->last_name;
     }
+
+    //softDeletes employees
+    public function trashedEmployees(){
+        $employees = Employee::onlyTrashed()->get();
+        return view('employees/trashedEmployees', compact('employees'));
+    }
+
+    //restore deleted employees
+    public function restoreEmployee($id){
+        Employee::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted employees
+    public function restoreEmployees(){
+        Employee::onlyTrashed()->restore();
+        return back();
+    }
     
 }

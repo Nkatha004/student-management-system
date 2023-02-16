@@ -35,7 +35,7 @@
     <div class="projects">
         <div class="card-header flex">
             <h4>Pending Payments</h4>
-            <!-- <button>See all <i class="uil uil-angle-right"></i></button> -->
+            <a href = "{{ URL::to('/pendingpayments')}}"><button id = "seeAll">See all <i class="uil uil-angle-right"></i></button></a>
         </div>
 
         <table>

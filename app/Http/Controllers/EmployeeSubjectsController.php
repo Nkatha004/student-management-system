@@ -34,7 +34,6 @@ class EmployeeSubjectsController extends Controller
                 return redirect("/employeesubjects/".request('employee'))->with("message", "There already exists ".SubjectsController::getSubjectName(request('subject'))." teacher for ".ClassesController::getClassName(request('class')));
             }
         }
-        return;
         EmployeeSubject::create([
             'employee_id' => request('employee'), 
             'subject_id' => request('subject'),
@@ -70,7 +69,8 @@ class EmployeeSubjectsController extends Controller
 
     public function destroy($id)
     {
-        $employeesubject = EmployeeSubject::find($id)->delete();
+        $employeesubject = EmployeeSubject::find($id);
+        $employeesubject->delete();
 
         return redirect("/employeesubjects/".$employeesubject->employee_id)->with("Employee Subject deleted successfully");
     }

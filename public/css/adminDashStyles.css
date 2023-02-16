@@ -398,3 +398,6 @@ thead :is(tr,td,th){
 	border: none;
 	text-align: right;
 }
+#seeAll{
+  border-radius: 0px;
+}

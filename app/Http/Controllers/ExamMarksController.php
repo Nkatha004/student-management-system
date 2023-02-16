@@ -48,22 +48,17 @@ class ExamMarksController extends Controller
             'term' => request('term'),
             'added_by' => Auth::user()->id
         ]);
-        return redirect('/viewmarks/'.request('subjectID'));
+        //Get the class of the student
+        $class = Student::all()->where('admission_number', request('admission'))->first()->class_id;
+        return redirect('/viewclassmarks/'.$class);
 
     }
-    public function viewMarks($id){
-        
-        $subject = SubjectsController::getSubjectName($id);
-        $marks = ExamMark::where('deleted_at', NULL)->where('added_by', Auth::user()->id)->get();
-    
-        return view('exams/viewMarks', ['marks'=>$marks, 'subject'=>$subject]);
-    }
-
-    public function viewClassMarks(){
+    public function viewClassMarks($id){
         if(Auth::user()->role_id == 4){
             //marks of all students in the class
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")
+                                        ->where('class_id', $id)
                                         ->whereIn('class_id', Classes::select('id')
                                         ->where('deleted_at', NULL)
                                         ->where('class_teacher', Auth::user()->id)->get())))
@@ -71,39 +66,56 @@ class ExamMarksController extends Controller
         }else{
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")
-                                        ->whereIn('class_id', Classes::select('id')
-                                        ->where('deleted_at', NULL)->get())))
+                                        ->where('class_id', $id)
+                                        ->where('deleted_at', NULL)->get()))
                                         ->paginate(15);
         }
 
-        return view('exams/viewAllMarks', ['marks'=>$marks]);
+        return view('exams/viewAllMarks', ['marks'=>$marks, 'classID'=>$id]);
     }
 
-    public function edit($id){
+    public function edit($id, $class){
         $marks = ExamMark::find($id);
         $studentsubject = StudentSubject::find($marks->student_subject_id);
         $student = Student::find($studentsubject->student_id);
 
-        return view('exams/editExamMark', ['marks'=>$marks, 'student'=>$student, 'studentsubject'=>$studentsubject]);
+        return view('exams/editExamMark', ['marks'=>$marks, 'class'=>$class, 'student'=>$student, 'studentsubject'=>$studentsubject]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, $class){
         $request->validate([
-            'mark' => 'required',
-            'status' => 'required'
+            'mark' => 'required'
         ]);
-        
+
         $mark = ExamMark::find($id);
         $mark->mark= $request->input('mark');
 
         $mark->save();
 
-        return redirect('/viewclassmarks')->with('message', 'Marks updated successfully!');
+        return redirect('/viewclassmarks/'.$class)->with('message', 'Marks updated successfully!');
     }
 
-    public function destroy($id){
+    public function destroy($id, $class){
         $mark = ExamMark::find($id)->delete();
 
-        return redirect('/viewclassmarks')->with('message', 'Mark deleted successfully!');
+        return redirect('/viewclassmarks/'.$class)->with('message', 'Mark deleted successfully!');
+    }
+
+    //softDeletes exam mark
+    public function trashedExamMarks(){
+        $marks = ExamMark::onlyTrashed()->get();
+        return view('exams/trashedExamMarks', compact('marks'));
+    }
+
+    //restore deleted exam mark
+    public function restoreExamMark($id){
+        ExamMark::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted exam marks
+    public function restoreExamMarks(){
+        ExamMark::onlyTrashed()->restore();
+        return back();
     }
 }

@@ -1,6 +1,9 @@
 @include('dashboard.dashboardSideNav')
 <main>
 	<div>
+        <a href = "{{URL::to('/restorestudents')}}"class = "btn btn-success">Restore all</a>
+    </div><br>
+	<div>
 		<table id = "studentsView" class="compact stripe row-border">
 			<thead>
 				<tr>
@@ -21,8 +24,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				
-				@foreach($students as $student)
+				@if ($message ?? null)
+					<tr>
+						<td colspan = "5">{{$message}}</td>
+					</tr>
+					<tr>
+						<td colspan = "5">
+							@if ($message ?? null == 'No classes and students found yet!')
+							<div class = "text-center">
+								<a href="{{URL::to('/classes')}}"><button>Add New Class</button></a>
+							</div>
+							@else
+							<div class = "text-center">
+								<a href="{{URL::to('/students')}}"><button>Add New Student</button></a>
+							</div>
+							@endif
+						</td>
+					</tr>
+				@else
+					@foreach($students as $student)
 					<tr>
 						<td>{{ $student->admission_number }}</td>
 						<td>{{ $student->first_name.' '.$student->last_name }}</td>
@@ -40,17 +60,13 @@
 						@endif
 						
 						<td>
-							<a href = "{{ url('/studentsubjects/'.$student->id) }}" class = "btn btn-sm btn-info">Subjects</a>
-						
-							@if (Auth::user()->role_id != 3)
-								<a href = "{{ url('/editstudent/'.$student->id) }}" class = "btn btn-sm btn-warning">Update</a>
-								@if (Auth::user()->role_id != 4)
-									<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-								@endif
+							@if (Auth::user()->role_id == 1 or Auth::user()->role_id == 2)
+								<a href = "{{ url('/restorestudent/'.$student->id) }}" class = "btn btn-sm btn-success">Restore</a>
 							@endif
 						</td>
 					</tr>
-				@endforeach
+					@endforeach
+				@endif
 			</tbody>
 		</table>
 		<script>

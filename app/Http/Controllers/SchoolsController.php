@@ -105,5 +105,23 @@ class SchoolsController extends Controller
 
         return $school->school_name;
     }
+
+    //softDeletes schools
+    public function trashedSchools(){
+        $schools = School::onlyTrashed()->get();
+        return view('schools/trashedSchools', compact('schools'));
+    }
+
+    //restore deleted schools
+    public function restoreSchool($id){
+        School::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted schools
+    public function restoreSchools(){
+        School::onlyTrashed()->restore();
+        return back();
+    }
     
 }

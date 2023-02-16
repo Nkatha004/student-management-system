@@ -1,8 +1,8 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center table-schools">
+	<div class = "text-center">
 
-	<table class="table table-striped">
+	   <table class="table table-striped">
 			<thead>
 				<tr>
                     @if(Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
