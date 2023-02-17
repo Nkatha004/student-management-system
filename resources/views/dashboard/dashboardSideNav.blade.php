@@ -172,8 +172,8 @@
                         <a href = "{{URL::to('/trashedcategories')}}"><span>Trashed Categories</span></a>
                     @endif
                 </div>
+                @endif
 
-                @endif    
                 @if(Auth::user()->role_id == 1)
                     <a class = "dropdown-btn">
                         <li>
@@ -208,6 +208,7 @@
 
                     @endif
                 @endif
+                
                 @if(Auth::user()->role_id != 3)
                     @if(Auth::user()->role_id != 4)
                         <a class = "dropdown-btn">
@@ -229,30 +230,30 @@
                         </a>
                     @endif
                 @endif
-                @if (Auth::user()->role_id != 3)
-                    @if (Auth::user()->role_id == 1)
-                        <a href = "{{URL::to('/viewpayments')}}">
-                            <li>
-                                <i class="uil uil-dollar-sign"></i>
-                                <span>Payments</span>
-                            </li>
-                        </a>
-                        <div class = "dropdown-container">
-                            <a ><span>View Payments</span></a>
-                        </div>
-                    @elseif(Auth::user()->role_id == 2)
-                        <a class = "dropdown-btn">
-                            <li>
-                                <i class="uil uil-dollar-sign"></i>
-                                <span>Payments</span>
-                            </li>
-                        </a>
-                        <div class = "dropdown-container">
-                            <a href = "{{URL::to('/payments')}}">Add Payment</a>
-                            <a href = "{{URL::to('/mytransactions')}}"><span>View my Payments</span></a>
-                        </div>
-                    @endif
+               
+                @if (Auth::user()->role_id == 1)
+                    <a href = "{{route('allPayments')}}">
+                        <li>
+                            <i class="uil uil-dollar-sign"></i>
+                            <span>Payments</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        <a ><span>View Payments</span></a>
+                    </div>
+                @elseif(Auth::user()->role_id == 2)
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-dollar-sign"></i>
+                            <span>Payments</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/payments')}}">Add Payment</a>
+                        <a href = "{{ route('myTransactions') }}"><span>View my Payments</span></a>
+                    </div>
                 @endif
+
                 
                 <a href = "{{URL::to('/logout')}}">
                     <li>

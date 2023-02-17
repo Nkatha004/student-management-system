@@ -3,7 +3,7 @@
 <main>
     <div class="cards-teachers">
     	<div class="single-card">
-	        <a href = "{{ URL::to('/mytransactions') }}"><div>
+	        <a href = "{{ route('myTransactions') }}"><div>
 	            <span>Total payments made</span>
 	            <h2>{{$payments. ' Kshs'}}</h2>
 	        </div></a>

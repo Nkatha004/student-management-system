@@ -21,13 +21,13 @@ class PaypalPaymentFactory extends Factory
     public function definition()
     {
         return [
-            'transaction_id' => fake()->regexify('[A-Za-z0-9]{14}'),
+            'transaction_id' => fake()->regexify('[A-Z0-9]{14}'),
             'payer_id' => fake()->numerify('###-######'),
             'payer_email' => fake()->email,
             'amount' => 39.94,
             'currency'=> 'USD',
             'payment_status' => 'Approved',
-            'paid_by' => Employee::factory()->create()->id
+            'paid_by' => 1
         ];
     }
 }

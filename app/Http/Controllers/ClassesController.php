@@ -12,6 +12,8 @@ use Auth;
 class ClassesController extends Controller
 {
     public function index(){
+        $this->authorize('create',  Classes::class);
+
         //exclude admin and principal from being class teachers
         $teachers = Employee::all()->where('deleted_at', NULL)->where('role_id', '!=', '1')->where('role_id', '!=', '2');
         if(Auth::user()->role_id != 1){
@@ -23,6 +25,8 @@ class ClassesController extends Controller
         return view('classes/addClass', ['teachers'=>$teachers]);
     }
     public function store(Request $request){
+        $this->authorize('create',  Classes::class);
+
         $request->validate([
             'classname' => 'required',
             'year' => 'required',
@@ -49,6 +53,8 @@ class ClassesController extends Controller
 
     }
     public function viewclasses(){
+        $this->authorize('viewAny',  Classes::class);
+
         if(Auth::user()->role_id == 1){
             $classes = Classes::where('deleted_at', NULL)->get();
         }elseif (Auth::user()->role_id == 4){
@@ -58,7 +64,9 @@ class ClassesController extends Controller
         }
         return view('classes/viewclasses', ['classes'=> $classes]);
     }
-    public function edit($id){
+    public function edit($id, Classes $class){
+        $this->authorize('update',  $class);
+
         $class = Classes::find($id);
         $schools = School::all()->where('deleted_at', NULL);
         $teachers = Employee::all()->where('deleted_at', NULL)->where('role_id', '!=', '1')->where('role_id', '!=', '2');
@@ -66,7 +74,9 @@ class ClassesController extends Controller
         return view('classes/editclass', ['class'=>$class, 'schools'=>$schools, 'teachers'=>$teachers]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, Classes $class){
+        $this->authorize('update',  $class);
+
         $request->validate([
             'classname' => 'required',
             'year' => 'required',
@@ -86,27 +96,35 @@ class ClassesController extends Controller
         return redirect('/viewclasses')->with('message', 'Class updated successfully!');
     }
 
-    public function destroy($id)
+    public function destroy($id, Classes $class)
     {
+        $this->authorize('delete',  $class);
+
         $class = Classes::find($id)->delete();
 
         return redirect('/viewclasses')->with('message', 'Class deleted successfully!');
     }
 
     //softDeletes classes
-    public function trashedClasses(){
+    public function trashedClasses(Classes $class){
+        $this->authorize('delete',  $class);
+
         $classes = Classes::onlyTrashed()->get();
         return view('classes/trashedClasses', compact('classes'));
     }
 
     //restore deleted classes
-    public function restoreClass($id){
+    public function restoreClass($id, Classes $class){
+        $this->authorize('restore',  $class);
+
         Classes::whereId($id)->restore();
         return back();
     }
 
     //restore all deleted classes
-    public function restoreClasses(){
+    public function restoreClasses(Classes $class){
+        $this->authorize('restore',  $class);
+
         Classes::onlyTrashed()->restore();
         return back();
     }

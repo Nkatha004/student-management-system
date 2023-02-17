@@ -24,9 +24,9 @@ class ExamMarkFactory extends Factory
         return [
             'student_subject_id' => StudentSubject::factory() -> create() -> id,
             'term' => fake()->randomElement(['First Term', 'Second Term', 'Third Term']),
-            'year' => fake()->randomElement(['2021', '2022', '2023']),
+            'year' => 2023,
             'mark' => fake()->numberBetween(40, 100),
-            'added_by' => Employee::factory() -> create() -> id,
+            'added_by' => fake()->randomElement([2,3,4])
         ];
     }
 }

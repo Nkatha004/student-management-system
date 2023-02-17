@@ -21,14 +21,16 @@
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getSubject($mark->student_subject_id) }}</td>
 						<td>{{ $mark->term }}</td>
 						<td>{{ $mark->mark }}</td>
-						<td>
-							@if (Auth::user()->role_id == 2)
+						@if (Auth::user()->role_id == 2 or Auth::user()->id == 1)
+							<td>
+	
+								@if (Auth::user()->role_id != 1)
 								<a href = "{{ url('/editmark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-warning">Update</a>
+								@endif
 								<a href = "{{ url('/deletemark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-danger">Delete</a>
-							@elseif(Auth::user()->role_id == 1) 
-								<a href = "{{ url('/deletemark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-danger">Delete</a>
-							@endif
+							
 						</td>
+					@endif
 					</tr>
 				@endforeach
 			</tbody>

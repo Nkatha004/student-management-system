@@ -22,12 +22,12 @@ class MpesaPaymentFactory extends Factory
     public function definition()
     {
         return [
-            'transaction_id' => fake()->regexify('[A-Za-z0-9]{14}'),
+            'transaction_id' => fake()->regexify('[A-Z0-9]{14}'),
             'transaction_date' => fake()->date(),
             'amount' => 5000,
             'currency' => 'KES',
             'phone_number' => fake()->numerify('0#########'),
-            'paid_by' => Employee::factory()->create()->id
+            'paid_by' => 1
         ];
     }
 }

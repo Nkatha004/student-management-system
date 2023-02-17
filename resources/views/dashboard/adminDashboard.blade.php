@@ -2,7 +2,7 @@
 <main>
     <div class="cards">
     <div class="single-card">
-        <a href = "{{ URL::to('/viewpayments') }}"><div>
+        <a href = "{{ route('allPayments') }}"><div>
             <span>Total payments made</span>
             <h2>{{ $totalpayments. ' Kshs' }}</h2>
         </div></a>

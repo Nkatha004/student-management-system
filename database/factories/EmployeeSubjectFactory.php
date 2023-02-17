@@ -23,9 +23,9 @@ class EmployeeSubjectFactory extends Factory
     public function definition()
     {
         return [
-            'employee_id' => Employee::factory()->create()->id,
-            'subject_id' => Subject::factory()->create()->id,
-            'class_id' => Classes::factory()->create()->id
+            'employee_id' => fake()->randomElement([2,3,4]),
+            'subject_id' => fake()->numberBetween(1, 12),
+            'class_id' => 1
         ];
     }
 }

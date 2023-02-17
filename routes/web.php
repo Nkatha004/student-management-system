@@ -39,60 +39,80 @@ Route::controller(SchoolsController::class)->group(function(){
     Route::get('/register', 'index');
 });
 
-Route::controller(EmployeesController::class)->group(function(){
-    Route::get('/employees', 'index');
-    Route::post('/employees', 'store');
-});
-
-Route::controller(RolesController::class)->group(function(){
-    Route::get('/roles', 'index');
-    Route::post('/roles', 'store');
-});
-
-Route::controller(SubjectCategoriesController::class)->group(function(){
-    Route::get('/subjectcategories', 'index');
-    Route::post('/subjectcategories', 'store');
-});
-
-Route::controller(SubjectsController::class)->group(function(){
-    Route::get('/subjects', 'index');
-    Route::post('/subjects', 'store');
-});
-
-Route::controller(ClassesController::class)->group(function(){
-    Route::get('/classes', 'index');
-    Route::post('/classes', 'store');
-});
-
-Route::controller(StudentsController::class)->group(function(){
-    Route::get('/students', 'index');
-    Route::post('/students', 'store');
-});
-
 //Require authentication to access routes
 Route::group(['middleware' => ['auth']], function() {
 
-    Route::controller(HomeController::class)->group(function(){
-        Route::get('/logout', 'logout');
+    //Using isAdminMiddleware for admin related roles only
+    Route::group([
+        'middleware' => 'is_admin',
+    ], function(){
+        Route::get('/admindashboard', [DashboardController::class, 'adminDashboard']);
+
+        Route::controller(PaymentsController::class)->group(function(){
+            Route::get('/viewpayments', 'viewPayments')->name('allPayments');
+            Route::get('/pendingpayments', 'pendingPayments');
+        });
+
+        Route::controller(SchoolsController::class)->group(function(){
+            Route::get('/editschool/{id}', 'edit');
+            Route::get('/viewschools', 'viewSchools');
+            Route::post('/updateschool/{id}', 'update');
+            Route::get('/deleteschool/{id}', 'destroy');
+            Route::get('/trashedschools', 'trashedSchools');
+            Route::get('/restoreschool/{id}', 'restoreSchool');
+            Route::get('/restoreschools', 'restoreSchools');
+        });
+
+        Route::controller(RolesController::class)->group(function(){
+            Route::get('/roles', 'index');
+            Route::post('/roles', 'store');
+            Route::get('/editrole/{id}', 'edit');
+            Route::get('/viewroles', 'viewRoles');
+            Route::post('/updaterole/{id}', 'update');
+            Route::get('/deleterole/{id}', 'destroy');
+            Route::get('/trashedroles', 'trashedRoles');
+            Route::get('/restorerole/{id}', 'restoreRole');
+            Route::get('/restoreroles', 'restoreRoles');
+        });
+
+        Route::controller(SubjectCategoriesController::class)->group(function(){
+            Route::get('/subjectcategories', 'index');
+            Route::post('/subjectcategories', 'store');
+            Route::get('/editsubjectcategory/{id}', 'edit');
+            Route::post('/updatesubjectcategory/{id}', 'update');
+            Route::get('/deletesubjectcategory/{id}', 'destroy');
+            Route::get('/trashedcategories', 'trashedCategories');
+            Route::get('/restorecategory/{id}', 'restoreCategory');
+            Route::get('/restorecategories', 'restoreCategories');
+        });
+
+        Route::controller(SubjectsController::class)->group(function(){
+            Route::get('/subjects', 'index');
+            Route::post('/subjects', 'store');
+            Route::get('/editsubject/{id}', 'edit');
+            Route::post('/updatesubject/{id}', 'update');
+            Route::get('/deletesubject/{id}', 'destroy');
+            Route::get('/trashedsubjects', 'trashedSubjects');
+            Route::get('/restoresubject/{id}', 'restoreSubject');
+            Route::get('/restoresubjects', 'restoreSubjects');
+        });
+
     });
+
+    Route::get('/logout', [HomeController::class, 'logout']);
+
+    Route::get('/viewsubjectcategories', [SubjectCategoriesController::class, 'viewSubjectCategories']);
+
+    Route::get('/viewsubjects', [SubjectsController::class, 'viewSubjects']);
 
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/teacherdashboard', 'teacherDashboard');
-        Route::get('/principaldashboard', 'principalDashboard');
-        Route::get('/admindashboard', 'adminDashboard');
-    });
-
-    Route::controller(SchoolsController::class)->group(function(){
-        Route::get('/editschool/{id}', 'edit');
-        Route::get('/viewschools', 'viewSchools');
-        Route::post('/updateschool/{id}', 'update');
-        Route::get('/deleteschool/{id}', 'destroy');
-        Route::get('/trashedschools', 'trashedSchools');
-        Route::get('/restoreschool/{id}', 'restoreSchool');
-        Route::get('/restoreschools', 'restoreSchools');
+        Route::get('/principaldashboard', 'principalDashboard');    
     });
 
     Route::controller(EmployeesController::class)->group(function(){
+        Route::get('/employees', 'index');
+        Route::post('/employees', 'store');
         Route::get('/editemployee/{id}', 'edit');
         Route::get('/viewemployees', 'viewEmployees');
         Route::post('/updateemployee/{id}', 'update');
@@ -112,53 +132,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/restoreemployeesubjects', 'restoreEmployeeSubjects');
         Route::get('/trashedemployeesubjects', 'trashedEmployeeSubjects');
     });
-
-    Route::controller(PaymentsController::class)->group(function(){
-        Route::get('/payments', 'payment');
-        Route::get('/mpesapayment', 'mpesaPayment');
-        Route::post('/payments', 'pay');
-        Route::get('/success', 'success');
-        Route::get('/error', 'errorOccured');
-        Route::get('/paymentsuccess', 'paymentSuccess');
-        Route::get('/cancelpayment', 'cancelPayment');
-        Route::get('/mytransactions', 'myTransactions');
-        Route::get('/viewpayments', 'viewPayments');
-        Route::get('/pendingpayments', 'pendingPayments');
-        Route::get('/mpesaconfirmation', 'mpesaConfirmation');
-        Route::post('/checktransaction', 'checkTransaction');
-    });
-
-    Route::controller(RolesController::class)->group(function(){
-        Route::get('/editrole/{id}', 'edit');
-        Route::get('/viewroles', 'viewRoles');
-        Route::post('/updaterole/{id}', 'update');
-        Route::get('/deleterole/{id}', 'destroy');
-        Route::get('/trashedroles', 'trashedRoles');
-        Route::get('/restorerole/{id}', 'restoreRole');
-        Route::get('/restoreroles', 'restoreRoles');
-    });
-
-    Route::controller(SubjectCategoriesController::class)->group(function(){
-        Route::get('/editsubjectcategory/{id}', 'edit');
-        Route::get('/viewsubjectcategories', 'viewSubjectCategories');
-        Route::post('/updatesubjectcategory/{id}', 'update');
-        Route::get('/deletesubjectcategory/{id}', 'destroy');
-        Route::get('/trashedcategories', 'trashedCategories');
-        Route::get('/restorecategory/{id}', 'restoreCategory');
-        Route::get('/restorecategories', 'restoreCategories');
-    });
-
-    Route::controller(SubjectsController::class)->group(function(){
-        Route::get('/editsubject/{id}', 'edit');
-        Route::get('/viewsubjects', 'viewSubjects');
-        Route::post('/updatesubject/{id}', 'update');
-        Route::get('/deletesubject/{id}', 'destroy');
-        Route::get('/trashedsubjects', 'trashedSubjects');
-        Route::get('/restoresubject/{id}', 'restoreSubject');
-        Route::get('/restoresubjects', 'restoreSubjects');
-    });
-    
+        
     Route::controller(ClassesController::class)->group(function(){
+        Route::get('/classes', 'index');
+        Route::post('/classes', 'store');
         Route::get('/editclass/{id}', 'edit');
         Route::get('/viewclasses', 'viewClasses');
         Route::post('/updateclass/{id}', 'update');
@@ -169,6 +146,8 @@ Route::group(['middleware' => ['auth']], function() {
     });
     
     Route::controller(StudentsController::class)->group(function(){
+        Route::get('/students', 'index');
+        Route::post('/students', 'store');
         Route::get('/editstudent/{id}', 'edit');
         Route::get('/viewstudents', 'viewStudents')->name('viewstudents');
         Route::get('/viewstudents/{id}', 'viewStudentsTaughtByEmployee');
@@ -201,5 +180,18 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/restoremark/{id}', 'restoreExamMark');
         Route::get('/restoremarks', 'restoreExamMarks');
         Route::get('/trashedmarks', 'trashedExamMarks');
+    });
+
+    Route::controller(PaymentsController::class)->group(function(){
+        Route::get('/payments', 'payment');
+        Route::get('/mpesapayment', 'mpesaPayment');
+        Route::post('/payments', 'pay');
+        Route::get('/success', 'success');
+        Route::get('/error', 'errorOccured');
+        Route::get('/paymentsuccess', 'paymentSuccess');
+        Route::get('/cancelpayment', 'cancelPayment');
+        Route::get('/mytransactions', 'myTransactions')->name('myTransactions');
+        Route::get('/mpesaconfirmation', 'mpesaConfirmation');
+        Route::post('/checktransaction', 'checkTransaction');
     });
 });

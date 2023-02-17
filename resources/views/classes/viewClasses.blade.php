@@ -27,8 +27,10 @@
                 
 					<td>
 						@if(Auth::user()->role_id != 4)
-						<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
-						<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+							@if(Auth::user()->role_id != 1)
+								<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
+							@endif
+							<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 						@endif
 
 						<a href = "{{ url('/viewclassmarks/'.$class->id) }}" class = "btn btn-sm btn-success">View Class Performance</a>

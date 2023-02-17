@@ -9,7 +9,7 @@
 @endif
 <main>
     @if(Auth::check())
-    <form method = "post" action = "{{ url('/schools') }}" class="row g-3 form">
+    <form method = "post" action = "{{ url('/schools') }}" class="row g-3 form normalForm">
     @else
     <form method = "post" action = "{{ url('/schools') }}" id = "addForm" class="row g-3 form">
     @endif

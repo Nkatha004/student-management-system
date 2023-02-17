@@ -24,7 +24,7 @@ class StudentSubjectFactory extends Factory
     {
         return [
             'student_id' => Student::factory() -> create() -> id,
-            'subject_id' => Subject::factory() -> create() -> id
+            'subject_id' => fake()->numberBetween(1, 12)
         ];
     }
 }

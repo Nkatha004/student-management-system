@@ -28,7 +28,7 @@ class StudentFactory extends Factory
             'guardian_name' => fake()->name,
             'guardian_phone_number' => fake()->numerify('0#########'),
             'guardian_email' => fake()->email(),
-            'class_id' => Classes::factory() -> create() -> id,
+            'class_id' => 1,
         ];
     }
 }
