@@ -13,6 +13,9 @@ use Auth;
 class EmployeeSubjectsController extends Controller
 {
     public function index($id){
+
+        $this->authorize('viewAny',  EmployeeSubject::class);
+
         $employee = Employee::find($id);
         $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('deleted_at', NULL);
         $subjects = Subject::all()->where('deleted_at', NULL);
@@ -21,6 +24,9 @@ class EmployeeSubjectsController extends Controller
     }
 
     public function store(Request $request){
+
+        $this->authorize('create',  EmployeeSubject::class);
+
         $request->validate([
             'employee' => 'required',
             'subject' => 'required',
@@ -43,7 +49,10 @@ class EmployeeSubjectsController extends Controller
         return redirect("/employeesubjects/".request('employee'))->with("message", "Employee Subject added successfully");
     }
 
-    public function edit($id){
+    public function edit($id, EmployeeSubject $employeesubject){
+
+        $this->authorize('update',  $employeesubject);
+
         $employeesubject = EmployeeSubject::find($id);
         $subjects = Subject::all()->where('deleted_at', NULL);
         $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
@@ -51,7 +60,10 @@ class EmployeeSubjectsController extends Controller
         return view('employees/editEmployeeSubject', ['employeesubject'=>$employeesubject, 'subjects'=>$subjects, 'classes'=>$classes]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, EmployeeSubject $employeesubject){
+
+        $this->authorize('update',  $employeesubject);
+
         $request->validate([
             'subject' => 'required',
             'class' => 'required'
@@ -67,8 +79,10 @@ class EmployeeSubjectsController extends Controller
         return redirect("/employeesubjects/".request('employee'))->with("Employee Subject edited successfully");
     }
 
-    public function destroy($id)
+    public function destroy($id, EmployeeSubject $employeesubject)
     {
+        $this->authorize('delete',  $employeesubject);
+
         $employeesubject = EmployeeSubject::find($id);
         $employeesubject->delete();
 
@@ -77,18 +91,24 @@ class EmployeeSubjectsController extends Controller
 
     //softDeletes employeesubjects
     public function trashedEmployeeSubjects(){
+        $this->authorize('restore',  EmployeeSubject::class);
+
         $employeesubjects = EmployeeSubject::onlyTrashed()->get();
         return view('employees/trashedEmployeeSubjects', compact('employeesubjects'));
     }
 
     //restore deleted employeesubject
     public function restoreEmployeeSubject($id){
+        $this->authorize('restore',  Employee::class);
+
         EmployeeSubject::whereId($id)->restore();
         return back();
     }
 
     //restore all deleted employeesubjects
     public function restoreEmployeeSubjects(){
+        $this->authorize('restore',  Employee::class);
+        
         EmployeeSubject::onlyTrashed()->restore();
         return back();
     }

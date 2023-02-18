@@ -6,7 +6,7 @@
 				<tr>
 					<th scope="col">Class Name</th>
                     <th scope="col">Year</th>
-					@if(Auth::user()->id == 1)
+					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
                     <th scope="col">School Name</th>
 					@endif
 					<th scope="col">Class Teacher</th>
@@ -19,19 +19,19 @@
 					<td>{{ $class->class_name }}</td>
                     <td>{{ $class->year }}</td>
 
-					@if(Auth::user()->id == 1)
+					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
 					<td>{{App\Http\Controllers\SchoolsController::getSchoolName($class->school_id) }}</td>
 					@endif
 
 					<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
                 
 					<td>
-						@if(Auth::user()->role_id != 4)
-							@if(Auth::user()->role_id != 1)
-								<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
-							@endif
+						@can('update', $class)
+							<a href = "{{ url('/editclass/'.$class->id) }}" class = "btn btn-sm btn-warning">Update</a>
+						@endcan
+						@can('delete', $class)
 							<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-						@endif
+						@endcan
 
 						<a href = "{{ url('/viewclassmarks/'.$class->id) }}" class = "btn btn-sm btn-success">View Class Performance</a>
 					</td>

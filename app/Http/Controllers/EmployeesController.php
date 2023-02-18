@@ -12,12 +12,16 @@ use Auth;
 class EmployeesController extends Controller
 {
     public function index(){
-        $schools = School::all()->where('deleted_at', NULL)->where('id', '!=', '1');
+        $this->authorize('create',  Employee::class);
+
+        $schools = School::all()->where('deleted_at', NULL);
         $roles = Role::all()->where('deleted_at', NULL);
 
         return view('employees/addEmployee', ['schools'=>$schools, 'roles'=>$roles]);
     }
     public function store(Request $request){
+        $this->authorize('create',  Employee::class);
+
         //Form validation
         $request->validate([
             'fname' => 'required',
@@ -44,23 +48,29 @@ class EmployeesController extends Controller
 
     }
     public function viewEmployees(){
-        if(Auth::user()->role_id == 1){
+        $this->authorize('viewAny',  Employee::class);
+
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $employees = Employee::orderBy('role_id')->where('deleted_at', NULL)->get();
-        }else if(Auth::user()->role_id == 2){
+        }else if(Auth::user()->role_id == Role::IS_PRINCIPAL){
             //display employees in the same school as logged in user
             $employees = Employee::orderBy('role_id')->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->get();
         }
         return view('employees/viewEmployees', ['employees'=> $employees]);
     }
-    public function edit($id){
+    public function edit($id, Employee $employee){
+        $this->authorize('update',  $employee);
+
         $employee = Employee::find($id);
-        $schools = School::all()->where('deleted_at', NULL)->where('id', '!=', '1');
-        $roles = Role::all()->where('deleted_at', NULL)->where('id' ,'!=' ,'1')->where('id', '!=' ,'2');
+        $schools = School::all()->where('deleted_at', NULL);
+        $roles = Role::all()->where('deleted_at', NULL)->where('id' ,'!=' ,Role::IS_SUPERADMIN)->where('id', '!=' , Role::IS_PRINCIPAL);
 
         return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools, 'roles'=>$roles]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, Employee $employee){
+        $this->authorize('update',  $employee);
+
         $request->validate([
             'fname' => 'required',
             'lname' => 'required',
@@ -82,11 +92,37 @@ class EmployeesController extends Controller
         return redirect('/viewemployees')->with('message', 'Employee updated successfully!');
     }
 
-    public function destroy($id)
+    public function destroy($id, Employee $employee)
     {
+        $this->authorize('delete',  $employee);
+
         $employee = Employee::find($id)->delete();
 
         return redirect('/viewemployees')->with('message', 'Employee deleted successfully!');
+    }
+
+    //softDeletes employees
+    public function trashedEmployees(Employee $employee){
+        $this->authorize('restore',  Employee::class);
+
+        $employees = Employee::onlyTrashed()->get();
+        return view('employees/trashedEmployees', compact('employees'));
+    }
+
+    //restore deleted employees
+    public function restoreEmployee($id){
+        $this->authorize('restore',  Employee::class);
+
+        Employee::whereId($id)->restore();
+        return back();
+    }
+
+    //restore all deleted employees
+    public function restoreEmployees(){
+        $this->authorize('restore',  Employee::class);
+
+        Employee::onlyTrashed()->restore();
+        return back();
     }
 
     public static function getEmployeeName($id){
@@ -97,23 +133,4 @@ class EmployeesController extends Controller
 
         return $employee->first_name.' '.$employee->last_name;
     }
-
-    //softDeletes employees
-    public function trashedEmployees(){
-        $employees = Employee::onlyTrashed()->get();
-        return view('employees/trashedEmployees', compact('employees'));
-    }
-
-    //restore deleted employees
-    public function restoreEmployee($id){
-        Employee::whereId($id)->restore();
-        return back();
-    }
-
-    //restore all deleted employees
-    public function restoreEmployees(){
-        Employee::onlyTrashed()->restore();
-        return back();
-    }
-    
 }

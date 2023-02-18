@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Management System</title>
+    <title>School Management System</title>
     <link href = "{{URL::asset('css/adminDashStyles.css')}}" rel = "stylesheet">
     <link href = "{{URL::asset('css/bityarn.css')}}" rel = "stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
@@ -59,20 +59,28 @@
                 </div>
 
                 @endif
-                @if (Auth::user()->role_id != 3 and Auth::user()->role_id != 4)
-                <a class = "dropdown-btn">
-                    <li>
-                        <i class="uil uil-users-alt"></i>
-                        <span>Employees</span>
-                    </li>
-                </a>
-                <div class = "dropdown-container">
-                    <a href = "{{URL::to('/employees')}}">Add Employee</a>
-                    <a href = "{{URL::to('/viewemployees')}}"><span>View Employees</span></a>
-                    <a href = "{{URL::to('/trashedemployees')}}"><span>Trashed Employees</span></a>
-                    <a href = "{{URL::to('/trashedemployeesubjects')}}"><span>Trashed Employee Subjects</span></a>                
-                </div>
-                @endif
+
+                @can('viewAny', '\App\Models\Employee')
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-users-alt"></i>
+                            <span>Employees</span>
+                        </li>
+                    </a>
+                    <div class = "dropdown-container">
+                        @can('create', '\App\Models\Employee')
+                            <a href = "{{URL::to('/employees')}}">Add Employee</a>
+                        @endcan
+                        @can('viewAny', '\App\Models\Employee')
+                            <a href = "{{URL::to('/viewemployees')}}"><span>View Employees</span></a>
+                        @endcan
+                        @can('restore', '\App\Models\Employee')
+                        <a href = "{{URL::to('/trashedemployees')}}"><span>Trashed Employees</span></a>
+                        @endcan
+                        <a href = "{{URL::to('/trashedemployeesubjects')}}"><span>Trashed Employee Subjects</span></a>                
+                    </div>
+                @endcan
+
                 @if(Auth::user()->role_id == 1)
                     <a class = "dropdown-btn">
                         <li>
@@ -172,9 +180,11 @@
                         <a href = "{{URL::to('/trashedcategories')}}"><span>Trashed Categories</span></a>
                     @endif
                 </div>
+
                 @endif
 
-                @if(Auth::user()->role_id == 1)
+                <!--Classes-->
+                @can('viewAny', '\App\Models\Classes')
                     <a class = "dropdown-btn">
                         <li>
                             <i class="uil uil-presentation-edit"></i>
@@ -182,33 +192,18 @@
                         </li>
                     </a>
                     <div class = "dropdown-container">
-                        <a href = "{{URL::to('/viewclasses')}}"><span>View Classes</span></a>
-                        <a href = "{{URL::to('/trashedclasses')}}"><span>Trashed Classes</span></a>
-                    </div>
-                @elseif (Auth::user()->role_id != 3)
-                    @if(Auth::user()->role_id != 2)
-                        <a href = "{{URL::to('/viewclasses')}}">
-                            <li>
-                                <i class="uil uil-presentation-edit"></i>
-                                <span>Classes</span>
-                            </li>
-                        </a>
-                    @else
-                        <a class = "dropdown-btn">
-                            <li>
-                                <i class="uil uil-presentation-edit"></i>
-                                <span>Classes</span>
-                            </li>
-                        </a>
-                        <div class = "dropdown-container">
+                        @can('create', '\App\Models\Classes')
                             <a href = "{{URL::to('/classes')}}">Add Class</a>
+                        @endcan
+                        @can('viewAny', '\App\Models\Classes')
                             <a href = "{{URL::to('/viewclasses')}}"><span>View Classes</span></a>
+                        @endcan
+                        @can('restore', '\App\Models\Classes')
                             <a href = "{{URL::to('/trashedclasses')}}"><span>Trashed Classes</span></a>
-                        </div>
+                        @endcan
+                    </div>
+                @endcan
 
-                    @endif
-                @endif
-                
                 @if(Auth::user()->role_id != 3)
                     @if(Auth::user()->role_id != 4)
                         <a class = "dropdown-btn">

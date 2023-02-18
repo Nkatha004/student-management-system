@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $mpesaSum = MpesaPayment::all()->sum('amount');
         $paypalSum = PaymentsController::exchangeRates(PaypalPayment::all()->sum('amount'), 'USD');
         $paymentsSum = $paypalSum + $mpesaSum;  
-        $schools = School::all()->count('id') - 1;
+        $schools = School::all()->count('id');
         $employees = Employee::all()->count('id') - 1;
         $students = Student::all()->count('id');
 
