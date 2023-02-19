@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class = "text-center">
-                    <!-- <p><a href = "#" id = "forgot-password" class = "green-color text-center">forgot your password?</a></p> -->
+                    <p><a href = "{{ URL::to('/forgotpassword') }}" id = "forgot-password" class = "green-color text-center">forgot your password?</a></p>
                     <button id = "signin">SIGN IN</button>
                 </div>
             

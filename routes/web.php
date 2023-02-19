@@ -31,6 +31,10 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index');
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'processLogin');
+    Route::get('/forgotpassword', 'forgotPassword');
+    Route::post('/sendresetlink', 'sendResetLink');
+    Route::get('/resetpassword/{token}', 'resetPassword')->name('resetPasswordForm');
+     Route::post('/resetpassword', 'saveResetPassword');
 });
 
 Route::controller(SchoolsController::class)->group(function(){

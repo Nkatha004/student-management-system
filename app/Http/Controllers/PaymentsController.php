@@ -185,7 +185,7 @@ class PaymentsController extends Controller
             'PhoneNumber' => $phoneNumber,
             //mpesa sends transaction response to this callback url
             'CallBackURL' => 'https://490e-105-162-23-59.ngrok.io/api/stk/push/callback/url',
-            'AccountReference' => "Student Management System Payment",
+            'AccountReference' => "School Management System Payment",
             'TransactionDesc' => "Lipa Na M-PESA"
         ];
 
