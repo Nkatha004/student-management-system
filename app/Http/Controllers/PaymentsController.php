@@ -305,7 +305,7 @@ class PaymentsController extends Controller
 
     public function pendingPayments(){
         //select the pending payments
-        $pendingpayments = School::all()->where('payment_status', 'Payment Pending')->where('id', '!=', 1);
+        $pendingpayments = School::all()->where('payment_status', 'Payment Pending');
 
         return view('payments/pendingPayments', ['pendingpayments'=>$pendingpayments]);
     }

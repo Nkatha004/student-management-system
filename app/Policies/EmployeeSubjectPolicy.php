@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Employee;
+use App\Models\Role;
 use App\Models\EmployeeSubject;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -14,6 +15,12 @@ class EmployeeSubjectPolicy
     {
         //All can view employee subjects
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
+    }
+
+    public function hasEmployeeSubjects(Employee $employee)
+    {
+        //All can view employee subjects
+        return in_array($employee->role_id, [Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
     }
 
     public function create(Employee $employee)

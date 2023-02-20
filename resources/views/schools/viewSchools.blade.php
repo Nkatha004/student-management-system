@@ -17,8 +17,12 @@
 					<td>{{ $school->email }}</td>
 					<td>{{ $school->phone_number }}</td>
 					<td>
-						<a href = "{{ url('/editschool/'.$school->id) }}" class = "btn btn-sm btn-warning">Update</a>
-						<a href = "{{ url('/deleteschool/'.$school->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						@can('update', $school)
+							<a href = "{{ url('/editschool/'.$school->id) }}" class = "btn btn-sm btn-warning">Update</a>
+						@endcan
+						@can('delete', $school)
+							<a href = "{{ url('/deleteschool/'.$school->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						@endcan
 					</td>
 				</tr>
 				@endforeach

@@ -1,8 +1,10 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div>
-        <a href = "{{URL::to('/restorestudents')}}"class = "btn btn-success">Restore all</a>
-    </div><br>
+	@can('restore', '\App\Models\Student')
+		<div>
+	        <a href = "{{URL::to('/restorestudents')}}"class = "btn btn-success">Restore all</a>
+	    </div><br>
+    @endcan
 	<div>
 		<table id = "studentsView" class="compact stripe row-border">
 			<thead>
@@ -11,13 +13,13 @@
 					<th scope="col">Name</th>
 
 					<!-- Display guardian phone number to all except admin  -->
-					@if (Auth::user()->role_id != 1)
+					@if (Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
 						<th scope="col">Phone Number</th>
 					@endif
 					<th scope="col">Class</th>
 
 					<!-- Display school name to admin only -->
-					@if (Auth::user()->role_id == 1)
+					@if (Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
 					<th scope="col">School</th>
 					@endif
 					<th scope="col">Actions</th>
@@ -48,22 +50,21 @@
 						<td>{{ $student->first_name.' '.$student->last_name }}</td>
 
 						<!-- Display phone number to all users except from admin -->
-						@if (Auth::user()->role_id != 1)
+						@if (Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
 						<td>{{ $student->guardian_phone_number }}</td>
 						@endif
 
 						<td>{{App\Http\Controllers\ClassesController::getClassName($student->class_id) }}</td>
 
 						<!-- Display school name only when admin is logged in -->
-						@if (Auth::user()->role_id == 1)
+						@if (Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
 							<td>{{App\Http\Controllers\SchoolsController::getSchoolNameByClassID($student->class_id) }}</td>
 						@endif
-						
-						<td>
-							@if (Auth::user()->role_id == 1 or Auth::user()->role_id == 2)
+						@can('restore', '\App\Models\Student')
+							<td>
 								<a href = "{{ url('/restorestudent/'.$student->id) }}" class = "btn btn-sm btn-success">Restore</a>
-							@endif
-						</td>
+							</td>
+						@endcan
 					</tr>
 					@endforeach
 				@endif

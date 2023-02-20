@@ -11,6 +11,8 @@ use App\Models\Classes;
 class StudentSubjectsController extends Controller
 {
     public function index($id){
+        $this->authorize('viewAny',  StudentSubject::class);
+
         $student = Student::find($id);
         $studentsubjects = StudentSubject::all()->where('student_id', $id)->where('deleted_at', NULL);
         $subjects = Subject::all()->where('deleted_at', NULL);
@@ -19,6 +21,8 @@ class StudentSubjectsController extends Controller
     }
 
     public function store(Request $request){
+        $this->authorize('create',  StudentSubject::class);
+
         $request->validate([
             'student' => 'required',
             'subject' => 'required'
@@ -39,14 +43,18 @@ class StudentSubjectsController extends Controller
         }
     }
 
-    public function edit($id){
+    public function edit($id, StudentSubject $studentSubject){
+        $this->authorize('update',  $studentSubject);
+
         $studentsubject = StudentSubject::find($id);
         $subjects = Subject::all()->where('deleted_at', NULL);
 
         return view('students/editstudentsubject', ['studentsubject'=>$studentsubject, 'subjects'=>$subjects]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, StudentSubject $studentSubject){
+        $this->authorize('update',  $studentSubject);
+
         $request->validate([
             'subject' => 'required'
         ]);
@@ -60,8 +68,10 @@ class StudentSubjectsController extends Controller
         return redirect("/studentsubjects/".request('student'))->with("Student Subject edited successfully");
     }
 
-    public function destroy($id)
+    public function destroy($id, StudentSubject $studentSubject)
     {
+        $this->authorize('delete',  $studentSubject);
+
         $studentsubject = StudentSubject::find($id);
         $studentsubject->delete();
 
@@ -82,18 +92,24 @@ class StudentSubjectsController extends Controller
 
     //softDeletes studentsubjects
     public function trashedStudentSubjects(){
+        $this->authorize('restore', StudentSubject::class);
+
         $studentsubjects = StudentSubject::onlyTrashed()->get();
         return view('students/trashedStudentSubjects', compact('studentsubjects'));
     }
 
     //restore deleted studentsubject
     public function restoreStudentSubject($id){
+        $this->authorize('restore', StudentSubject::class);
+
         StudentSubject::whereId($id)->restore();
         return back();
     }
 
     //restore all deleted studentsubjects
     public function restoreStudentSubjects(){
+        $this->authorize('restore', StudentSubject::class);
+        
         StudentSubject::onlyTrashed()->restore();
         return back();
     }

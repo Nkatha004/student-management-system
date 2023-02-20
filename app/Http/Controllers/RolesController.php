@@ -9,10 +9,14 @@ use App\Models\Role;
 class RolesController extends Controller
 {
     public function index(){
+        $this->authorize('create',  Role::class);
+
         return view('roles/addRole');
     }
 
     public function store(Request $request){
+        $this->authorize('create',  Role::class);
+
         $input = $request->all();
 
         $rules = [
@@ -39,18 +43,24 @@ class RolesController extends Controller
         return redirect('/viewroles')->with('message', 'Role added successfully!');
     }
     public function viewRoles(){
+        $this->authorize('viewAny',  Role::class);
+
         $roles = Role::where('deleted_at', NULL)->get();
 
         return view('roles/viewroles', ['roles'=> $roles]);
     }
 
-    public function edit($id){
+    public function edit($id, Role $role){
+        $this->authorize('update',  $role);
+
         $role = Role::find($id);
 
         return view('roles/editRole', ['role'=>$role]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, Role $role){
+        $this->authorize('update',  $role);
+
         $input = $request->all();
         $role = Role::find($id);
 
@@ -78,26 +88,34 @@ class RolesController extends Controller
         return redirect('/viewroles')->with('message', 'Role updated successfully!');
     }
 
-    public function destroy($id)
+    public function destroy($id, Role $role)
     {
+        $this->authorize('delete',  $role);
+
         $role = Role::find($id)->delete();
         return redirect('/viewroles')->with('message', 'Role deleted successfully!');
     }
 
     //softDeletes roles
     public function trashedRoles(){
+        $this->authorize('restore',  Role::class);
+
         $roles = Role::onlyTrashed()->get();
         return view('roles/trashedRoles', compact('roles'));
     }
 
     //restore deleted role
     public function restoreRole($id){
+        $this->authorize('restore',  Role::class);
+
         Role::whereId($id)->restore();
         return back();
     }
 
     //restore all deleted roles
     public function restoreRoles(){
+        $this->authorize('restore',  Role::class);
+        
         Role::onlyTrashed()->restore();
         return back();
     }

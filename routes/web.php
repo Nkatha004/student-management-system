@@ -100,7 +100,24 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/restoresubject/{id}', 'restoreSubject');
             Route::get('/restoresubjects', 'restoreSubjects');
         });
+    });
 
+    //Using IsPrincipalMiddleware for principal related roles only
+    Route::group([
+        'middleware' => 'is_principal',
+    ], function(){
+        Route::controller(PaymentsController::class)->group(function(){
+            Route::get('/payments', 'payment');
+            Route::get('/mpesapayment', 'mpesaPayment');
+            Route::post('/payments', 'pay');
+            Route::get('/success', 'success');
+            Route::get('/error', 'errorOccured');
+            Route::get('/paymentsuccess', 'paymentSuccess');
+            Route::get('/cancelpayment', 'cancelPayment');
+            Route::get('/mytransactions', 'myTransactions')->name('myTransactions');
+            Route::get('/mpesaconfirmation', 'mpesaConfirmation');
+            Route::post('/checktransaction', 'checkTransaction');
+        });
     });
 
     Route::get('/logout', [HomeController::class, 'logout']);
@@ -184,18 +201,5 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/restoremark/{id}', 'restoreExamMark');
         Route::get('/restoremarks', 'restoreExamMarks');
         Route::get('/trashedmarks', 'trashedExamMarks');
-    });
-
-    Route::controller(PaymentsController::class)->group(function(){
-        Route::get('/payments', 'payment');
-        Route::get('/mpesapayment', 'mpesaPayment');
-        Route::post('/payments', 'pay');
-        Route::get('/success', 'success');
-        Route::get('/error', 'errorOccured');
-        Route::get('/paymentsuccess', 'paymentSuccess');
-        Route::get('/cancelpayment', 'cancelPayment');
-        Route::get('/mytransactions', 'myTransactions')->name('myTransactions');
-        Route::get('/mpesaconfirmation', 'mpesaConfirmation');
-        Route::post('/checktransaction', 'checkTransaction');
     });
 });

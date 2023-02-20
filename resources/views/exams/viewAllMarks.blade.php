@@ -9,7 +9,7 @@
 					<th scope="col">Subject</th>
 					<th scope="col">Term</th>
 					<th scope="col">Mark</th>
-					@if (Auth::user()->role_id == 2 or Auth::user()->role_id == 1)
+					@if (Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN or Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL)
 						<th scope="col">Actions</th>
 					@endif
 				</tr>
@@ -21,16 +21,15 @@
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getSubject($mark->student_subject_id) }}</td>
 						<td>{{ $mark->term }}</td>
 						<td>{{ $mark->mark }}</td>
-						@if (Auth::user()->role_id == 2 or Auth::user()->id == 1)
-							<td>
-	
-								@if (Auth::user()->role_id != 1)
+
+						<td>
+							@can('update', $mark)
 								<a href = "{{ url('/editmark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-warning">Update</a>
-								@endif
+							@endcan
+							@can('delete', $mark)
 								<a href = "{{ url('/deletemark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-danger">Delete</a>
-							
+							@endcan
 						</td>
-					@endif
 					</tr>
 				@endforeach
 			</tbody>

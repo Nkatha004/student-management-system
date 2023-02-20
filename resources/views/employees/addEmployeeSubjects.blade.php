@@ -31,16 +31,16 @@
                         @can('delete', $e_subject)
                             <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
                         @endcan
-                        @if($employee->role_id != \App\Models\Role::IS_SUPERADMIN)
-						<a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
-                        @endif
+                        @can('create', '\App\Models\ExamMark')
+                            <a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
+                        @endcan
                     </td>
 				</tr>
                 @endforeach
 			</tbody>
 		</table>
 	</div>
-    @can('create', '\App\Models\EmployeeSubjects')
+    @can('create', '\App\Models\EmployeeSubject')
         <form method = "post" action = "{{ url('/employeesubjects') }}" id = "teachingSubjects" class="row g-3 form">
             @csrf
             @if(session()->has('message'))

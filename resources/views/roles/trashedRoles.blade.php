@@ -1,8 +1,10 @@
 @include('dashboard.dashboardSideNav')
 <main>
-    <div>
-        <a href = "{{URL::to('/restoreroles')}}"class = "btn btn-success">Restore all</a>
-    </div><br>
+	@can('restore', '\App\Models\Role')
+	    <div>
+	        <a href = "{{URL::to('/restoreroles')}}"class = "btn btn-success">Restore all</a>
+	    </div><br>
+	@endcan
 	<div>
 		<table id= "deletedRolesView" class="stripe row-border">
 			<thead>
@@ -17,10 +19,11 @@
 				<tr>
 					<td>{{ $role->role_name }}</td>
                     <td>{{ $role->role_description }}</td>
-
-					<td>
-						<a href = "{{ url('/restorerole/'.$role->id) }}" class = "btn btn-sm btn-success">Restore</a>
-					</td>
+                    @can('restore', '\App\Models\Role')
+						<td>
+							<a href = "{{ url('/restorerole/'.$role->id) }}" class = "btn btn-sm btn-success">Restore</a>
+						</td>
+					@endcan
 				</tr>
 				@endforeach
 			</tbody>

@@ -16,8 +16,12 @@
                     <td>{{ $role->role_description }}</td>
 
 					<td>
-						<a href = "{{ url('/editrole/'.$role->id) }}" class = "btn btn-sm btn-warning">Update</a>
-						<a href = "{{ url('/deleterole/'.$role->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						@can('update', $role)
+							<a href = "{{ url('/editrole/'.$role->id) }}" class = "btn btn-sm btn-warning">Update</a>
+						@endcan
+						@can('delete', $role)
+							<a href = "{{ url('/deleterole/'.$role->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+						@endcan
 					</td>
 				</tr>
 				@endforeach

@@ -32,10 +32,10 @@
 						@can('delete', $class)
 							<a href = "{{ url('/deleteclass/'.$class->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 						@endcan
-
-						<a href = "{{ url('/viewclassmarks/'.$class->id) }}" class = "btn btn-sm btn-success">View Class Performance</a>
+						@can('viewAny', '\App\Models\Classes')
+							<a href = "{{ url('/viewclassmarks/'.$class->id) }}" class = "btn btn-sm btn-success">View Class Performance</a>
+						@endcan
 					</td>
-
 				</tr>
 				@endforeach
 			</tbody>

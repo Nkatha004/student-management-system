@@ -12,9 +12,14 @@ use Hash;
 class SchoolsController extends Controller
 {
     public function index(){
+        $this->authorize('create',  School::class);
+
         return view('schools/addSchool');
     }
     public function store(Request $request){
+        $this->authorize('create',  School::class);
+        $this->authorize('create',  Employee::class);
+
         $request->validate([
             'schoolname' => 'required',
             'school_email' => 'required | email',
@@ -53,6 +58,8 @@ class SchoolsController extends Controller
         return redirect('/login')->with('message', 'School registered successfully!');
     }
     public function viewSchools(){
+        $this->authorize('viewAny',  School::class);
+
         $schools = School::where('deleted_at', NULL)->where('id', '!=', '1')->get();
 
         return view('schools/viewschools', ['schools'=> $schools]);
@@ -64,7 +71,9 @@ class SchoolsController extends Controller
         return view('schools/editSchool', ['school'=>$school]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, School $school){
+        $this->authorize('update',  $school);
+
         $request->validate([
             'schoolname' => 'required',
             'email' => 'required | email',
@@ -84,6 +93,8 @@ class SchoolsController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('delete',  $school);
+
         $school = School::find($id)->delete();
         
         return redirect('/viewschools')->with('message', 'School deleted successfully!');
@@ -108,20 +119,25 @@ class SchoolsController extends Controller
 
     //softDeletes schools
     public function trashedSchools(){
+        $this->authorize('restore',  School::class);
+
         $schools = School::onlyTrashed()->get();
         return view('schools/trashedSchools', compact('schools'));
     }
 
     //restore deleted schools
     public function restoreSchool($id){
+        $this->authorize('restore',  School::class);
+
         School::whereId($id)->restore();
         return back();
     }
 
     //restore all deleted schools
     public function restoreSchools(){
+        $this->authorize('restore',  School::class);
+
         School::onlyTrashed()->restore();
         return back();
     }
-    
 }

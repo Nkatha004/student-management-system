@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 class ExamMarksController extends Controller
 {
     public function index($studentID, $subjectID){
+
+        $this->authorize('create',  ExamMark::class);
+
         //find the student subject done by the student
         $studentsubjects = StudentSubject::select('*')->where('deleted_at', NULL)
                                                 ->where('student_id', Student::find($studentID)->id)
@@ -25,6 +28,8 @@ class ExamMarksController extends Controller
         return view('exams.addExamMarks', ['student'=>Student::find($studentID),'subject'=>Subject::find($subjectID), 'studentsubjects'=>$studentsubjects]);
     }
     public function store(Request $request){
+        $this->authorize('create',  ExamMark::class);
+
         $request->validate([
             'term' => 'required',
             'mark' => 'required'
@@ -54,6 +59,9 @@ class ExamMarksController extends Controller
 
     }
     public function viewClassMarks($id){
+
+        $this->authorize('viewAny',  ExamMark::class);
+
         if(Auth::user()->role_id == 4){
             //marks of all students in the class
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
@@ -74,7 +82,9 @@ class ExamMarksController extends Controller
         return view('exams/viewAllMarks', ['marks'=>$marks, 'classID'=>$id]);
     }
 
-    public function edit($id, $class){
+    public function edit($id, $class, ExamMark $examMark){
+        $this->authorize('update',  $examMark);
+
         $marks = ExamMark::find($id);
         $studentsubject = StudentSubject::find($marks->student_subject_id);
         $student = Student::find($studentsubject->student_id);
@@ -82,7 +92,9 @@ class ExamMarksController extends Controller
         return view('exams/editExamMark', ['marks'=>$marks, 'class'=>$class, 'student'=>$student, 'studentsubject'=>$studentsubject]);
     }
 
-    public function update(Request $request, $id, $class){
+    public function update(Request $request, $id, $class, ExamMark $examMark){
+        $this->authorize('update',  $examMark);
+
         $request->validate([
             'mark' => 'required'
         ]);
@@ -95,7 +107,9 @@ class ExamMarksController extends Controller
         return redirect('/viewclassmarks/'.$class)->with('message', 'Marks updated successfully!');
     }
 
-    public function destroy($id, $class){
+    public function destroy($id, $class, ExamMark $examMark){
+        $this->authorize('delete',  $examMark);
+
         $mark = ExamMark::find($id)->delete();
 
         return redirect('/viewclassmarks/'.$class)->with('message', 'Mark deleted successfully!');
@@ -103,18 +117,24 @@ class ExamMarksController extends Controller
 
     //softDeletes exam mark
     public function trashedExamMarks(){
+        $this->authorize('restore',  ExamMark::class);
+
         $marks = ExamMark::onlyTrashed()->get();
         return view('exams/trashedExamMarks', compact('marks'));
     }
 
     //restore deleted exam mark
     public function restoreExamMark($id){
+        $this->authorize('restore',  ExamMark::class);
+
         ExamMark::whereId($id)->restore();
         return back();
     }
 
     //restore all deleted exam marks
     public function restoreExamMarks(){
+        $this->authorize('restore',  ExamMark::class);
+        
         ExamMark::onlyTrashed()->restore();
         return back();
     }

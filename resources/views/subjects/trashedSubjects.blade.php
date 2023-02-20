@@ -1,8 +1,10 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div>
-        <a href = "{{URL::to('/restoresubjects')}}"class = "btn btn-success">Restore all</a>
-    </div><br>
+	@can('restore', '\App\Models\Subject')
+		<div>
+	        <a href = "{{URL::to('/restoresubjects')}}"class = "btn btn-success">Restore all</a>
+	    </div><br>
+	@endcan
 	<div>
 		<table id = "subjectsView" class="stripe row-border">
 			<thead>
@@ -20,11 +22,11 @@
 					<td>{{ $subject->subject_name }}</td>
                     <td>{{ App\Http\Controllers\SubjectCategoriesController::getSubjectCategoryName($subject->category_id) }}</td>
 					
-					@if(Auth::user()->role_id == 1)
+					@can('restore', '\App\Models\Subject')
 					<td>
 						<a href = "{{ url('/restoresubject/'.$subject->id) }}" class = "btn btn-sm btn-success">Restore</a>
 					</td>
-					@endif
+					@endcan
 				</tr>
 				@endforeach
 			</tbody>

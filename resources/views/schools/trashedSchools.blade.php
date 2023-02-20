@@ -1,8 +1,10 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div>
-        <a href = "{{URL::to('/restoreschools')}}"class = "btn btn-success">Restore all</a>
-    </div><br>	
+	@can('restore', '\App\Models\School')
+		<div>
+	        <a href = "{{URL::to('/restoreschools')}}"class = "btn btn-success">Restore all</a>
+	    </div><br>	
+	@endcan
 	<div>
 		<table id = "schoolsView" class="stripe row-border">
 			<thead>
@@ -19,9 +21,11 @@
 					<td>{{ $school->school_name }}</td>
 					<td>{{ $school->email }}</td>
 					<td>{{ $school->phone_number }}</td>
-					<td>
-						<a href = "{{ url('/restoreschool/'.$school->id) }}" class = "btn btn-sm btn-success">Restore</a>
-					</td>
+					@can('restore', '\App\Models\School')
+						<td>
+							<a href = "{{ url('/restoreschool/'.$school->id) }}" class = "btn btn-sm btn-success">Restore</a>
+						</td>
+					@endcan
 				</tr>
 				@endforeach
 			</tbody>

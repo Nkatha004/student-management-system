@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\Role;
 
 class isAdminMiddleware
 {
@@ -18,7 +19,7 @@ class isAdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         //if user is not logged in or they are not admin
-        if(!Auth()->check() || Auth::user()->role_id != 1){
+        if(!Auth()->check() || Auth::user()->role_id != Role::IS_SUPERADMIN){
             abort(403);
         }   
         return $next($request);
