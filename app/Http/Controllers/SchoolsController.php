@@ -12,13 +12,9 @@ use Hash;
 class SchoolsController extends Controller
 {
     public function index(){
-        $this->authorize('create',  School::class);
-
         return view('schools/addSchool');
     }
     public function store(Request $request){
-        $this->authorize('create',  School::class);
-        $this->authorize('create',  Employee::class);
 
         $request->validate([
             'schoolname' => 'required',

@@ -2,10 +2,12 @@
 <main>
     <div class="container">
         <div class="row signincontainer">
-            <div class = "col welcome">
-                <h4 id = "welcome-back"class = "text-center">Welcome back!</h4>
-                <p><a href = "{{URL::to('/register')}}">Register a new school</a> or <a href = "{{URL::to('/#section3')}}">contact us. </a>You can reach us via <a href = "mailto: admin@admin.com">email</a> or <a href = "tel: +254XXXXXXXXX">phone</a></p>
-                <p>If your school is registered, please proceed to <a href = "{{URL::to('/login')}}">login</a></p>
+            <div class = "col welcome text-center">
+                <h3>Welcome Back!</h3>
+                <medium>Hello there,<br/></br>If you are new, you may consider registering your school with us.</medium>
+                <div class = "text-center">
+                    <a href = "{{URL::to('/register')}}"><button id = "signup">SIGN UP</button></a>
+                </div>
             </div>
             
             <form action = "{{ url('/login') }}" method = "post" class = "col text-center" id = "signindiv">
@@ -15,7 +17,7 @@
                         {{ session()->get('message') }}
                     </div>
                 @endif
-                <h3 id = "signinheader">Sign in</h3>
+                <h3 id = "signinheader">Sign In</h3>
                 @if($errors->has('email'))
                     <div class = "alert alert-danger" role = "alert">
                         {{ $errors->first('email') }}

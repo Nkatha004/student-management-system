@@ -39,7 +39,7 @@ Route::controller(HomeController::class)->group(function(){
 
 Route::controller(SchoolsController::class)->group(function(){
     Route::post('/schools', 'store');
-    Route::get('/schools', 'index');
+    // Route::get('/schools', 'index');
     Route::get('/register', 'index');
 });
 

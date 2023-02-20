@@ -67,7 +67,7 @@ div button{
     border-radius: 25px;
 }
 #forgot-password:hover, .footer_links ul li a:hover, #haveAccount:hover{
-    color:rgb(230, 100, 100);
+    color: #000;
     cursor: pointer;
 }
 a#haveAccount, a#forgot-password{
@@ -78,6 +78,6 @@ a#haveAccount, a#forgot-password{
 }
 button:hover{
     background-color: transparent;
-    color: rgb(230, 100, 100);
+    color: #088264;
     border: solid 2px #000;
 }

@@ -16,7 +16,7 @@ nav{
     color: black;
 }
 .nav-link:hover, #active:hover,#user:hover, .navbar-brand:hover{
-    color: rgb(230, 100, 100);
+    color: #088264;
 }
 button{
     background-color: #088264;
@@ -30,7 +30,7 @@ button{
 }
 button:hover{
     background-color: transparent;
-    color: rgb(230, 100, 100);
+    color: #088264;
     border: solid 2px #000;
 }
 .features{
@@ -99,23 +99,29 @@ footer{
 }
 button#signup{
     background-color: transparent;
+    border: solid #fff;
+    margin-top: 20px;
 }
 #signup:hover{
-    background-color: white;
-    color: #000;
+    text-decoration: none;
+    color: #fff;
+}
+#welcomeStatement{
+    margin-top: 30px;
 }
 #signindiv{
     padding: 10% 10% 10%;
 }
 #signinheader, #welcome-back{
     padding-bottom:20px;
+    color: #088264;
 }
 #forgot-password:hover, .footer_links ul li a:hover, #haveAccount:hover{
-    color:rgb(230, 100, 100);
+    color: #000;
     cursor: pointer;
 }
 .welcome a:hover{
-    color:rgb(170, 227, 252);
+    color: #000;
     cursor: pointer;
 }
 #welcome-back, .welcome a{
