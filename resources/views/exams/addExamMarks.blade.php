@@ -30,7 +30,7 @@
             </div>
         @endif
         <h3 class = "text-center">Add Marks</h3>
-        @if(Auth::user()->role_id != 2)
+        @if(Auth::user()->role_id != \App\Models\Role::IS_PRINCIPAL)
         <div class = "alert alert-info" role = "alert">
             Ensure marks entered are correct before submitting. Marks submitted cannot be edited!
         </div>

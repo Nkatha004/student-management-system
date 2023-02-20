@@ -1,5 +1,5 @@
 @if(Auth::check())
-    @if(Auth::user()->role_id == 1)
+    @if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
         @include('dashboard.dashboardSideNav')
     @else
         @include('common/header')

@@ -268,8 +268,8 @@
     </div>
     <div class="main-content" id="main-content">
         <header class="flex">
-            @if(Auth::user()->role_id != 1)
-            <h4>{{App\Http\Controllers\SchoolsController::getSchoolName(Auth::user()->school_id)}}</h4>
+            @if(Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
+                <h4>{{App\Http\Controllers\SchoolsController::getSchoolName(Auth::user()->school_id)}}</h4>
             @else
                 <h2>Dashboard</h2>
             @endif

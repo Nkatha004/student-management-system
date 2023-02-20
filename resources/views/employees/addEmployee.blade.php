@@ -84,7 +84,7 @@
         <input value = '3' name = "role" hidden>
         @endif
 
-        @if (Auth::user()->role_id != 1)
+        @if (Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
         <input value = '{{Auth::user()->school_id}}' name = "school" hidden>
         @else
             @if($errors->has('school'))

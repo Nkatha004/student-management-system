@@ -54,7 +54,7 @@
             <input type="email" class="form-control" id="email" name = "email" value = "{{ $employee->email }}">
         </div>
 
-        @if($employee->id != 1)
+        @if($employee->role_id != \App\Models\Role::IS_SUPERADMIN)
             @if($errors->has('tscNo'))
                 <div class = "alert alert-danger" role = "alert">
                     {{ $errors->first('tscNo') }}

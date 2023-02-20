@@ -7,6 +7,7 @@ use App\Models\ExamMark;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Classes;
+use App\Models\Role;
 use App\Models\School;
 use App\Models\StudentSubject;
 use Auth;
@@ -62,7 +63,7 @@ class ExamMarksController extends Controller
 
         $this->authorize('viewAny',  ExamMark::class);
 
-        if(Auth::user()->role_id == 4){
+        if(Auth::user()->role_id == Role::IS_CLASSTEACHER){
             //marks of all students in the class
             $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")

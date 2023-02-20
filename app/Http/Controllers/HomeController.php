@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\School;
 use App\Models\Employee;
+use App\Models\Role;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -29,9 +30,9 @@ class HomeController extends Controller
         //Login user
         if(Auth::attempt($credentials)){
             //Check the roles of users and redirect to the appropriate dashboard
-            if(Auth::user()->role_id == 1){
+            if(Auth::user()->role_id == Role::IS_SUPERADMIN){
                 return redirect('/admindashboard')->with('message', 'Admin Login successful');
-            }else if(Auth::user()->role_id == 2){
+            }else if(Auth::user()->role_id == Role::IS_PRINCIPAL){
                 $school = School::find(Auth::user()->school_id);
                 if($school->payment_status == 'Payment Complete'){
                     return redirect('/principaldashboard')->with('message', 'Principal Login successful');

@@ -11,8 +11,8 @@
 				<tr>
 					<th scope="col">Subject Name</th>
 					<th scope="col">Subject Category</th>
-					@if(Auth::user()->role_id == 1)
-					<th scope="col">Actions</th>
+					@if(Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL)
+						<th scope="col">Actions</th>
 					@endif
 				</tr>
 			</thead>
