@@ -14,7 +14,7 @@ use App\Http\Controllers\EmployeeSubjectsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentSubjectsController;
 use App\Http\Controllers\ExamMarksController;
-use App\Http\Controllers\FiltersController;
+use App\Http\Controllers\ContactUsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,14 +34,18 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('/forgotpassword', 'forgotPassword');
     Route::post('/sendresetlink', 'sendResetLink');
     Route::get('/resetpassword/{token}', 'resetPassword')->name('resetPasswordForm');
-     Route::post('/resetpassword', 'saveResetPassword');
+    Route::post('/resetpassword', 'saveResetPassword');
+    Route::post('/contact', 'contact');
 });
 
 Route::controller(SchoolsController::class)->group(function(){
     Route::post('/schools', 'store');
-    // Route::get('/schools', 'index');
+    Route::get('/schools', 'index');
     Route::get('/register', 'index');
 });
+
+Route::post('/contact', [ContactUsController::class, 'store']);
+
 
 //Require authentication to access routes
 Route::group(['middleware' => ['auth']], function() {
@@ -65,6 +69,18 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/trashedschools', 'trashedSchools');
             Route::get('/restoreschool/{id}', 'restoreSchool');
             Route::get('/restoreschools', 'restoreSchools');
+        });
+
+        Route::controller(ContactUsController::class)->group(function(){
+            Route::get('/viewmessages', 'viewMessages');
+            Route::get('/pendingmessages', 'pendingMessages');
+            Route::get('/respondedmessages', 'respondedMessages');
+            Route::get('/deletemessage/{id}', 'destroy');
+            Route::get('/trashedmessages', 'trashedMessages');
+            Route::get('/restoremessage/{id}', 'restoreMessage');
+            Route::get('/restoremessages', 'restoreMessages');
+            Route::get('/respondmessage/{id}', 'respondMessage');
+            Route::post('/sendemailresponse', 'sendEmailResponse');
         });
 
         Route::controller(RolesController::class)->group(function(){

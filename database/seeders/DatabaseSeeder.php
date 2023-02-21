@@ -16,6 +16,7 @@ use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\SubjectCategories;
+use App\Models\Contact;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,6 +35,8 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             ClassesSeeder::class,
         ]);
+        
+        Contact::factory(10)->create();
         ExamMark::factory(10)->create();
         EmployeeSubject::factory()->create();
         MpesaPayment::factory(1)->create();

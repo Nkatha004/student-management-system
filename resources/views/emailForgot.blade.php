@@ -4,3 +4,5 @@
 <p>Click<a href = "{{ $action_link }}"> here </a>to reset your password or paste the link below in your browser.</p>
 
 <p>{{ $action_link }}</p>
+
+Regards,<br/>School Management System

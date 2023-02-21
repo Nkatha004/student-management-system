@@ -9,6 +9,7 @@ use App\Models\School;
 use App\Models\Employee;
 use App\Models\Role;
 use Carbon\Carbon;
+use App\Models\Contact;
 
 class HomeController extends Controller
 {

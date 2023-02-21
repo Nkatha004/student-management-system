@@ -28,6 +28,18 @@
                             <span>Dashboard</span>
                         </li>
                     </a>
+                    <a class = "dropdown-btn">
+                        <li>
+                            <i class="uil uil-comment-alt-message"></i>
+                            <span>Messages</span>
+                        </li>
+                        
+                    </a>
+                    <div class = "dropdown-container">
+                        <a href = "{{URL::to('/viewmessages')}}">All Messages</a>
+                        <a href = "{{URL::to('/pendingmessages')}}"><span>Pending Messages</span></a>
+                        <a href = "{{URL::to('/respondedmessages')}}"><span>Responded Messages</span></a>
+                    </div>
                 @elseif (Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL) 
                     <a href = "{{URL::to('/principaldashboard')}}">
                         <li id = "activeDash" >
