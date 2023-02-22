@@ -66,8 +66,7 @@ class RolesController extends Controller
 
         $rules = [
             'rolename' => 'required',
-            'roleDesc' => 'required',
-            'status' => 'required'
+            'roleDesc' => 'required'
         ];
 
         $messages = [

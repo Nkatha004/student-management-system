@@ -2,7 +2,7 @@
 
 <main>
    
-    <form action = "{{ url('/students') }}" method = "post" id = "addEmployeeForm" class="row g-3 form">
+    <form action = "{{ url('/students') }}" method = "post" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
             <div class="alert alert-success">

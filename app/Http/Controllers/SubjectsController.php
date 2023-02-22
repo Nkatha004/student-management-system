@@ -52,8 +52,7 @@ class SubjectsController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'category' => 'required',
-            'status' => 'required'
+            'category' => 'required'
         ]);
 
         $subject = Subject::find($id);

@@ -136,7 +136,12 @@ Route::group(['middleware' => ['auth']], function() {
         });
     });
 
-    Route::get('/logout', [HomeController::class, 'logout']);
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/updateprofile', 'showProfilePage');
+        Route::post('/updateprofile', 'updateProfile');
+        Route::post('/changepassword', 'changePassword');
+        Route::get('/logout', 'logout');
+    });
 
     Route::get('/viewsubjectcategories', [SubjectCategoriesController::class, 'viewSubjectCategories']);
 

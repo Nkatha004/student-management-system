@@ -47,8 +47,7 @@ class SubjectCategoriesController extends Controller
 
         $request->validate([
             'category_name' => 'required',
-            'description' => 'required',
-            'status' => 'required'
+            'description' => 'required'
         ]);
 
         $category = SubjectCategories::find($id);

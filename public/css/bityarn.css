@@ -81,3 +81,14 @@ button:hover{
     color: #088264;
     border: solid 2px #000;
 }
+.profileForm{
+    padding: 20px;
+}
+#profilePasswordForm{
+    margin-top: 24%;
+}
+#profileImage{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}

@@ -75,8 +75,7 @@ class EmployeesController extends Controller
             'fname' => 'required',
             'lname' => 'required',
             'email' => 'required | email',
-            'telNo' => 'required',
-            'status' => 'required'
+            'telNo' => 'required | min: 9'
         ]);
 
         $employee = Employee::find($id);

@@ -149,9 +149,8 @@ class StudentsController extends Controller
             'lname' => 'required',
             'guardianname' => 'required',
             'email' => 'required | email',
-            'phoneNo' => 'required',
-            'admNo' => 'required',
-            'status'=>'required'
+            'phoneNo' => 'required | min:9',
+            'admNo' => 'required'
         ]);
         
         $student = Student::find($id);

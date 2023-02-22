@@ -291,9 +291,17 @@
             </div> -->
 
             <div class="admin-box flex" >
-            @if (Auth::check())
-                <i class="fa-solid fa-circle-user"></i>
-                <span>{{ Auth::user()->first_name.' '.Auth::user()->last_name }}<span>
-            @endif
+                @if (Auth::check())
+                    <div class="dropdown">
+                        <a id = "user" class="nav-link dropdown-toggle" data-bs-toggle= "dropdown" href = "" id = "dropdownMenuButton">
+                            <i class="uil uil-user-circle"></i>
+                            {{ Auth::user()->first_name.' '.Auth::user()->last_name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ URL::to('/updateprofile') }}">My Profile</a></li>
+                            <li><a class="dropdown-item" href="{{URL::to('/logout')}}">Log out</a></li>
+                        </ul>
+                    </div>
+                @endif
             </div>
         </header>

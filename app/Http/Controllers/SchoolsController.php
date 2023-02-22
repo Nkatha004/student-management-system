@@ -73,8 +73,7 @@ class SchoolsController extends Controller
         $request->validate([
             'schoolname' => 'required',
             'email' => 'required | email',
-            'telNo' => 'required',
-            'status' => 'required'
+            'telNo' => 'required | min:9'
         ]);
 
         $school = School::find($id);

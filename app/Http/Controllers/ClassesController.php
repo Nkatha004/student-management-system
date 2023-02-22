@@ -80,8 +80,7 @@ class ClassesController extends Controller
         $request->validate([
             'classname' => 'required',
             'year' => 'required',
-            'teacher'=>'required',
-            'status'=>'required'
+            'teacher'=>'required'
         ]);
 
         $class = Classes::find($id);

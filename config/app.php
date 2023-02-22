@@ -195,6 +195,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //Auditing Package
+        OwenIt\Auditing\AuditingServiceProvider::class,
+
     ],
 
     /*

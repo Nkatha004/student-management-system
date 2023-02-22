@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Role;
 use Carbon\Carbon;
 use App\Models\Contact;
+use Hash;
 
 class HomeController extends Controller
 {
@@ -116,5 +117,55 @@ class HomeController extends Controller
         Auth::logout();
 
         return redirect('/login');
+    }
+
+    public function showProfilePage(){
+        return view('updateProfile');
+    }
+
+    public function updateProfile(Request $request){
+        $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'telNo' => 'required',
+            'email' => 'required | email'
+        ]);
+
+        $employee = Employee::find(Auth::user()->id);
+        
+        $employee->first_name= $request->input('fname');
+        $employee->last_name= $request->input('lname');
+        $employee->email = $request->input('email');
+        $employee->telephone_number = $request->input('telNo');
+
+        if(Auth::user()->role_id != Role::IS_SUPERADMIN){
+            $employee->tsc_number = $request->input('tscNo');
+        }
+
+        $employee->save();
+
+        return redirect('/updateprofile')->with('messageprofile', 'Profile updated successfully!');
+    }
+
+    public function changePassword(Request $request){
+        $request->validate([
+            'currentPassword' => 'required',
+            'password' => 'required | min:6',
+            'password_confirmation' => 'required | min:6 | same:password'
+        ]);
+
+        //check if stored password is equivalent to the given old password
+        $dbPassword = Hash::check(request('currentPassword'), Auth::user()->password);
+
+        if($dbPassword){
+            $employee = Employee::find(Auth::user()->id);
+        
+            $employee->password= $request->input('password');
+            $employee->save();
+
+            return redirect('/updateprofile')->with('message', 'Password changed successfully');
+        }else{
+            return redirect('/updateprofile')->with('message', 'Current password is incorrect for '.Auth::user()->first_name);
+        }
     }
 }
