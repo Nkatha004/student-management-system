@@ -25,6 +25,7 @@ return new class extends Migration
             $table -> foreign('school_id') -> references('id') -> on('schools');
             $table->integer('role_id')->unsigned();
             $table -> foreign('role_id') -> references('id') -> on('roles');
+            $table->string('profile_image')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

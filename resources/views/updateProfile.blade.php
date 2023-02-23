@@ -4,20 +4,35 @@
     <div class="container profile">
 
         <div class="row">
-             <div class = "col">
-                <center>
-                    <!-- If there is an existing image in db -->
-                    <!-- <img id = "profileImage" src = "{{URL::asset('images/student_bg.jpg')}}"> -->
+            
+            <div class = "col">
+                <form id = "form" method = "post" action = "{{ url('/updateprofile') }}" class="row g-3 form profileForm" enctype="multipart/form-data">
+                @csrf
+                    <div class = "text-center">
+                        <!-- If there is no image in db -->
+                        @if(Auth::user()->profile_image == NULL)
+                            <div class = "upload">
+                                <img id = "profileImage" src = "{{URL::asset('images/user.png')}}">
+                                <div class = "rightRound" id = "upload">
+                                    <input type = "file" name= "image" id = "image" accept=".jpg, .jpeg, .png" id = "upload"/>
+                                    <i class = "fa fa-camera"></i>
+                                </div>
+                            </div>
+                        @else
+                            <!-- If there is an existing image in db -->
+                            <div class = "upload">
+                                <img id = "profileImage" src = "{{ URL::asset('profileImages/'.Auth::user()->profile_image) }}">
+                                <div class = "rightRound" id = "upload">
+                                    <input type = "file" name= "image" id = "image" accept=".jpg, .jpeg, .png" id = "upload"/>
+                                    <i class = "fa fa-camera"></i>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
 
-                    <!-- If there is no file in db -->
-                    <i class="green-color fa-solid fa-user fa-6x"></i>
-                    <input id="upload" type="file" hidden accept="image/*"/>
-                    <a href="" id="upload_link"><i class="green-color uil uil-plus-circle"></i></a>
-                </center>
-
-                <form method = "post" action = "{{ url('/updateprofile') }}" class="row g-3 form profileForm">
+                
                     <h4 class = "green-color text-center">My Profile</h4>
-                    @csrf
+                   
                     @if(session()->has('messageprofile'))
                         <div class="alert alert-success">
                             {{ session()->get('messageprofile') }}
@@ -133,15 +148,13 @@
                         <button type="submit">Change Password</button>
                     </div>
                 </form>
+                <script>
+                    document.getElementById("image").onchange = function(){
+                        document.getElementById('profileImage').src = URL.createObjectURL(image.files[0]);
+                        document.getElementById('profileIcon').src = URL.createObjectURL(image.files[0]);
+                    }
+                </script>
             </div>
         </div>
     </div>
 </main>
-<script type="text/javascript">
-    $(function(){
-        $("#upload_link").on('click', function(e){
-            e.preventDefault();
-            $("#upload:hidden").trigger('click');
-        });
-    }); 
-</script>

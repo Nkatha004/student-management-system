@@ -58,6 +58,7 @@ class HomeController extends Controller
             'email' => 'required | email | exists:employees,email'
         ]);
 
+        //generate an access token for resetting the password
         $token = \Str::random(64);
         \DB::table('password_resets')->insert([
             'email' => $request->email,
@@ -71,6 +72,7 @@ class HomeController extends Controller
             <p>If you did not authorise this, simply ignore this email.</p>
             <p>If you did, you can now reset your password by clicking the link below.</p>";
 
+        //send an email to user to help reset the password
         \Mail::send('emailForgot', ['action_link'=>$action_link, 'body'=>$body], function($message) use ($request){
             $message->from('nkatha.dev@gmail.com', 'School Management System');
             $message->to($request->email)
@@ -96,6 +98,7 @@ class HomeController extends Controller
             'token' => $request->token, 
         ])->first();
 
+        //confirm that the sent token matches with the received token
         if(!$check_token){
             return back()->withInput()->with('message', 'Invalid Token');
         }else{
@@ -142,6 +145,17 @@ class HomeController extends Controller
             $employee->tsc_number = $request->input('tscNo');
         }
 
+        if($image = $request->file('image')){
+            //store profile images by the time stamp and file extension
+            $destination = "profileImages/";
+            $profileImage = time().'.'.$request->file('image')->getClientOriginalExtension();
+
+            //store profile images in public/profileImages folder
+            $image->move($destination, $profileImage);
+
+            //store image in db
+            $employee->profile_image =  $profileImage;
+        }
         $employee->save();
 
         return redirect('/updateprofile')->with('messageprofile', 'Profile updated successfully!');
@@ -160,7 +174,7 @@ class HomeController extends Controller
         if($dbPassword){
             $employee = Employee::find(Auth::user()->id);
         
-            $employee->password= $request->input('password');
+            $employee->password= Hash::make($request->input('password'));
             $employee->save();
 
             return redirect('/updateprofile')->with('message', 'Password changed successfully');
