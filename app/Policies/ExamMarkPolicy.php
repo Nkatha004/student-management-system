@@ -19,8 +19,8 @@ class ExamMarkPolicy
 
     public function create(Employee $employee)
     {
-        //Only principal cannot add marks
-        return $employee->role_id != Role::IS_PRINCIPAL;
+        //Only admin cannot add marks
+        return $employee->role_id != Role::IS_SUPERADMIN;
     }
 
     public function update(Employee $employee, ExamMark $mark)

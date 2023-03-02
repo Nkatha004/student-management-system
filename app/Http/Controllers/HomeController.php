@@ -22,6 +22,10 @@ class HomeController extends Controller
         return view('indexTrial');
     }
 
+    public function loginTrial(){
+        return view('loginTrial');
+    }
+
     public function login(){
         return view('login');
     }

@@ -8,6 +8,9 @@ use App\Models\Contact;
 
 class ContactUsController extends Controller
 {
+    public function index(){
+        return view('contactus/contact');
+    }
     public function store(Request $request){
         $input = $request->all();
 

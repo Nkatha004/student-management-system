@@ -29,7 +29,8 @@ use App\Http\Controllers\ContactUsController;
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index');
-    Route::get('/home', 'indexTrial');
+    Route::get('/indextrial', 'indexTrial');
+    Route::get('/logintrial', 'loginTrial');
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'processLogin');
     Route::get('/forgotpassword', 'forgotPassword');
@@ -37,6 +38,7 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('/resetpassword/{token}', 'resetPassword')->name('resetPasswordForm');
     Route::post('/resetpassword', 'saveResetPassword');
     Route::post('/contact', 'contact');
+    Route::post('/contact', 'viewcontact');
 });
 
 Route::controller(SchoolsController::class)->group(function(){
@@ -45,8 +47,10 @@ Route::controller(SchoolsController::class)->group(function(){
     Route::get('/register', 'index');
 });
 
-Route::post('/contact', [ContactUsController::class, 'store']);
-
+Route::controller(ContactUsController::class)->group(function(){
+    Route::get('/contact', 'index');
+    Route::post('/contact', 'store');
+});
 
 //Require authentication to access routes
 Route::group(['middleware' => ['auth']], function() {

@@ -81,7 +81,7 @@
         </div>
 
         @if (Auth::check())
-        <input value = '3' name = "role" hidden>
+        <input value = '4' name = "role" hidden>
         @endif
 
         @if (Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
