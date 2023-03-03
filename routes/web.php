@@ -29,8 +29,6 @@ use App\Http\Controllers\ContactUsController;
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index');
-    Route::get('/indextrial', 'indexTrial');
-    Route::get('/logintrial', 'loginTrial');
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'processLogin');
     Route::get('/forgotpassword', 'forgotPassword');

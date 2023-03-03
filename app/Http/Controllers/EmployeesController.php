@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\School;
@@ -28,8 +28,16 @@ class EmployeesController extends Controller
             'lname' => 'required',
             'email' => 'required | email | unique:employees',
             'telNo' => 'required',
-            'password' => 'required | min:6',
-            'password_confirmation' => 'required | min:6 | same:password'
+            'password' => [
+                'required',
+                Password::min(8)
+                            ->letters()
+                            ->mixedCase()
+                            ->numbers()
+                            ->symbols()
+                            ->uncompromised(3)
+            ],
+            'password_confirmation' => 'required | same:password'
         ]);
 
         Employee::create([

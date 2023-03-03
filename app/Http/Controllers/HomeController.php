@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -18,14 +18,6 @@ class HomeController extends Controller
         return view('index');
     }
 
-    public function indexTrial(){
-        return view('indexTrial');
-    }
-
-    public function loginTrial(){
-        return view('loginTrial');
-    }
-
     public function login(){
         return view('login');
     }
@@ -33,10 +25,18 @@ class HomeController extends Controller
     public function processLogin(Request $request){
         $request->validate([
             'email' => 'required',
-            'password' => 'required'
+            'login_password' => [
+                'required',
+                Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised(3)
+            ]
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'login_password');
 
         //Login user
         if(Auth::attempt($credentials)){
@@ -55,7 +55,7 @@ class HomeController extends Controller
             
         }
 
-        return redirect()->back()->with('message', 'Invalid login credentials');
+        return redirect()->back()->with('messageLogin', 'Invalid login credentials');
     }
 
     public function forgotPassword(){
@@ -173,8 +173,16 @@ class HomeController extends Controller
     public function changePassword(Request $request){
         $request->validate([
             'currentPassword' => 'required',
-            'password' => 'required | min:6',
-            'password_confirmation' => 'required | min:6 | same:password'
+            'password' => [
+                'required',
+                Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised(3)
+            ],
+            'password_confirmation' => 'required | same:password'
         ]);
 
         //check if stored password is equivalent to the given old password

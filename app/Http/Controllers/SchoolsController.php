@@ -7,6 +7,7 @@ use App\Models\School;
 use App\Models\Classes;
 use App\Models\Role;
 use App\Models\Employee;
+use Illuminate\Validation\Rules\Password;
 use Hash;
 
 class SchoolsController extends Controller
@@ -25,8 +26,16 @@ class SchoolsController extends Controller
             'principal_tscNo' => 'required',
             'principal_telNo' => 'required',
             'principal_email' => 'required | email',
-            'password' => 'required | min:6',
-            'password_confirmation' => 'required | min:6 | same:password'
+            'password' => [
+                'required',
+                Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised(3)
+            ],
+            'password_confirmation' => 'required | same:password'
         ]);
         //Insert school records first
         School::create([
@@ -51,7 +60,7 @@ class SchoolsController extends Controller
             'role_id' => $role->id
         ]);
 
-        return redirect('/login')->with('message', 'School registered successfully!');
+        return redirect('/login')->with('messageLogin', 'School registered successfully!');
     }
     public function viewSchools(){
         $this->authorize('viewAny',  School::class);
