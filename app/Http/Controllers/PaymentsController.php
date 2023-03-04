@@ -134,7 +134,7 @@ class PaymentsController extends Controller
         //generate timestamp
         $timestamp = Carbon::rawParse('now')->format('YmdHms');
         //use passkey
-        $passKey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+        $passKey = "{YOUR-PASS-KEY}";
         //businessShortcode
         $businessShortCode = 174379;
         //generate password
@@ -145,8 +145,8 @@ class PaymentsController extends Controller
 
     //mpesa generate access token request
     public function newAccessToken(){
-        $consumer_key = "ubqH6wgnrcANAAJD2HN9AZNG6YF7tReY";
-        $consumer_secret = "Ng4Z5Y6bvXnqG4bx";
+        $consumer_key = "{YOUR-CONSUMER-KEY}";
+        $consumer_secret = "{YOUR-CONSUMER-SECRET}";
         $credentials = base64_encode($consumer_key.":".$consumer_secret);
         $url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
@@ -256,7 +256,7 @@ class PaymentsController extends Controller
     //convert kenyan shillings to USD and vice versa to use in paypal
     public static function exchangeRates($amount, $from){
         // Fetching JSON
-        $req_url = 'https://v6.exchangerate-api.com/v6/bb190d74f640fa30bf8c5b35/latest/'.$from;
+        $req_url = 'https://v6.exchangerate-api.com/v6/{YOUR-KEY}/latest/'.$from;
         $response_json = file_get_contents($req_url);
 
         // Continuing if we got a result
