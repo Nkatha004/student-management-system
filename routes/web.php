@@ -30,6 +30,7 @@ use App\Http\Controllers\ContactUsController;
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index');
     Route::get('/login', 'login')->name('login');
+    Route::get('/register', 'register');
     Route::post('/login', 'processLogin');
     Route::get('/forgotpassword', 'forgotPassword');
     Route::post('/sendresetlink', 'sendResetLink');
@@ -42,7 +43,7 @@ Route::controller(HomeController::class)->group(function(){
 Route::controller(SchoolsController::class)->group(function(){
     Route::post('/schools', 'store');
     Route::get('/schools', 'index');
-    Route::get('/register', 'index');
+    // Route::get('/register', 'index');
 });
 
 Route::controller(ContactUsController::class)->group(function(){
