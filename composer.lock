@@ -4549,7 +4549,7 @@
                 "psr/log": "^1|^2|^3",
                 "symfony/error-handler": "^5.4|^6.0",
                 "symfony/event-dispatcher": "^5.4|^6.0",
-                "symfony/http-foundation": "^5.4|^6.0",
+                "symfony/http-foundation": "^5.4.21|^6.2.7",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
@@ -5765,6 +5765,7 @@
         },
         {
             "name": "symfony/string",
+<<<<<<< HEAD
             "version": "v6.0.19",
             "source": {
                 "type": "git",
@@ -5775,6 +5776,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/d9e72497367c23e08bf94176d2be45b00a9d232a",
                 "reference": "d9e72497367c23e08bf94176d2be45b00a9d232a",
+=======
+            "version": "v6.2.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/string.git",
+                "reference": "67b8c1eec78296b85dc1c7d9743830160218993d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/string/zipball/67b8c1eec78296b85dc1c7d9743830160218993d",
+                "reference": "67b8c1eec78296b85dc1c7d9743830160218993d",
+>>>>>>> 28618c57fe6710a4d6317646d8f01d03e20c1f8b
                 "shasum": ""
             },
             "require": {
@@ -5830,7 +5843,11 @@
                 "utf8"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/string/tree/v6.0.19"
+=======
+                "source": "https://github.com/symfony/string/tree/v6.2.7"
+>>>>>>> 28618c57fe6710a4d6317646d8f01d03e20c1f8b
             },
             "funding": [
                 {
@@ -5846,7 +5863,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-01-01T08:36:10+00:00"
+=======
+            "time": "2023-02-24T10:42:00+00:00"
+>>>>>>> 28618c57fe6710a4d6317646d8f01d03e20c1f8b
         },
         {
             "name": "symfony/translation",
@@ -6097,6 +6118,7 @@
         },
         {
             "name": "symfony/var-dumper",
+<<<<<<< HEAD
             "version": "v6.0.19",
             "source": {
                 "type": "git",
@@ -6107,6 +6129,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/var-dumper/zipball/eb980457fa6899840fe1687e8627a03a7d8a3d52",
                 "reference": "eb980457fa6899840fe1687e8627a03a7d8a3d52",
+=======
+            "version": "v6.2.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "cf8d4ca1ddc1e3cc242375deb8fc23e54f5e2a1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/cf8d4ca1ddc1e3cc242375deb8fc23e54f5e2a1e",
+                "reference": "cf8d4ca1ddc1e3cc242375deb8fc23e54f5e2a1e",
+>>>>>>> 28618c57fe6710a4d6317646d8f01d03e20c1f8b
                 "shasum": ""
             },
             "require": {
@@ -6165,7 +6199,11 @@
                 "dump"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/var-dumper/tree/v6.0.19"
+=======
+                "source": "https://github.com/symfony/var-dumper/tree/v6.2.7"
+>>>>>>> 28618c57fe6710a4d6317646d8f01d03e20c1f8b
             },
             "funding": [
                 {
@@ -6181,7 +6219,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-01-20T17:44:14+00:00"
+=======
+            "time": "2023-02-24T10:42:00+00:00"
+>>>>>>> 28618c57fe6710a4d6317646d8f01d03e20c1f8b
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
