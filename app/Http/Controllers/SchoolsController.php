@@ -59,8 +59,11 @@ class SchoolsController extends Controller
             'school_id' => $school->id,
             'role_id' => $role->id
         ]);
-
-        return redirect('/login')->with('messageLogin', 'School registered successfully!');
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            return redirect('/viewschools')->with('message', 'School registered successfully!');
+        }else{
+            return redirect('/login')->with('messageLogin', 'School registered successfully!');
+        }
     }
     public function viewSchools(){
         $this->authorize('viewAny',  School::class);

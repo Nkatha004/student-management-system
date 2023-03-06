@@ -13,12 +13,11 @@ use Auth;
 class EmployeeSubjectsController extends Controller
 {
     public function index($id){
-
-        $this->authorize('viewAny',  EmployeeSubject::class);
-
         $employee = Employee::find($id);
+        $this->authorize('viewAny',  EmployeeSubject::class);
+        
         $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('deleted_at', NULL);
-        $subjects = Subject::all()->where('deleted_at', NULL);
+        $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
         $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
         return view('employees/addEmployeeSubjects', ['employee'=> $employee, 'employeesubjects'=> $employeesubjects, 'subjects'=>$subjects, 'classes'=>$classes]);
     }

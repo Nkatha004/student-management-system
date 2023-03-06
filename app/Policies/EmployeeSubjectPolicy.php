@@ -10,11 +10,19 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class EmployeeSubjectPolicy
 {
     use HandlesAuthorization;
-
+    
     public function viewAny(Employee $employee)
     {
         //All can view employee subjects
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
+    }
+
+    public function view(Employee $employee, EmployeeSubject $employeeSubject)
+    {
+        //Admin and principal can view all employee subjects
+        //Classteacher and teacher can view their employee subjects only
+        return $employee->role_id == 2;
+        // return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]) || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
     }
 
     public function hasEmployeeSubjects(Employee $employee)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SubjectCategories;
 use App\Models\Subject;
+use App\Models\School;
 
 class SubjectsController extends Controller
 {
@@ -12,20 +13,23 @@ class SubjectsController extends Controller
         $this->authorize('create',  Subject::class);
 
         $categories = SubjectCategories::all()->where('deleted_at', NULL);
+        $schools = School::all()->where('deleted_at', NULL);
 
-        return view('subjects/addSubject', ['categories'=> $categories ]);
+        return view('subjects/addSubject', ['categories'=> $categories, 'schools' => $schools]);
     }
     public function store(Request $request){
         $this->authorize('create',  Subject::class);
 
         $request->validate([
             'name' => 'required',
-            'category'=>'required'
+            'category'=>'required',
+            'school' => 'required'
         ]);
         
         Subject::create([
             'subject_name' => request('name'),
-            'category_id' => request('category')
+            'category_id' => request('category'),
+            'school_id' => request('school')
         ]);
 
         return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
@@ -38,27 +42,29 @@ class SubjectsController extends Controller
         return view('subjects/viewSubjects', ['subjects'=> $subjects]);
     }
 
-    public function edit($id, Subject $editSubject){
-        $this->authorize('update',  $editSubject);
-
+    public function edit($id){
         $subject = Subject::find($id);
-        $categories = SubjectCategories::all()->where('deleted_at', NULL);
+        $this->authorize('update',  $subject);
 
-        return view('subjects/editSubject', ['subject'=> $subject,'categories'=> $categories]);
+        $categories = SubjectCategories::all()->where('deleted_at', NULL);
+        $schools = School::all()->where('deleted_at', NULL);
+
+        return view('subjects/editSubject', ['subject'=> $subject,'categories'=> $categories, 'schools' => $schools]);
     }
 
-    public function update(Request $request, $id, Subject $editSubject){
-        $this->authorize('update',  $editSubject);
+    public function update(Request $request, $id){
+        $subject = Subject::find($id);
+        $this->authorize('update',  $subject);
 
         $request->validate([
             'name' => 'required',
-            'category' => 'required'
+            'category' => 'required',
+            'school' => 'required'
         ]);
 
-        $subject = Subject::find($id);
-        
         $subject->subject_name= $request->input('name');
         $subject->category_id = $request->input('category');
+        $subject->school_id = $request->input('school');
         $subject->save();
 
         return redirect('/viewsubjects')->with('message', 'Subject updated successfully!');

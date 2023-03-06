@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\SubjectCategories;
 use App\Models\Subject;
+use App\Models\School;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subject>
@@ -22,7 +23,8 @@ class SubjectFactory extends Factory
     {
         return [
             'subject_name' => fake()->randomElement(['Mathematics', 'English','Kiswahili', 'Chemistry', 'Biology', 'Physics', 'History', 'Geography', 'C.R.E', 'Business', 'Agriculture', 'French', 'Music', 'Aviation', 'HomeScience', 'Computer']),
-            'category_id' => SubjectCategories::factory() -> create() -> id
+            'category_id' => SubjectCategories::factory() -> create() -> id,
+            'school_id' => School::factory() -> create() -> id
         ];
     }
 }

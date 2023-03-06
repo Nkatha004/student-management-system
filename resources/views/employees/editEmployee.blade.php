@@ -64,7 +64,23 @@
                 <label for="tscNo" class=" form-label">TSC Number</label>
                 <input type="text" class="form-control" id="tscNo" name = "tscNo" value = "{{ $employee->tsc_number }}">
             </div>
+
+            @if($errors->has('role'))
+                <div class = "alert alert-danger" role = "alert">
+                    {{ $errors->first('role') }}
+                </div>
+            @endif
+            <div class="col-12">
+                <label for="inputState" class="form-label">Role</label>
+                <select id="inputState" class="form-select" name = "role">
+                    <option selected disabled>Choose the role</option>
+                    @foreach($roles as $role)
+                    <option value = "{{ $role->id}} ">{{ $role->role_name}}</option>
+                    @endforeach
+                </select>
+            </div>
         @endif
+        
         <div class="col-12 text-center">
             <button type="submit">Save</button>
         </div>

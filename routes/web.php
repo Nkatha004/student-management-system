@@ -98,28 +98,6 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/restorerole/{id}', 'restoreRole');
             Route::get('/restoreroles', 'restoreRoles');
         });
-
-        Route::controller(SubjectCategoriesController::class)->group(function(){
-            Route::get('/subjectcategories', 'index');
-            Route::post('/subjectcategories', 'store');
-            Route::get('/editsubjectcategory/{id}', 'edit');
-            Route::post('/updatesubjectcategory/{id}', 'update');
-            Route::get('/deletesubjectcategory/{id}', 'destroy');
-            Route::get('/trashedcategories', 'trashedCategories');
-            Route::get('/restorecategory/{id}', 'restoreCategory');
-            Route::get('/restorecategories', 'restoreCategories');
-        });
-
-        Route::controller(SubjectsController::class)->group(function(){
-            Route::get('/subjects', 'index');
-            Route::post('/subjects', 'store');
-            Route::get('/editsubject/{id}', 'edit');
-            Route::post('/updatesubject/{id}', 'update');
-            Route::get('/deletesubject/{id}', 'destroy');
-            Route::get('/trashedsubjects', 'trashedSubjects');
-            Route::get('/restoresubject/{id}', 'restoreSubject');
-            Route::get('/restoresubjects', 'restoreSubjects');
-        });
     });
 
     //Using IsPrincipalMiddleware for principal related roles only
@@ -147,10 +125,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/logout', 'logout');
     });
 
-    Route::get('/viewsubjectcategories', [SubjectCategoriesController::class, 'viewSubjectCategories']);
-
-    Route::get('/viewsubjects', [SubjectsController::class, 'viewSubjects']);
-
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/teacherdashboard', 'teacherDashboard');
         Route::get('/principaldashboard', 'principalDashboard');    
@@ -166,6 +140,30 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/restoreemployee/{id}', 'restoreEmployee');
         Route::get('/restoreemployees', 'restoreEmployees');
         Route::get('/trashedemployees', 'trashedEmployees');
+    });
+
+    Route::controller(SubjectCategoriesController::class)->group(function(){
+        Route::get('/subjectcategories', 'index');
+        Route::post('/subjectcategories', 'store');
+        Route::get('/viewsubjectcategories', 'viewSubjectCategories');
+        Route::get('/editsubjectcategory/{id}', 'edit');
+        Route::post('/updatesubjectcategory/{id}', 'update');
+        Route::get('/deletesubjectcategory/{id}', 'destroy');
+        Route::get('/trashedcategories', 'trashedCategories');
+        Route::get('/restorecategory/{id}', 'restoreCategory');
+        Route::get('/restorecategories', 'restoreCategories');
+    });
+
+    Route::controller(SubjectsController::class)->group(function(){
+        Route::get('/subjects', 'index');
+        Route::post('/subjects', 'store');
+        Route::get('/viewsubjects', 'viewSubjects');
+        Route::get('/editsubject/{id}', 'edit');
+        Route::post('/updatesubject/{id}', 'update');
+        Route::get('/deletesubject/{id}', 'destroy');
+        Route::get('/trashedsubjects', 'trashedSubjects');
+        Route::get('/restoresubject/{id}', 'restoreSubject');
+        Route::get('/restoresubjects', 'restoreSubjects');
     });
 
     Route::controller(EmployeeSubjectsController::class)->group(function(){

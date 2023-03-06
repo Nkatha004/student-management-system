@@ -12,5 +12,5 @@ class Subject extends Model implements Auditable
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable; 
 
-    protected $fillable = ['id', 'subject_name','category_id'];
+    protected $fillable = ['id', 'subject_name','category_id', 'school_id'];
 }

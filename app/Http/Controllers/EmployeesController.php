@@ -83,7 +83,8 @@ class EmployeesController extends Controller
             'fname' => 'required',
             'lname' => 'required',
             'email' => 'required | email',
-            'telNo' => 'required | min: 9'
+            'telNo' => 'required | min: 9',
+            'role' => 'required'
         ]);
 
         $employee = Employee::find($id);
@@ -93,6 +94,7 @@ class EmployeesController extends Controller
         $employee->email = $request->input('email');
         $employee->telephone_number = $request->input('telNo');
         $employee->tsc_number = $request->input('tscNo');
+        $employee->role_id = $request->input('role');
     
         $employee->save();
 

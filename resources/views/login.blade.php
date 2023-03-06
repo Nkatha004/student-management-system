@@ -26,14 +26,14 @@
                         <i class="fas fa-envelope"></i>
                         <input type = "email" placeholder = "Email Address" name = "email">
                     </div>
-                    @if($errors->has('login_password'))
+                    @if($errors->has('password'))
                         <div class = "alert-danger" role = "alert">
-                            {{ $errors->first('login_password') }}
+                            {{ $errors->first('password') }}
                         </div>
                     @endif
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                        <input type = "password" placeholder = "Password" name = "login_password">
+                        <input type = "password" placeholder = "Password" name = "password">
                     </div>
                     <input type = "submit" value = "Login" class = "btn solid"/>
                 </form>

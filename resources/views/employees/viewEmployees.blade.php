@@ -32,10 +32,13 @@
 	                    <td>{{App\Http\Controllers\RolesController::getRoleName($employee->role_id) }}</td>
 
 						<td>
-							<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Subjects</a>
+							@if($employee->role_id != \App\Models\Role::IS_SUPERADMIN)
+								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Subjects</a>
+							@endif
 							@can('update', $employee)
 								<a href = "{{ url('/editemployee/'.$employee->id) }}" class = "btn btn-sm btn-warning">Update</a>
 							@endcan
+							
 							@can('delete', $employee)
 								<a href = "{{ url('/deleteemployee/'.$employee->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 							@endcan

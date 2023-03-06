@@ -1,45 +1,57 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	<div class = "text-center">
-
-	   <table class="table table-striped">
-			<thead>
-				<tr>
+	
+        <table id = "employeeSubjectsView" class="stripe row-border">
+            <thead>
+                <tr>
                     @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER)
-    					<th scope="col">First Name</th>
-    					<th scope="col">Last Name</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                     @endif
                     
                     <th scope="col">Teaching Subjects</th>
                     <th scope="col">Class</th>
-				</tr>
-			</thead>
-			<tbody>
+                    @can('restore', '\App\Models\EmployeeSubject')
+                        <th scope="col">Actions</th>
+                    @endcan
+                </tr>
+            </thead>
+            <tbody>
                 @foreach($employeesubjects as $e_subject)
-				<tr>
-                    @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER)
-    					<td>{{ $employee->first_name }}</td>
-    					<td>{{ $employee->last_name }}</td>
-                    @endif
-                    <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
-                    <td>{{App\Http\Controllers\ClassesController::getClassName($e_subject->class_id)}}</td>
-                    
-                    <td>
-                        @can('update', $e_subject)
-                            <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
-                        @endcan
-                        @can('delete', $e_subject)
-                            <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-                        @endcan
-                        @can('create', '\App\Models\ExamMark')
-                            <a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
-                        @endcan
-                    </td>
-				</tr>
+                    @can('view', $e_subject)
+                        <tr>
+                            @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER)
+                                <td>{{ $employee->first_name }}</td>
+                                <td>{{ $employee->last_name }}</td>
+                            @endif
+                            <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
+                            <td>{{App\Http\Controllers\ClassesController::getClassName($e_subject->class_id)}}</td>
+                            
+                            @can('restore', '\App\Models\EmployeeSubject')
+                                <td>
+                                    @can('update', $e_subject)
+                                        <a href = "{{ url('/editemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
+                                    @endcan
+                                    @can('delete', $e_subject)
+                                        <a href = "{{ url('/deleteemployeesubject/'.$e_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+                                    @endcan
+                                    @can('create', '\App\Models\ExamMark')
+                                        <a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a>
+                                    @endcan
+                                </td>
+                            @endcan
+                        </tr>
+                    @endcan
                 @endforeach
-			</tbody>
-		</table>
-	</div>
+            </tbody>
+        </table>
+        <script>
+            $(document).ready( function () {
+                $('#employeeSubjectsView').DataTable();
+            } );
+        </script>
+
+
     @can('create', '\App\Models\EmployeeSubject')
         <form method = "post" action = "{{ url('/employeesubjects') }}" id = "teachingSubjects" class="row g-3 form">
             @csrf

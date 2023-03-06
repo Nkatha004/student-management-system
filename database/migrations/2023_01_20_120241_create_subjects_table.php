@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('subject_name');
             $table->integer('category_id')->unsigned();
             $table -> foreign('category_id') -> references('id') -> on('subject_categories');
+            $table->integer('school_id')->unsigned();
+            $table -> foreign('school_id') -> references('id') -> on('schools');
             $table->softDeletes();
             $table->timestamps();
         });

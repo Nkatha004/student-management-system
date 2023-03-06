@@ -29,18 +29,19 @@ class HomeController extends Controller
     public function processLogin(Request $request){
         $request->validate([
             'email' => 'required',
-            'login_password' => [
-                'required',
-                Password::min(8)
-                        ->letters()
-                        ->mixedCase()
-                        ->numbers()
-                        ->symbols()
-                        ->uncompromised(3)
+            'password' => [
+                'required'
             ]
         ]);
 
-        $credentials = $request->only('email', 'login_password');
+        // Password::min(8)
+        //         ->letters()
+        //         ->mixedCase()
+        //         ->numbers()
+        //         ->symbols()
+        //         ->uncompromised(3)
+
+        $credentials = $request->only('email', 'password');
 
         //Login user
         if(Auth::attempt($credentials)){
