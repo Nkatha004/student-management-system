@@ -32,6 +32,25 @@
                 <textarea class="form-control" id="description" name = "description" style="height: 100px"></textarea>
             </div>
         </div>
+
+        @if(Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
+            <input hidden name = "school" value = "{{ Auth::user()->school_id }}">
+        @else
+            @if($errors->has('school'))
+                <div class = "alert alert-danger" role = "alert">
+                    {{ $errors->first('school') }}
+                </div>
+            @endif
+            <div class="col-12">
+                <label for="inputState" class="form-label">School Name</label>
+                <select id="inputState" class="form-select" name = "school">
+                    <option selected disabled>Choose the school</option>
+                    @foreach($schools as $school)
+                    <option value = "{{ $school->id}} ">{{ $school->school_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
        
         <div class="col-12 text-center">
             <button type="submit">Add Subject Category</button>

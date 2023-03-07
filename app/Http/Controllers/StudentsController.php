@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\School;
 use App\Models\Classes;
 use App\Models\Role;
@@ -17,11 +18,14 @@ class StudentsController extends Controller
         $this->authorize('create',  Student::class);
 
         $schools = School::all()->where('deleted_at', NULL);
-        if(Auth::user()->role_id != Role::IS_CLASSTEACHER){
-            $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
-        }else{
+
+        if(Auth::user()->role_id == Role::IS_CLASSTEACHER){
             //allow class teacher to add students belonging to their class only
             $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id);
+        }elseif(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $classes = Classes::all()->where('deleted_at', NULL);
+        }else{
+            $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
         }
         return view('students/addStudent', ['schools'=>$schools, 'classes'=>$classes]);
     }
@@ -86,9 +90,13 @@ class StudentsController extends Controller
     }
     public function viewStudentsTaughtByEmployee($id){
         $this->authorize('viewAny',  Student::class);
-
-        //select all students who are in the class and do the subject taught by the teacher
-        $students = Student::select('*')->where('class_id', EmployeeSubject::find($id)->class_id)->whereIn('id', StudentSubject::select('student_id')->where('subject_id', EmployeeSubject::find($id)->subject_id)->get())->get();
+        //if admin select all students
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $students = Student::select('*')->where('deleted_at', NULL)->get();
+        }else{
+             //select all students who are in the class and do the subject taught by the teacher
+            $students = Student::select('*')->where('class_id', EmployeeSubject::find($id)->class_id)->whereIn('id', StudentSubject::select('student_id')->where('subject_id', EmployeeSubject::find($id)->subject_id)->get())->get();
+        }
         return view('students/viewStudentsToAddMarks', ['students'=>$students, 'subject'=>EmployeeSubject::find($id)->subject_id]);
     }
     public function viewStudentsToAddMarks($id){
@@ -174,6 +182,17 @@ class StudentsController extends Controller
 
         $student = Student::find($id)->delete();
         return redirect('/viewstudents')->with('message', 'Student deleted successfully!');
+    }
+
+    public function addMarksByAdmin($id){
+        $student = Student::find($id);
+
+        //find the student subjects done by the student
+        $subjects = StudentSubject::select('*')->where('deleted_at', NULL)
+                                                        ->where('student_id', $student->id)
+                                                        ->get();
+
+        return view('exams/addExamMarks', ['student' => $student, 'subjects'=>$subjects]);
     }
 
     public static function getStudentName($id){

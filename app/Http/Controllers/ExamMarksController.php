@@ -19,6 +19,10 @@ class ExamMarksController extends Controller
 
         $this->authorize('create',  ExamMark::class);
 
+        //find the subjects done by the student
+        $subjects = StudentSubject::select('*')->where('deleted_at', NULL)
+                                                        ->where('student_id', Student::find($studentID)->id)
+                                                        ->get();
         //find the student subject done by the student
         $studentsubjects = StudentSubject::select('*')->where('deleted_at', NULL)
                                                 ->where('student_id', Student::find($studentID)->id)
@@ -26,10 +30,16 @@ class ExamMarksController extends Controller
                                                 ->get()
                                                 ->first();
 
-        return view('exams.addExamMarks', ['student'=>Student::find($studentID),'subject'=>Subject::find($subjectID), 'studentsubjects'=>$studentsubjects]);
+        return view('exams.addExamMarks', ['student'=>Student::find($studentID),'subject'=>Subject::find($subjectID), 'studentsubjects'=>$studentsubjects, 'subjects'=>$subjects]);
     }
     public function store(Request $request){
         $this->authorize('create',  ExamMark::class);
+
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $request->validate([
+                'subject' => 'required'
+            ]);
+        }
 
         $request->validate([
             'term' => 'required',
@@ -39,16 +49,23 @@ class ExamMarksController extends Controller
         $year = date('Y');
 
         //get the exam marks so that you can validate the results for the specific term and student do not already exist
-        $exams = ExamMark::all()->where('student_subject_id', request('studentSubject'));
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $studentsubject = StudentSubject::select('id')->where('student_id', request('student_id'))->where('subject_id', request('subject'))->get()->first()->id;
+            $exams = ExamMark::where('student_subject_id', $studentsubject)->get();
+        }else{
+            $studentsubject = request('studentSubject');
+            $exams = ExamMark::all()->where('student_subject_id', studentsubject);
+        }
 
         foreach($exams as $exam){
             if($year == $exam->year && request('term') == $exam->term){
-                $studentName = StudentSubjectsController::getStudentName(request('studentSubject'));
-                return redirect('/marks/'.StudentSubject::find(request('studentSubject'))->student_id.'/'.StudentSubject::find(request('studentSubject'))->subject_id)->with('message', 'Marks for '.$studentName.' for '.$request->term.' '.$year.' '.' already exist!'); 
+                $studentName = StudentSubjectsController::getStudentName(request('student_id'));
+                return redirect('/marks/'.StudentSubject::find($studentsubject)->student_id.'/'.StudentSubject::find($studentsubject)->subject_id)->with('message', 'Marks for '.$studentName.' for '.$request->term.' '.$year.' '.' already exist!'); 
             }
         }
+        
         ExamMark::create([
-            'student_subject_id' => request('studentSubject'),
+            'student_subject_id' => $studentsubject,
             'mark' => request('mark'), 
             'year' => $year,
             'term' => request('term'),

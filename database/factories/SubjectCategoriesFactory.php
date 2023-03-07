@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\SubjectCategories;
+use App\Models\School;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SubjectCategories>
@@ -21,7 +22,8 @@ class SubjectCategoriesFactory extends Factory
     {
         return [
             'category_name' => fake()->randomElement(['Mathematics', 'Languages', 'Sciences', 'Humanities', 'Technicals']),
-            'description' => fake()->text(10)
+            'description' => fake()->text(10),
+            'school_id' => School::factory() -> create() -> id,
         ];
     }
 }

@@ -7,17 +7,21 @@
 					<th scope="col">Category Name</th>
 					<th scope="col">Category Description</th>
 					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
-						<th scope = "col">Actions</th>
+						<th scope="col">School</th>
 					@endif
+					<th scope = "col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach($categories as $category)
-				<tr>
-					<td>{{ $category->category_name }}</td>
-                    <td>{{ $category->description }}</td>
+					@can('view', $category)
+					<tr>
+						<td>{{ $category->category_name }}</td>
+						<td>{{ $category->description }}</td>
 
-					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+						@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+							<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($category->school_id) }}</td>
+						@endif
 						<td>
 							@can('update', $category)
 								<a href = "{{ url('/editsubjectcategory/'.$category->id) }}" class = "btn btn-sm btn-warning">Update</a>
@@ -26,8 +30,8 @@
 								<a href = "{{ url('/deletesubjectcategory/'.$category->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 							@endcan
 						</td>
-					@endif
-				</tr>
+					</tr>
+					@endcan
 				@endforeach
 			</tbody>
 		</table>

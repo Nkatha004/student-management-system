@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\SubjectCategories;
 use App\Models\Subject;
 use App\Models\School;
+use App\Models\Role;
+use Auth;
 
 class SubjectsController extends Controller
 {
@@ -22,18 +24,23 @@ class SubjectsController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'category'=>'required',
-            'school' => 'required'
-        ]);
-        
-        Subject::create([
-            'subject_name' => request('name'),
-            'category_id' => request('category'),
-            'school_id' => request('school')
+            'category'=>'required'
         ]);
 
-        return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
+        $school = SubjectCategories::all()->where('deleted_at', NULL)->where('id', request('category'))->first()->school_id;
+
+        if($this->canAddRecord(request('name'), request('category'), $school)){
+            Subject::create([
+                'subject_name' => request('name'),
+                'category_id' => request('category'),
+                'school_id' => $school
+            ]);
+            return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
+        }else{
+            return redirect('/subjects')->with('message', "Subject for the selected category already exists!");
+        }   
     }
+
     public function viewSubjects(){
         $this->authorize('viewAny',  Subject::class);
 
@@ -72,7 +79,9 @@ class SubjectsController extends Controller
 
     public function destroy($id, Subject $deleteSubject)
     {
-        $this->authorize('delete',  $deleteSubject);
+        $subject = Subject::find($id);
+        $this->authorize('delete',  $subject);
+
         $subject = Subject::find($id)->delete();
         
         return redirect('/viewsubjects')->with('message', 'Subject deleted successfully!');
@@ -91,7 +100,11 @@ class SubjectsController extends Controller
     public function trashedSubjects(){
         $this->authorize('restore', Subject::class);
 
-        $subjects = Subject::onlyTrashed()->get();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $subjects = Subject::onlyTrashed()->get()->where('school_id', Auth::user()->school_id);
+        }else{
+            $subjects = Subject::onlyTrashed()->get();
+        }
         return view('subjects/trashedSubjects', compact('subjects'));
     }
 
@@ -109,5 +122,15 @@ class SubjectsController extends Controller
         
         Subject::onlyTrashed()->restore();
         return back();
+    }
+
+    public static function canAddRecord($subjectName, $categoryId, $schoolId){
+        $categories = SubjectCategories::all()->where('subject_name', $subjectName)->where('category_id', $categoryId)->where('school_id', $schoolId);
+
+        if(count($categories) > 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

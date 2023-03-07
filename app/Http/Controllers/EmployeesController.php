@@ -71,7 +71,12 @@ class EmployeesController extends Controller
 
         $employee = Employee::find($id);
         $schools = School::all()->where('deleted_at', NULL);
-        $roles = Role::all()->where('deleted_at', NULL)->where('id' ,'!=' ,Role::IS_SUPERADMIN)->where('id', '!=' , Role::IS_PRINCIPAL);
+
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $roles = Role::all()->where('deleted_at', NULL);
+        }else{
+            $roles = Role::all()->where('deleted_at', NULL)->where('id' ,'!=' ,Role::IS_SUPERADMIN)->where('id', '!=' , Role::IS_PRINCIPAL);
+        }
 
         return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools, 'roles'=>$roles]);
     }

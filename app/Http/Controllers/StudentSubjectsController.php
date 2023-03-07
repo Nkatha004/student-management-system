@@ -7,6 +7,8 @@ use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Classes;
+use App\Models\Role;
+use Auth;
 
 class StudentSubjectsController extends Controller
 {
@@ -14,8 +16,14 @@ class StudentSubjectsController extends Controller
         $this->authorize('viewAny',  StudentSubject::class);
 
         $student = Student::find($id);
+
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $schoolID = Classes::all()->where('id', $student->class_id)->first()->school_id;
+            $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', $schoolID);
+        }else{
+            $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+        }
         $studentsubjects = StudentSubject::all()->where('student_id', $id)->where('deleted_at', NULL);
-        $subjects = Subject::all()->where('deleted_at', NULL);
     
         return view('students/addStudentSubjects', ['student'=> $student, 'studentsubjects'=> $studentsubjects, 'subjects'=>$subjects]);
     }
@@ -44,10 +52,18 @@ class StudentSubjectsController extends Controller
     }
 
     public function edit($id, StudentSubject $studentSubject){
+        $student = Student::find($id);
+        
         $this->authorize('update',  $studentSubject);
 
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $schoolID = Classes::all()->where('id', $student->class_id)->first()->school_id;
+            $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', $schoolID);
+        }else{
+            $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+        }
+
         $studentsubject = StudentSubject::find($id);
-        $subjects = Subject::all()->where('deleted_at', NULL);
 
         return view('students/editstudentsubject', ['studentsubject'=>$studentsubject, 'subjects'=>$subjects]);
     }
@@ -78,7 +94,7 @@ class StudentSubjectsController extends Controller
         return redirect("/studentsubjects/".$studentsubject->student_id)->with("Student Subject deleted successfully");
     }
     public static function getStudentName($id){
-        $student = Student::find(StudentSubject::find($id)->student_id);
+        $student = Student::find($id);
         return $student->first_name. ' '. $student->last_name;
     }
     public static function getSubject($id){

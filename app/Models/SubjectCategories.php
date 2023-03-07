@@ -12,7 +12,7 @@ class SubjectCategories extends Model implements Auditable
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable; 
 
-    protected $fillable = ['id', 'category_name', 'description'];
+    protected $fillable = ['id', 'category_name', 'description', 'school_id'];
 
     public const MATHEMATICS = 1;
     public const LANGUAGES = 2;

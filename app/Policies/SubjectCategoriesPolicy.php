@@ -17,6 +17,13 @@ class SubjectCategoriesPolicy
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
+    public function view(Employee $employee, SubjectCategories $subjectCategories)
+    {
+        //admin can view all subject categories
+        //principal can view all subject categories linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subjectCategories->school_id == $employee->school_id);
+    }
+
     public function create(Employee $employee)
     {
         //Only principal and admin can add subject categories
@@ -25,19 +32,21 @@ class SubjectCategoriesPolicy
 
     public function update(Employee $employee, subjectCategories $subjectCategories)
     {
-        //Only admin can update subject categories
-        return $employee->role_id == Role::IS_SUPERADMIN;
+        //admin can update all/any subject categories
+        //principal can update all subject categories linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subjectCategories->school_id == $employee->school_id);
     }
 
     public function delete(Employee $employee, subjectCategories $subjectCategories)
     {
-        //Only admin can delete subject categories
-        return $employee->role_id == Role::IS_SUPERADMIN;
+        //admin can update all/any subject categories
+        //principal can update all subject categories linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subjectCategories->school_id == $employee->school_id);
     }
 
     public function restore(Employee $employee)
     {
-        //Only admin can restore subject categories
-        return $employee->role_id == Role::IS_SUPERADMIN;
+        //Only principal and admin can restore subject categories
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 }

@@ -21,8 +21,8 @@ class EmployeeSubjectPolicy
     {
         //Admin and principal can view all employee subjects
         //Classteacher and teacher can view their employee subjects only
-        return $employee->role_id == 2;
-        // return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]) || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]) ;
+        // || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
     }
 
     public function hasEmployeeSubjects(Employee $employee)
@@ -33,14 +33,14 @@ class EmployeeSubjectPolicy
 
     public function create(Employee $employee)
     {
-        //Only principal can create employee subject
-        return $employee->role_id == Role::IS_PRINCIPAL;
+        //Only principal and admin can create employee subjects
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
     public function update(Employee $employee, EmployeeSubject $employeeSubject)
     {
-        //Only principal can update employee subject
-        return $employee->role_id == Role::IS_PRINCIPAL;
+        //Only principal and admin can update employee subject
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
     public function delete(Employee $employee, EmployeeSubject $employeeSubject)

@@ -19,14 +19,14 @@ class ExamMarkPolicy
 
     public function create(Employee $employee)
     {
-        //Only admin cannot add marks
-        return $employee->role_id != Role::IS_SUPERADMIN;
+        //All can add marks
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
     }
 
     public function update(Employee $employee, ExamMark $mark)
     {
-        //Only principal can change marks
-        return $employee->role_id == Role::IS_PRINCIPAL;
+        //Only principal and admin can change marks
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
     public function delete(Employee $employee, ExamMark $mark)

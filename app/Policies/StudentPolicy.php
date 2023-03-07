@@ -19,14 +19,14 @@ class StudentPolicy
 
     public function create(Employee $employee)
     {
-        //Only principal and class teacher can add student
-        return in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_PRINCIPAL]);
+        //Only teacher cannot add student
+        return $employee->role_id != Role::IS_TEACHER;
     }
 
     public function update(Employee $employee, Student $student)
     {
-        //Only principal and class teacher can update a student
-        return in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_PRINCIPAL]);
+        //Only teacher cannot update a student
+        return $employee->role_id != Role::IS_TEACHER;
     }
 
     public function delete(Employee $employee, Student $student)

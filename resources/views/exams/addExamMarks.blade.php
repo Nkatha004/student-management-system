@@ -32,13 +32,15 @@
         <h3 class = "text-center">Add Marks</h3>
         @if(Auth::user()->role_id != \App\Models\Role::IS_PRINCIPAL)
         <div class = "alert alert-info" role = "alert">
-            Ensure marks entered are correct before submitting. Marks submitted cannot be edited!
+            Ensure marks entered are correct before submitting!
         </div>
         @endif
 
         <input type="text" class="form-control" id="student_id" name = "student_id" value = "{{$student->id}}" hidden>
-        <input type="text" class="form-control" id="studentSubject" name = "studentSubject" value = "{{$studentsubjects->id}}" hidden>
         
+        @if(Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
+            <input type="text" class="form-control" id="studentSubject" name = "studentSubject" value = "{{$studentsubjects->id}}" hidden>
+        @endif
         <div class="col-12">
             @if($errors->has('admission'))
                 <div class = "alert alert-danger" role = "alert">
@@ -55,12 +57,23 @@
             </div>
         @endif
         <div class="col-12">
-            <label for="inputState" class="form-label">Subject Name</label>
-            <input type="text" class="form-control" id="subject" name = "subject" value = "{{$subject->subject_name}}" readonly>
-            <input type="text" class="form-control" id="subject" name = "subjectID" value = "{{$subject->id}}" hidden>
+            @if(Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
+                <label for="inputState" class="form-label">Subject Name</label>
+                <input type="text" class="form-control" id="subject" name = "subject" value = "{{$subject->subject_name}}" readonly>
+                <input type="text" class="form-control" id="subject" name = "subjectID" value = "{{$subject->id}}" hidden>
+            @else
+                <div class="col-12">
+                    <label for="inputState" class="form-label">Subject Name</label>
+                    <select id="inputState" class="form-select" name = "subject">
+                        <option selected disabled>Choose the subject</option>
+                        @foreach($subjects as $subject)
+                            <option value = "{{ $subject->subject_id}} ">{{ \App\Http\Controllers\SubjectsController::getSubjectName($subject->subject_id)}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
         </div>
 
-        
         @if($errors->has('term'))
             <div class = "alert alert-danger" role = "alert">
                 {{ $errors->first('term') }}

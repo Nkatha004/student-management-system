@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Employee;
 use Illuminate\Validation\Rules\Password;
 use Hash;
+use Auth;
 
 class SchoolsController extends Controller
 {
@@ -68,7 +69,7 @@ class SchoolsController extends Controller
     public function viewSchools(){
         $this->authorize('viewAny',  School::class);
 
-        $schools = School::where('deleted_at', NULL)->where('id', '!=', '1')->get();
+        $schools = School::where('deleted_at', NULL)->get();
 
         return view('schools/viewschools', ['schools'=> $schools]);
     }
@@ -98,7 +99,7 @@ class SchoolsController extends Controller
         return redirect('/viewschools')->with('message', 'School updated successfully!');
     }
 
-    public function destroy($id)
+    public function destroy($id, School $school)
     {
         $this->authorize('delete',  $school);
 

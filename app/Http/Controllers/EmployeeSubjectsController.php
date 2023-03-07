@@ -6,6 +6,7 @@ use App\Http\Controllers\SubjectsController;
 use App\Models\Employee;
 use App\Models\Subject;
 use App\Models\Classes;
+use App\Models\Role;
 use App\Models\EmployeeSubject;
 use Illuminate\Http\Request;
 use Auth;
@@ -17,8 +18,10 @@ class EmployeeSubjectsController extends Controller
         $this->authorize('viewAny',  EmployeeSubject::class);
         
         $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('deleted_at', NULL);
-        $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
-        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+
+        $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);
+        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);
+       
         return view('employees/addEmployeeSubjects', ['employee'=> $employee, 'employeesubjects'=> $employeesubjects, 'subjects'=>$subjects, 'classes'=>$classes]);
     }
 
@@ -53,8 +56,10 @@ class EmployeeSubjectsController extends Controller
         $this->authorize('update',  $employeesubject);
 
         $employeesubject = EmployeeSubject::find($id);
-        $subjects = Subject::all()->where('deleted_at', NULL);
-        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+        $employee = Employee::find($employeesubject->employee_id);
+
+        $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);
+        $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);
 
         return view('employees/editEmployeeSubject', ['employeesubject'=>$employeesubject, 'subjects'=>$subjects, 'classes'=>$classes]);
     }

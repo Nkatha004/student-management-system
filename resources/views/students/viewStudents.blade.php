@@ -4,7 +4,7 @@
 		<table id = "studentsView" class="compact stripe row-border">
 			<thead>
 				<tr>
-					<th scope="col">Admission Number</th>
+					<th scope="col">Admission No.</th>
 					<th scope="col">Name</th>
 
 					<!-- Display guardian phone number to all except admin  -->
@@ -51,6 +51,10 @@
 							@can('delete', $student)
 								<a href = "{{ url('/deletestudent/'.$student->id) }}" class = "btn btn-sm btn-danger">Delete</a>
 							@endcan
+
+							@if(Auth::user()->role_id == \App\models\Role::IS_SUPERADMIN)
+								<a href = "{{ url('/addmarks/'.$student->id) }}" class = "btn btn-sm btn-secondary">Add Marks</a>
+							@endif
 						</td>
 					</tr>
 				@endforeach

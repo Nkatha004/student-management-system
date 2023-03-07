@@ -251,7 +251,15 @@
                     </div>
                 @endif
 
-                
+                @if (Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL)
+                    <a href = "{{URL::to('/contact')}}">
+                        <li>
+                            <i class="uil uil-comment-alt-message"></i>
+                            <span>Leave us a Message</span>
+                        </li>
+                    </a>
+                @endif
+
                 <a href = "{{URL::to('/logout')}}">
                     <li>
                         <i class="uil uil-signin"></i>

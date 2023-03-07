@@ -11,6 +11,9 @@
 				<tr>
 					<th scope="col">Category Name</th>
 					<th scope="col">Category Description</th>
+					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+						<th scope = "col">School</th>
+					@endif
 					<th scope = "col">Actions</th>
 				</tr>
 			</thead>
@@ -19,6 +22,9 @@
 				<tr>
 					<td>{{ $category->category_name }}</td>
                     <td>{{ $category->description }}</td>
+					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+						<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($category->school_id) }}</td>
+					@endif
 
                     @can('restore', '\App\Models\SubjectCategories')
 						<td>

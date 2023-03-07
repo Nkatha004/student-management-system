@@ -1,7 +1,7 @@
-@include('common/header')   
+@include('dashboard.dashboardSideNav')
 <div id = "section3" class="contact">
     <div class="row">
-        <form method = "POST" id = "addForm" action = "{{ url('/contact') }}">
+        <form method = "POST" action = "{{ url('/contact') }}">
             @csrf
             @if(session()->has('message'))
                 <div class="alert alert-success text-center">
@@ -11,15 +11,18 @@
             <h2 class = "text-center">Contact Us</h2><br/>
             <div class="row g-3">
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="First name" aria-label="First name" name = "firstName">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-control" value="{{$employee->first_name}}" aria-label="First name" name = "firstName" readonly>
                 </div>
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" name = "lastName">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-control" value="{{$employee->last_name}}" aria-label="Last name" name = "lastName" readonly>
                 </div>
             </div><br/>
             <div class="row g-3">
                 <div class="col-12">
-                    <input type="email" class="form-control" id="inputAddress" placeholder="Email Address" name = "email">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="inputAddress" value="{{$employee->email}}" name = "email" readonly>
                 </div>
             </div><br/>
             <div class="row g-3">

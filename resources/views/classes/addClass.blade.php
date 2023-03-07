@@ -42,9 +42,6 @@
                 }
             </script>
         </div>
-        @if (Auth::check())
-        <input value = "{{ Auth::user()->school_id }} " name = "school" hidden>
-        @endif
 
         @if($errors->has('teacher'))
             <div class = "alert alert-danger" role = "alert">
@@ -56,7 +53,11 @@
             <select id="inputState" class="form-select" name = "teacher">
                 <option selected disabled>Choose the teacher</option>
                 @foreach($teachers as $teacher)
-                    <option value = "{{ $teacher->id}} ">{{ $teacher->first_name. ' '. $teacher->last_name}}</option>
+                    @if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+                        <option value = "{{ $teacher->id}} ">{{ $teacher->first_name. ' '. $teacher->last_name.' - '.\App\Http\Controllers\SchoolsController::getSchoolName($teacher->school_id)}}</option>
+                    @else
+                        <option value = "{{ $teacher->id}} ">{{ $teacher->first_name. ' '. $teacher->last_name }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

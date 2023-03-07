@@ -81,13 +81,15 @@
             <select id="inputState" class="form-select" name = "class">
                 <option selected disabled>Choose the class</option>
                 @foreach($classes as $class)
-                <option value = "{{ $class->id}} ">{{ $class->class_name}}</option>
+                    @if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+                        <option value = "{{ $class->id}} ">{{ $class->class_name.' - '.\App\Http\Controllers\SchoolsController::getSchoolNameByClassID($class->id)}}</option>
+                    @else
+                        <option value = "{{ $class->id}} ">{{ $class->class_name }}</option>
+                    @endif
+
                 @endforeach
             </select>
         </div>
-        @if (Auth::check())
-        <input value = "{{ Auth::user()->school_id }} " name = "school" hidden>
-        @endif
 
         <div class="col-12 text-center">
             <button type="submit">Add Student</button>

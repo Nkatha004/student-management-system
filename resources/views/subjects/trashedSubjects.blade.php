@@ -11,7 +11,7 @@
 				<tr>
 					<th scope="col">Subject Name</th>
 					<th scope="col">Subject Category</th>
-					@if(Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL)
+					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
 						<th scope = "col">School</th>
 					@endif
 					<th scope="col">Actions</th>
@@ -22,7 +22,7 @@
 				<tr>
 					<td>{{ $subject->subject_name }}</td>
                     <td>{{ App\Http\Controllers\SubjectCategoriesController::getSubjectCategoryName($subject->category_id) }}</td>
-					@if(Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL)
+					@if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
 						<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($subject->school_id) }}</td>
 					@endif
 					@can('restore', '\App\Models\Subject')

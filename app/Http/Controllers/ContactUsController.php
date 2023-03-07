@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Contact;
+use App\Models\Employee;
+use Auth;
 
 class ContactUsController extends Controller
 {
     public function index(){
-        return view('contactus/contact');
+        $employee = Employee::all()->where('deleted_at', NULL)->where('id', Auth::user()->id)->first();
+        return view('contactus/contact', ['employee' => $employee]);
     }
     public function store(Request $request){
         $input = $request->all();
@@ -51,7 +54,7 @@ class ContactUsController extends Controller
             ->subject('School Management System: Message Received');
         });
 
-        return redirect('/#section3')->with('message', 'Message successfully sent');
+        return redirect('/#section3')->with('message', 'Message sent. We will respond via email soonest possible.');
     }
     public function viewMessages(){
         $contacts = Contact::where('deleted_at', NULL)->get();

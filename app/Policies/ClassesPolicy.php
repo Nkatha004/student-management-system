@@ -19,14 +19,14 @@ class ClassesPolicy
 
     public function create(Employee $employee)
     {
-        //Only principal can add class to their school
-        return $employee->role_id == Role::IS_PRINCIPAL;
+        //Only principal and admin can add class to their school
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
     public function update(Employee $employee, Classes $classes)
     {
-        //Only principal can update class in their school
-        return $employee->role_id == Role::IS_PRINCIPAL;
+        //Only principal and admin can update class in their school
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
     public function delete(Employee $employee, Classes $classes)

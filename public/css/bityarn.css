@@ -127,3 +127,12 @@ button:hover{
 .upload input::-webkit-file-upload-button, .upload input[type=submit]{
     cursor: pointer;
 }
+
+.contact{
+    padding: 3% 10% 0%;
+    overflow: hidden;
+}
+
+.contact .col input, .contact .col-12 input{
+    background-color: #e7f3ef;
+}

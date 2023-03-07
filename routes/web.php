@@ -196,6 +196,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewstudents', 'viewStudents')->name('viewstudents');
         Route::get('/viewstudents/{id}', 'viewStudentsTaughtByEmployee');
         Route::get('/addstudentmarks', 'viewStudentsToAddMarks');
+        Route::get('/addmarks/{id}', 'addMarksByAdmin');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
         Route::get('/trashedstudents', 'trashedStudents');

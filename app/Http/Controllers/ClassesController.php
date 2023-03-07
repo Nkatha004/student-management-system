@@ -32,13 +32,13 @@ class ClassesController extends Controller
             'year' => 'required',
             'teacher'=>'required'
         ]);
-        if(request('school') == NULL){
-            return redirect('/login')->with('message', "Please login to add a new class");
-        }
+
+        $school = Employee::all()->where('id', request('teacher'))->first()->school_id;
+
         Classes::create([
             'class_name' => request('classname'), 
             'year' => request('year'),
-            'school_id' => request('school'),
+            'school_id' => $school,
             'class_teacher'=>request('teacher')
         ]);
 
