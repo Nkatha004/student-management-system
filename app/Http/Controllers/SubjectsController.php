@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\SubjectCategoriesController;
 
 use Illuminate\Http\Request;
 use App\Models\SubjectCategories;
@@ -13,11 +14,13 @@ class SubjectsController extends Controller
 {
     public function index(){
         $this->authorize('create',  Subject::class);
-
-        $categories = SubjectCategories::all()->where('deleted_at', NULL);
-        $schools = School::all()->where('deleted_at', NULL);
-
-        return view('subjects/addSubject', ['categories'=> $categories, 'schools' => $schools]);
+        
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $categories = SubjectCategories::all()->where('deleted_at', NULL);
+        }else{
+            $categories = SubjectCategories::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+        }
+        return view('subjects/addSubject', ['categories'=> $categories]);
     }
     public function store(Request $request){
         $this->authorize('create',  Subject::class);
@@ -37,7 +40,7 @@ class SubjectsController extends Controller
             ]);
             return redirect('/viewsubjects')->with('message', 'Subject added successfully!');
         }else{
-            return redirect('/subjects')->with('message', "Subject for the selected category already exists!");
+            return redirect('/subjects')->with('messageWarning', request('name')." already exists in category ".SubjectCategoriesController::getSubjectCategoryName(request('category'))."!");
         }   
     }
 
@@ -53,8 +56,12 @@ class SubjectsController extends Controller
         $subject = Subject::find($id);
         $this->authorize('update',  $subject);
 
-        $categories = SubjectCategories::all()->where('deleted_at', NULL);
-        $schools = School::all()->where('deleted_at', NULL);
+        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+            $categories = SubjectCategories::all()->where('deleted_at', NULL);
+        }else{
+            $categories = SubjectCategories::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+        }
+        $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
 
         return view('subjects/editSubject', ['subject'=> $subject,'categories'=> $categories, 'schools' => $schools]);
     }
@@ -112,25 +119,34 @@ class SubjectsController extends Controller
     public function restoreSubject($id){
         $this->authorize('restore', Subject::class);
 
-        Subject::whereId($id)->restore();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            Subject::whereId($id)->where('school_id', Auth::user()->school_id)->restore();
+        }else{
+            Subject::whereId($id)->restore();
+        }
         return back();
     }
 
     //restore all deleted subjects
     public function restoreSubjects(){
         $this->authorize('restore', Subject::class);
-        
-        Subject::onlyTrashed()->restore();
+
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            Subject::onlyTrashed()->where('school_id', Auth::user()->school_id)->restore();
+        }else{
+            Subject::onlyTrashed()->restore();
+        }
+
         return back();
     }
 
     public static function canAddRecord($subjectName, $categoryId, $schoolId){
-        $categories = SubjectCategories::all()->where('subject_name', $subjectName)->where('category_id', $categoryId)->where('school_id', $schoolId);
+        $subjects = Subject::all()->where('subject_name', $subjectName)->where('category_id', $categoryId)->where('school_id', $schoolId);
 
-        if(count($categories) > 0){
-            return true;
-        }else{
+        if(count($subjects) > 0){
             return false;
+        }else{
+            return true;
         }
     }
 }

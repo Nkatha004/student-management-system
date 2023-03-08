@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\StudentSubject;
+use App\Models\Student;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentSubjectPolicy
@@ -15,6 +16,16 @@ class StudentSubjectPolicy
     {
         //All can view student subjects
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
+    }
+
+    public function view(Employee $employee, StudentSubject $studentSubject)
+    {
+        //Admin and principal can view all student subjects
+        //Classteacher and teacher can view student subject of their students only
+        $studentSubjectSchool = Student::all()->where('id', $studentSubject->student_id)->first()->school_id;
+
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, (Role::IS_PRINCIPAL && $employee->school_id == $studentSubjectSchool)]);
+        // || ($employee->role_id == Role::IS_TEACHER);
     }
 
     public function create(Employee $employee)

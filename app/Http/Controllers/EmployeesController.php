@@ -14,7 +14,7 @@ class EmployeesController extends Controller
     public function index(){
         $this->authorize('create',  Employee::class);
 
-        $schools = School::all()->where('deleted_at', NULL);
+        $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
         $roles = Role::all()->where('deleted_at', NULL);
 
         return view('employees/addEmployee', ['schools'=>$schools, 'roles'=>$roles]);
@@ -70,7 +70,7 @@ class EmployeesController extends Controller
         $this->authorize('update',  $employee);
 
         $employee = Employee::find($id);
-        $schools = School::all()->where('deleted_at', NULL);
+        $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
 
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $roles = Role::all()->where('deleted_at', NULL);

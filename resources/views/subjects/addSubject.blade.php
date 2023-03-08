@@ -3,8 +3,13 @@
     <form action = "{{ url('/subjects') }}" method = "post" id = "addEmployeeForm" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success text-center">
                 {{ session()->get('message') }}
+            </div>
+        @endif
+        @if(session()->has('messageWarning'))
+            <div class="alert alert-warning text-center">
+                {{ session()->get('messageWarning') }}
             </div>
         @endif
 
@@ -29,7 +34,11 @@
             <select id="inputState" class="form-select" name = "category">
                 <option selected disabled>Choose the category</option>
                 @foreach($categories as $category)
-                    <option value = "{{ $category->id}} ">{{ $category->category_name.' - '.\App\Http\Controllers\SchoolsController::getSchoolName($category->school_id) }}</option>
+                    @if(Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
+                        <option value = "{{ $category->id}} ">{{ $category->category_name.' - '.\App\Http\Controllers\SchoolsController::getSchoolName($category->school_id) }}</option>
+                    @else
+                        <option value = "{{ $category->id}} ">{{ $category->category_name }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

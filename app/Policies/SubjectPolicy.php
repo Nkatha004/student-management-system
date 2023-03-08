@@ -50,4 +50,11 @@ class SubjectPolicy
         //principal can restore all subjects linked to their school 
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
+
+    public function restoreOne(Employee $employee, Subject $subject)
+    {
+        //admin can restore all/any subject
+        //principal can restore all subject linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subject->school_id == $employee->school_id);
+    }
 }

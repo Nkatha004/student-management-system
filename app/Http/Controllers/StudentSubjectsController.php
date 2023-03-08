@@ -110,15 +110,20 @@ class StudentSubjectsController extends Controller
     public function trashedStudentSubjects(){
         $this->authorize('restore', StudentSubject::class);
 
-        $studentsubjects = StudentSubject::onlyTrashed()->get();
+        $studentsubjects = StudentSubject::onlyTrashed()->whereIn('student_id', Student::select('id')->whereIn('class_id', Classes::select('id')->where('school_id', Auth::user()->school_id)))->get();
         return view('students/trashedStudentSubjects', compact('studentsubjects'));
     }
 
     //restore deleted studentsubject
     public function restoreStudentSubject($id){
         $this->authorize('restore', StudentSubject::class);
-
-        StudentSubject::whereId($id)->restore();
+        
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $studentsubjects = StudentSubject::whereId($id)->whereIn('student_id', Student::select('id')->whereIn('class_id', Classes::select('id')->where('school_id', Auth::user()->school_id)))->restore();
+        }else{
+            StudentSubject::whereId($id)->restore();
+        }
+        
         return back();
     }
 
@@ -126,7 +131,13 @@ class StudentSubjectsController extends Controller
     public function restoreStudentSubjects(){
         $this->authorize('restore', StudentSubject::class);
         
-        StudentSubject::onlyTrashed()->restore();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            StudentSubject::onlyTrashed()->whereIn('student_id', Student::select('id')->whereIn('class_id', Classes::select('id')->where('school_id', Auth::user()->school_id)))->restore();
+            Subject::onlyTrashed()->where('school_id', Auth::user()->school_id)->restore();
+        }else{
+            StudentSubject::onlyTrashed()->restore();
+        }
+
         return back();
     }
 }

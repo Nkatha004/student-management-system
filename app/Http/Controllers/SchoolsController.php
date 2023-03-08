@@ -38,32 +38,38 @@ class SchoolsController extends Controller
             ],
             'password_confirmation' => 'required | same:password'
         ]);
-        //Insert school records first
-        School::create([
-            'school_name' => request('schoolname'),
-            'email' => request('school_email'),
-            'phone_number' => request('school_telNo')
-        ]);
+        
+        //check if that school already exists and display error message
+        if($this->canAddRecord(request('schoolname'))){
+            //Insert school records first
+            School::create([
+                'school_name' => request('schoolname'),
+                'email' => request('school_email'),
+                'phone_number' => request('school_telNo')
+            ]);
 
-        //select the inserted school
-        $school = School::select('id')->where('school_name', '=', request('schoolname'))->get()->first();
-        $role = Role::select('id')->where('role_name', '=', 'Principal')->get()->first();
+            //select the inserted school
+            $school = School::select('id')->where('school_name', '=', request('schoolname'))->get()->first();
+            $role = Role::select('id')->where('role_name', '=', 'Principal')->get()->first();
 
-       // create an employee whose school id is the inserted school above
-        Employee::create([
-            'first_name' => request('principal_fname'), 
-            'last_name' => request('principal_lname'),
-            'tsc_number' => request('principal_tscNo'),
-            'email' => request('principal_email'),
-            'password' => Hash::make(request('password')),
-            'telephone_number' => request('principal_telNo'),
-            'school_id' => $school->id,
-            'role_id' => $role->id
-        ]);
-        if(Auth::user()->role_id == Role::IS_SUPERADMIN){
-            return redirect('/viewschools')->with('message', 'School registered successfully!');
+            // create an employee whose school id is the inserted school above
+            Employee::create([
+                'first_name' => request('principal_fname'), 
+                'last_name' => request('principal_lname'),
+                'tsc_number' => request('principal_tscNo'),
+                'email' => request('principal_email'),
+                'password' => Hash::make(request('password')),
+                'telephone_number' => request('principal_telNo'),
+                'school_id' => $school->id,
+                'role_id' => $role->id
+            ]);
+            if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+                return redirect('/viewschools')->with('message', 'School registered successfully!');
+            }else{
+                return redirect('/login')->with('messageLogin', 'School registered successfully!');
+            }
         }else{
-            return redirect('/login')->with('messageLogin', 'School registered successfully!');
+            return back()->with('messageWarning', request('schoolname').' already exists! Contact the administrator for further assistance!'); 
         }
     }
     public function viewSchools(){
@@ -147,5 +153,15 @@ class SchoolsController extends Controller
 
         School::onlyTrashed()->restore();
         return back();
+    }
+
+    public static function canAddRecord($school){
+        $schools = School::all()->where('school_name', $school);
+
+        if(count($schools) > 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

@@ -21,8 +21,9 @@ class EmployeeSubjectPolicy
     {
         //Admin and principal can view all employee subjects
         //Classteacher and teacher can view their employee subjects only
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]) ;
-        // || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
+        $employeeSubjectSchool = Employee::all()->where('id', $employeeSubject->employee_id)->first()->school_id;
+
+        return in_array($employee->role_id, [Role::IS_SUPERADMIN, (Role::IS_PRINCIPAL && $employee->school_id == $employeeSubjectSchool)]) || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
     }
 
     public function hasEmployeeSubjects(Employee $employee)
@@ -39,14 +40,16 @@ class EmployeeSubjectPolicy
 
     public function update(Employee $employee, EmployeeSubject $employeeSubject)
     {
-        //Only principal and admin can update employee subject
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+        //admin can update all/any employee subjects
+        //principal can update all employee subjects linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employeeSubject->school_id == $employee->school_id);
     }
 
     public function delete(Employee $employee, EmployeeSubject $employeeSubject)
     {
-        //Principal and admin can delete employee subject
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+        //admin can delete all/any employee subjects
+        //principal can delete all employee subjects linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employeeSubject->school_id == $employee->school_id);
     }
 
     public function restore(Employee $employee)

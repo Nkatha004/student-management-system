@@ -7,6 +7,7 @@
 					<th scope="col">School Name</th>
 					<th scope="col">Email</th>
 					<th scope="col">Phone Number</th>
+					<th scope="col">Payment Status</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -16,6 +17,7 @@
 					<td>{{ $school->school_name }}</td>
 					<td>{{ $school->email }}</td>
 					<td>{{ $school->phone_number }}</td>
+					<td>{{ $school->payment_status }}</td>
 					<td>
 						@can('update', $school)
 							<a href = "{{ url('/editschool/'.$school->id) }}" class = "btn btn-sm btn-warning">Update</a>

@@ -12,8 +12,14 @@
                 <form action = "{{ url('/schools') }}" method = "post" class="sign-up-form">
                 @csrf
                     @if(session()->has('message'))
-                        <div class="alert-info">
+                        <div class="alert-info text-center">
                             {{ session()->get('message') }}
+                        </div>
+                    @endif
+
+                    @if(session()->has('messageWarning'))
+                        <div class="alert-warning text-center">
+                            {{ session()->get('messageWarning') }}
                         </div>
                     @endif
                     <h2 class="title">Sign up</h2>

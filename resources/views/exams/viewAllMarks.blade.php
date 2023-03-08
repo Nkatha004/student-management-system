@@ -9,9 +9,9 @@
 					<th scope="col">Subject</th>
 					<th scope="col">Term</th>
 					<th scope="col">Mark</th>
-					@if (Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN or Auth::user()->role_id == \App\Models\Role::IS_PRINCIPAL)
+					@can('restore', '\App\Models\ExamMark')
 						<th scope="col">Actions</th>
-					@endif
+					@endcan
 				</tr>
 			</thead>
 			<tbody>
@@ -21,7 +21,7 @@
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getSubject($mark->student_subject_id) }}</td>
 						<td>{{ $mark->term }}</td>
 						<td>{{ $mark->mark }}</td>
-
+						@can('restore', '\App\Models\ExamMark')
 						<td>
 							@can('update', $mark)
 								<a href = "{{ url('/editmark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-warning">Update</a>
@@ -30,6 +30,7 @@
 								<a href = "{{ url('/deletemark/'.$mark->id.'/'.$classID) }}" class = "btn btn-sm btn-danger">Delete</a>
 							@endcan
 						</td>
+						@endcan
 					</tr>
 				@endforeach
 			</tbody>

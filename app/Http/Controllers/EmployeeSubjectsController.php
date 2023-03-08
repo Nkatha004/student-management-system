@@ -9,6 +9,7 @@ use App\Models\Classes;
 use App\Models\Role;
 use App\Models\EmployeeSubject;
 use Illuminate\Http\Request;
+use App\Models\School;
 use Auth;
 
 class EmployeeSubjectsController extends Controller
@@ -97,7 +98,13 @@ class EmployeeSubjectsController extends Controller
     public function trashedEmployeeSubjects(){
         $this->authorize('restore',  EmployeeSubject::class);
 
-        $employeesubjects = EmployeeSubject::onlyTrashed()->get();
+        //deleted employeesubjects in principal's school only; admin view all emp. subjects
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $employeesubjects = EmployeeSubject::select('*')->onlyTrashed()->whereIn('employee_id', Employee::select('id')->where('school_id', Auth::user()->school_id))->get();
+        }else{
+            $employeesubjects = EmployeeSubject::onlyTrashed()->get();
+        }
+
         return view('employees/trashedEmployeeSubjects', compact('employeesubjects'));
     }
 
@@ -105,15 +112,25 @@ class EmployeeSubjectsController extends Controller
     public function restoreEmployeeSubject($id){
         $this->authorize('restore',  Employee::class);
 
-        EmployeeSubject::whereId($id)->restore();
+        // principal can restore employee subjects of employees in their school only
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            EmployeeSubject::whereId($id)->whereIn('employee_id', Employee::select('id')->where('school_id', Auth::user()->school_id))->restore();
+        }else{
+            EmployeeSubject::whereId($id)->restore();
+        }
         return back();
     }
 
     //restore all deleted employeesubjects
     public function restoreEmployeeSubjects(){
         $this->authorize('restore',  Employee::class);
+
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            EmployeeSubject::onlyTrashed()->whereIn('employee_id', Employee::select('id')->where('school_id', Auth::user()->school_id))->restore();
+        }else{
+            EmployeeSubject::onlyTrashed()->restore();
+        }
         
-        EmployeeSubject::onlyTrashed()->restore();
         return back();
     }
 }

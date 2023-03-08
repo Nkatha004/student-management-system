@@ -5,8 +5,14 @@
     <form action = "{{ url('/subjectcategories') }}" method = "post" id = "addEmployeeForm" class="row g-3 form">
         @csrf
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success text-center">
                 {{ session()->get('message') }}
+            </div>
+        @endif
+
+        @if(session()->has('messageWarning'))
+            <div class="alert alert-warning text-center">
+                {{ session()->get('messageWarning') }}
             </div>
         @endif
 

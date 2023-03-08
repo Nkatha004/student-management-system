@@ -7,7 +7,7 @@
 @else
     @include('common/header')
 @endif
-<main>
+<main>    
     @if(Auth::check())
     <form method = "post" action = "{{ url('/schools') }}" class="row g-3 form normalForm">
     @else
@@ -15,8 +15,13 @@
     @endif
         @csrf
         @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success text-center">
                 {{ session()->get('message') }}
+            </div>
+        @endif
+        @if(session()->has('messageWarning'))
+            <div class="alert alert-warning text-center">
+                {{ session()->get('messageWarning') }}
             </div>
         @endif
         <h3 class = "text-center">Register New School</h3>

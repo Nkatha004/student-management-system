@@ -1,12 +1,10 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	
     <table id = "employeeSubjectsView" class="stripe row-border">
         <thead>
             <tr>
-                @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER)
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
+                @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER and Auth::user()->role_id != $employee->id)
+                   <th scope="col">Name</th>
                 @endif
                 
                 <th scope="col">Teaching Subjects</th>
@@ -20,9 +18,8 @@
             @foreach($employeesubjects as $e_subject)
                 @can('view', $e_subject)
                     <tr>
-                        @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER)
-                            <td>{{ $employee->first_name }}</td>
-                            <td>{{ $employee->last_name }}</td>
+                        @if(Auth::user()->role_id != \App\Models\Role::IS_CLASSTEACHER and Auth::user()->role_id != \App\Models\Role::IS_TEACHER and Auth::user()->role_id != $employee->id)
+                            <td>{{ $employee->first_name.' '. $employee->last_name}}</td>
                         @endif
                         <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($e_subject->subject_id)}} </p></td>
                         <td>{{App\Http\Controllers\ClassesController::getClassName($e_subject->class_id)}}</td>
@@ -64,14 +61,16 @@
             @endif
             <h3 class = "text-center">Assign Teaching Subjects</h3>
             
+            <input type="text" hidden class="form-control" id="employee" name = "employee" value = "{{$employee->id}}">
+
             <div class="col-12">
-                @if($errors->has('employee'))
+                @if($errors->has('name'))
                     <div class = "alert alert-danger" role = "alert">
-                        {{ $errors->first('employee') }}
+                        {{ $errors->first('name') }}
                     </div>
                 @endif
-                <label for="employee" class="form-label">Employee ID</label>
-                <input type="text" class="form-control" id="employee" name = "employee" value = "{{$employee->id}}" readonly>
+                <label for="name" class="form-label">Employee Name</label>
+                <input type="text" class="form-control" id="name" name = "name" value = "{{$employee->first_name.' '.$employee->last_name}}" readonly>
             </div>
             
             @if($errors->has('subject'))

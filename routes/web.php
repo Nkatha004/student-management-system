@@ -42,8 +42,6 @@ Route::controller(HomeController::class)->group(function(){
 
 Route::controller(SchoolsController::class)->group(function(){
     Route::post('/schools', 'store');
-    Route::get('/schools', 'index');
-    // Route::get('/register', 'index');
 });
 
 Route::controller(ContactUsController::class)->group(function(){
@@ -66,6 +64,7 @@ Route::group(['middleware' => ['auth']], function() {
         });
 
         Route::controller(SchoolsController::class)->group(function(){
+            Route::get('/schools', 'index');
             Route::get('/editschool/{id}', 'edit');
             Route::get('/viewschools', 'viewSchools');
             Route::post('/updateschool/{id}', 'update');

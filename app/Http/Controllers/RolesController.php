@@ -35,12 +35,17 @@ class RolesController extends Controller
             return back()->withErrors($validator->messages());
         }
 
-        Role::create([
-            'role_name' => $input['rolename'],
-            'role_description' => $input['roleDesc']
-        ]);
+        if($this->canAddRecord(request('rolename'))){
+            Role::create([
+                'role_name' => $input['rolename'],
+                'role_description' => $input['roleDesc']
+            ]);
 
-        return redirect('/viewroles')->with('message', 'Role added successfully!');
+            return redirect('/viewroles')->with('message', 'Role added successfully!');
+        }else{
+            return redirect('/roles')->with('messageWarning', request('rolename')." already exists!");
+        }
+
     }
     public function viewRoles(){
         $this->authorize('viewAny',  Role::class);
@@ -126,5 +131,15 @@ class RolesController extends Controller
         $role = Role::find($id);
 
         return $role->role_name;
+    }
+
+    public static function canAddRecord($role){
+        $roles = Role::all()->where('role_name', $role);
+
+        if(count($roles) > 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

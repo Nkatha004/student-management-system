@@ -26,7 +26,7 @@
 						<td>{{ App\Http\Controllers\SchoolsController::getSchoolName($category->school_id) }}</td>
 					@endif
 
-                    @can('restore', '\App\Models\SubjectCategories')
+                    @can('restoreOne', $category)
 						<td>
 							<a href = "{{ url('/restorecategory/'.$category->id) }}" class = "btn btn-sm btn-success">Restore</a>
 						</td>

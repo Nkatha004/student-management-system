@@ -1,6 +1,6 @@
 @include('dashboard.dashboardSideNav')
 <main>
-	@can('restore', \App\Models\StudentSubject)
+	@can('restore', '\App\Models\StudentSubject')
 	    <div>
 	        <a href = "{{URL::to('/restorestudentsubjects')}}"class = "btn btn-success">Restore all</a>
 	    </div><br>
@@ -21,7 +21,7 @@
 						<td>{{ App\Http\Controllers\StudentsController::getStudentName($studentsubject->student_id) }}</td>
 						<td>{{ App\Http\Controllers\SubjectsController::getSubjectName($studentsubject->subject_id) }}</td>
 						
-						@can('restore', \App\Models\StudentSubject)
+						@can('restore', '\App\Models\StudentSubject')
 							<td><a href = "{{ url('/restorestudentsubject/'.$studentsubject->id) }}" class = "btn btn-sm btn-success">Restore</a></td>
 						@endcan
 					</tr>

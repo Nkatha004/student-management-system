@@ -3,8 +3,7 @@
     <table id = "studentSubjectsView" class="stripe row-border">
         <thead>
             <tr>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
+                <th scope="col">Name</th>
                 <th scope = "col">Class</th>
                 <th scope="col">Student Subjects</th>
                 @if(Auth::user()->role_id != \App\Models\Role::IS_TEACHER)
@@ -14,20 +13,21 @@
         </thead>
         <tbody>
             @foreach($studentsubjects as $s_subject)
-            <tr>
-                <td>{{ $student->first_name }}</td>
-                <td>{{ $student->last_name }}</td>
-                <td>{{App\Http\Controllers\ClassesController::getClassName($student->class_id) }}</td>
-                <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($s_subject->subject_id)}} </p></td>
-                <td>
-                    @can('update', $s_subject)
-                        <a href = "{{ url('/editstudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
-                    @endcan
-                    @can('delete', $s_subject)
-                        <a href = "{{ url('/deletestudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
-                    @endcan
-                </td>
-            </tr>
+                @can('view', $s_subject)
+                <tr>
+                    <td>{{ $student->first_name.' '.$student->last_name }}</td>                
+                    <td>{{App\Http\Controllers\ClassesController::getClassName($student->class_id) }}</td>
+                    <td><p>{{App\Http\Controllers\SubjectsController::getSubjectName($s_subject->subject_id)}} </p></td>
+                    <td>
+                        @can('update', $s_subject)
+                            <a href = "{{ url('/editstudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-warning">Update</a>
+                        @endcan
+                        @can('delete', $s_subject)
+                            <a href = "{{ url('/deletestudentsubject/'.$s_subject->id) }}" class = "btn btn-sm btn-danger">Delete</a>
+                        @endcan
+                    </td>
+                </tr>
+                @endcan
             @endforeach
         </tbody>
     </table>

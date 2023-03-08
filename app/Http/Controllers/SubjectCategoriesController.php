@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\SchoolsController;
 
 use Illuminate\Http\Request;
 use App\Models\SubjectCategories;
@@ -12,7 +13,7 @@ class SubjectCategoriesController extends Controller
 {
     public function index(){
         $this->authorize('create',  SubjectCategories::class);
-        $schools = School::all()->where('deleted_at', NULL);
+        $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
 
         return view('subjectCategories/addSubjectCategory', ['schools' => $schools]);
     }
@@ -24,13 +25,17 @@ class SubjectCategoriesController extends Controller
             'description' => 'required',
             'school' => 'required'
         ]);
-        SubjectCategories::create([
-            'category_name' => request('category_name'),
-            'description' => request('description'),
-            'school_id' => request('school')
-        ]);
 
-        return redirect('/viewsubjectcategories')->with('message', 'Subject category added successfully!');
+        if($this->canAddRecord(request('category_name'), request('school'))){
+            SubjectCategories::create([
+                'category_name' => request('category_name'),
+                'description' => request('description'),
+                'school_id' => request('school')
+            ]);
+            return redirect('/viewsubjectcategories')->with('message', 'Subject category added successfully!');
+        }else{
+            return redirect('/subjectcategories')->with('messageWarning', request('category_name')." already exists for ".SchoolsController::getSchoolName(request('school')));
+        }
     }
     public function viewSubjectCategories(){
         $this->authorize('viewAny',  SubjectCategories::class);
@@ -40,23 +45,21 @@ class SubjectCategoriesController extends Controller
         return view('subjectCategories/viewSubjectCategories', ['categories'=> $categories]);
     }
 
-    public function edit($id, SubjectCategories $subjectCategory){
-        $this->authorize('update',  $subjectCategory);
-
+    public function edit($id){
         $category = SubjectCategories::find($id);
+        $this->authorize('update',  $category);
 
         return view('subjectCategories/editSubjectCategory', ['category'=>$category]);
     }
 
-    public function update(Request $request, $id, SubjectCategories $subjectCategory){
-        $this->authorize('update',  $subjectCategory);
+    public function update(Request $request, $id){
+        $category = SubjectCategories::find($id);
+        $this->authorize('update',  $category);
 
         $request->validate([
             'category_name' => 'required',
             'description' => 'required'
         ]);
-
-        $category = SubjectCategories::find($id);
         
         $category->category_name= $request->input('category_name');
         $category->description = $request->input('description');
@@ -65,11 +68,12 @@ class SubjectCategoriesController extends Controller
         return redirect('/viewsubjectcategories')->with('message', 'Subject category updated successfully!');
     }
 
-    public function destroy($id, SubjectCategories $subjectCategory)
+    public function destroy($id)
     {
-        $this->authorize('delete',  $subjectCategory);
+        $category = SubjectCategories::find($id);
+        $category->delete();
 
-        $category = SubjectCategories::find($id)->delete();
+        $this->authorize('delete',  $category);
 
         return redirect('/viewsubjectcategories')->with('message', 'Subject category deleted successfully!');
     }
@@ -81,6 +85,16 @@ class SubjectCategoriesController extends Controller
         $category = SubjectCategories::find($id);
 
         return $category->category_name;
+    }
+
+    public static function canAddRecord($category, $school){
+        $categories = SubjectCategories::all()->where('category_name', $category)->where('school_id', $school);
+
+        if(count($categories) > 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     //softDeletes categories
@@ -96,11 +110,16 @@ class SubjectCategoriesController extends Controller
         return view('subjectCategories/trashedSubjectCategories', compact('categories'));
     }
 
-    //restore deleted categories
+    //restore deleted category
     public function restoreCategory($id){
         $this->authorize('restore',  SubjectCategories::class);
-
-        SubjectCategories::whereId($id)->restore();
+    
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            SubjectCategories::whereId($id)->where('school_id', Auth::user()->school_id)->restore();
+        }else{
+            SubjectCategories::whereId($id)->restore();
+        }
+        
         return back();
     }
 
@@ -108,7 +127,12 @@ class SubjectCategoriesController extends Controller
     public function restoreCategories(){
         $this->authorize('restore',  SubjectCategories::class);
         
-        SubjectCategories::onlyTrashed()->restore();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            SubjectCategories::onlyTrashed()->where('school_id', Auth::user()->school_id)->restore();
+        }else{
+            SubjectCategories::onlyTrashed()->restore();
+        }
+
         return back();
     }
 }

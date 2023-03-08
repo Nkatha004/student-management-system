@@ -68,7 +68,7 @@ class ClassesController extends Controller
         $this->authorize('update',  $class);
 
         $class = Classes::find($id);
-        $schools = School::all()->where('deleted_at', NULL);
+        $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
         $teachers = Employee::all()->where('deleted_at', NULL)->where('role_id', '!=', Role::IS_SUPERADMIN)->where('role_id', '!=', Role::IS_PRINCIPAL);
 
         return view('classes/editclass', ['class'=>$class, 'schools'=>$schools, 'teachers'=>$teachers]);

@@ -30,17 +30,17 @@ class SubjectCategoriesPolicy
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
 
-    public function update(Employee $employee, subjectCategories $subjectCategories)
+    public function update(Employee $employee, SubjectCategories $subjectCategories)
     {
         //admin can update all/any subject categories
         //principal can update all subject categories linked to their school
         return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subjectCategories->school_id == $employee->school_id);
     }
 
-    public function delete(Employee $employee, subjectCategories $subjectCategories)
+    public function delete(Employee $employee, SubjectCategories $subjectCategories)
     {
-        //admin can update all/any subject categories
-        //principal can update all subject categories linked to their school
+        //admin can delete all/any subject categories
+        //principal can delete all subject categories linked to their school
         return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subjectCategories->school_id == $employee->school_id);
     }
 
@@ -48,5 +48,12 @@ class SubjectCategoriesPolicy
     {
         //Only principal and admin can restore subject categories
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+    }
+
+    public function restoreOne(Employee $employee, SubjectCategories $subjectCategories)
+    {
+        //admin can restore all/any subject categories
+        //principal can restore all subject categories linked to their school
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $subjectCategories->school_id == $employee->school_id);
     }
 }

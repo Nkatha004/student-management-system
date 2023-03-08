@@ -186,6 +186,21 @@ form{
     margin: 1rem 0 0;
 }
 
+.alert-warning{
+    max-width: 380px;
+    width: 100%;
+    background-color: #fff3cd;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    color: #997404;
+    border: solid 0.5px #ffe69c;
+    margin: 1rem 0 0;
+}
+
+.text-center{
+    text-align: center;
+}
+
 @media (max-width: 870px) {
     .container{
         min-height: 800px;
