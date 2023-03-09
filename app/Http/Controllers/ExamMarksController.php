@@ -16,8 +16,13 @@ use Illuminate\Http\Request;
 class ExamMarksController extends Controller
 {
     public function index($studentID, $subjectID){
-
-        $this->authorize('create',  ExamMark::class);
+        $studentsubjects = StudentSubject::select('*')->where('deleted_at', NULL)
+                                                ->where('student_id', Student::find($studentID)->id)
+                                                ->where('subject_id', Subject::find($subjectID)->id)
+                                                ->get()
+                                                ->first();
+        $mark = ExamMark::select('*')->where('student_subject_id', $studentsubjects->id)->get()->first();
+        $this->authorize('createMark',  $mark);
 
         //find the subjects done by the student
         $subjects = StudentSubject::select('*')->where('deleted_at', NULL)

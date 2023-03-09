@@ -12,7 +12,7 @@
                 @can('restore', '\App\Models\EmployeeSubject')
                     <th scope="col">Actions</th>
                 @endcan
-                @if(Auth::user()->role_id == \App\Models\Role::IS_TEACHER)
+                @if(Auth::user()->role_id == \App\Models\Role::IS_TEACHER || Auth::user()->role_id == \App\Models\Role::IS_CLASSTEACHER)
                     <th scope="col">Actions</th>
                 @endif
             </tr>
@@ -42,7 +42,7 @@
                                 @endif
                             </td>
                         @endcan
-                        @if(Auth::user()->role_id == \App\Models\Role::IS_TEACHER)
+                        @if(Auth::user()->role_id == \App\Models\Role::IS_TEACHER || Auth::user()->role_id == \App\Models\Role::IS_CLASSTEACHER)
                             <td><a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a></td>
                         @endif
                     </tr>

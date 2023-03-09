@@ -99,6 +99,8 @@ class StudentsController extends Controller
         }
         return view('students/viewStudentsToAddMarks', ['students'=>$students, 'subject'=>EmployeeSubject::find($id)->subject_id]);
     }
+    
+    //id here is employee subject id
     public function viewStudentsToAddMarks($id){
         $this->authorize('viewAny',  Student::class);
 

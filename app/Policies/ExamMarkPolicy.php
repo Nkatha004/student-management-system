@@ -32,7 +32,7 @@ class ExamMarkPolicy
         }else if($employee->role_id == Role::IS_PRINCIPAL){
             $schoolID = Classes::select('school_id')->whereIn('id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))) ->get()->first()->school_id;
             return $employee->school_id == $schoolID;
-        }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
+        }else if($employee->role_id == Role::IS_CLASSTEACHER){
             $classID = Classes::select('id')->where('class_teacher', $employee->id)->get()->first()->id;
             $studentClass = Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))->get()->first()->class_id;
            
@@ -41,21 +41,44 @@ class ExamMarkPolicy
             $teacherSubjects = EmployeeSubject::select('subject_id')->where('employee_id', $employee->id)->get();
             $teacherClasses = EmployeeSubject::select('class_id')->where('employee_id', $employee->id)->get();
             
-            //students doing subjects taught by teacher
-            $students = Student::select('*')->whereIn('class_id', $teacherClasses)
-                                            ->whereIn('id', StudentSubject::select('student_id')
-                                            ->whereIn('subject_id', $teacherSubjects))
-                                            ->get();
+            //subject done by student
+            $Studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
+            return in_array($studentSubject, $teacherSubjects); 
         }
-        $marks = ExamMark::all()->whereIn('student_subject_id', StudentSubject::select('id')->whereIn('student_id', Student::select('id')->whereIn('class_id', Classes::select('id')->where('school_id', Auth::user()->id))))->get();
-
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, (Role::IS_PRINCIPAL && $employee->school_id == $employeeSubjectSchool)]) || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
     }
 
     public function create(Employee $employee)
     {
         //All can add marks
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
+    }
+
+    public function createMark(Employee $employee, ExamMark $mark)
+    {
+        //All can add marks
+        //Admin can add all marks
+        //Principal can add marks in their school
+        //Class Teacher/teacher can add marks of their students only
+        if($employee->role_id == Role::IS_SUPERADMIN){
+            return true;
+        }else if($employee->role_id == Role::IS_PRINCIPAL){
+            $schoolID = Classes::select('school_id')->whereIn('id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))) ->get()->first()->school_id;
+            return $employee->school_id == $schoolID;
+        }else if($employee->role_id == Role::IS_CLASSTEACHER){
+            $classID = Classes::select('id')->where('class_teacher', $employee->id)->get()->first()->id;
+            $studentClass = Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))->get()->first()->class_id;
+           
+            return $classID == $studentClass;
+        }else{
+            $teacherSubjects = EmployeeSubject::select('subject_id')->where('employee_id', $employee->id)->get();
+            $teacherClasses = EmployeeSubject::select('class_id')->where('employee_id', $employee->id)->get();
+            
+            //subject done by student
+            $Studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
+            return true;
+            // return in_array($Studentsubject, $teacherSubjects); 
+        }
+        // return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
     }
     
     public function update(Employee $employee, ExamMark $mark)
