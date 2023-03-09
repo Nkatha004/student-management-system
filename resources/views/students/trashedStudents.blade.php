@@ -60,7 +60,7 @@
 						@if (Auth::user()->role_id == \App\Models\Role::IS_SUPERADMIN)
 							<td>{{App\Http\Controllers\SchoolsController::getSchoolNameByClassID($student->class_id) }}</td>
 						@endif
-						@can('restore', '\App\Models\Student')
+						@can('restoreOne', $student)
 							<td>
 								<a href = "{{ url('/restorestudent/'.$student->id) }}" class = "btn btn-sm btn-success">Restore</a>
 							</td>

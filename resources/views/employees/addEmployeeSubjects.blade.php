@@ -57,7 +57,7 @@
     </script>
 
 
-    @can('create', '\App\Models\EmployeeSubject')
+    @can('view', $employee)
         <form method = "post" action = "{{ url('/employeesubjects') }}" id = "teachingSubjects" class="row g-3 form">
             @csrf
             @if(session()->has('message'))

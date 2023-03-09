@@ -24,7 +24,7 @@
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getSubject($mark->student_subject_id) }}</td>
 						<td>{{ $mark->term }}</td>
 						<td>{{ $mark->mark }}</td>
-						@can('restore', '\App\Models\ExamMark')
+						@can('restoreOne', $mark)
 							<td>
 								<a href = "{{ url('/restoremark/'.$mark->id) }}" class = "btn btn-sm btn-success">Restore</a>
 							</td>

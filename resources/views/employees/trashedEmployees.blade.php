@@ -39,7 +39,7 @@
 
 	                    <td>{{App\Http\Controllers\RolesController::getRoleName($employee->role_id) }}</td>
 						<td>
-							@can('restore', '\App\Models\Employee')
+							@can('restoreOne', $employee)
 								<a href = "{{ url('/restoreemployee/'.$employee->id) }}" class = "btn btn-sm btn-success">Restore</a>
 							@endcan
 						</td>

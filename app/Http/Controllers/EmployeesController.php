@@ -66,10 +66,10 @@ class EmployeesController extends Controller
         }
         return view('employees/viewEmployees', ['employees'=> $employees]);
     }
-    public function edit($id, Employee $employee){
+    public function edit($id){
+        $employee = Employee::find($id);
         $this->authorize('update',  $employee);
 
-        $employee = Employee::find($id);
         $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
 
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
@@ -81,7 +81,8 @@ class EmployeesController extends Controller
         return view('employees/editEmployee', ['employee'=>$employee, 'schools'=>$schools, 'roles'=>$roles]);
     }
 
-    public function update(Request $request, $id, Employee $employee){
+    public function update(Request $request, $id){
+        $employee = Employee::find($id);
         $this->authorize('update',  $employee);
 
         $request->validate([
@@ -91,8 +92,6 @@ class EmployeesController extends Controller
             'telNo' => 'required | min: 9',
             'role' => 'required'
         ]);
-
-        $employee = Employee::find($id);
         
         $employee->first_name= $request->input('fname');
         $employee->last_name= $request->input('lname');
@@ -106,11 +105,12 @@ class EmployeesController extends Controller
         return redirect('/viewemployees')->with('message', 'Employee updated successfully!');
     }
 
-    public function destroy($id, Employee $employee)
+    public function destroy($id)
     {
+        $employee = Employee::find($id);
         $this->authorize('delete',  $employee);
 
-        $employee = Employee::find($id)->delete();
+        $employee->delete();
 
         return redirect('/viewemployees')->with('message', 'Employee deleted successfully!');
     }
@@ -119,7 +119,11 @@ class EmployeesController extends Controller
     public function trashedEmployees(Employee $employee){
         $this->authorize('restore',  Employee::class);
 
-        $employees = Employee::onlyTrashed()->get();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $employees = Employee::onlyTrashed()->get()->where('school_id', Auth::user()->school_id);
+        }else{
+            $employees = Employee::onlyTrashed()->get();
+        }
         return view('employees/trashedEmployees', compact('employees'));
     }
 

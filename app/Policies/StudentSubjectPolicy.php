@@ -16,8 +16,8 @@ class StudentSubjectPolicy
 
     public function viewAny(Employee $employee)
     {
-        //All can view student subjects
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
+        //All but teacher can view student subjects
+        return $employee->role_id != Role::IS_TEACHER;
     }
 
     public function view(Employee $employee, StudentSubject $studentSubject)
@@ -27,16 +27,15 @@ class StudentSubjectPolicy
         if($employee->role_id == Role::IS_SUPERADMIN){
             return true;
         }else if($employee->role_id == Role::IS_PRINCIPAL){
-            $classID = Student::select('class_id')->where('id', $studentSubject->student_id) ->get()->first()->class_id;
+            $classID = Student::select('class_id')->where('id', $studentSubject->student_id)->get()->first()->class_id;
             $studentSubjectSchool = Classes::select('school_id')->where('id', $classID)->get()->first()->school_id;
 
             return $employee->school_id == $studentSubjectSchool;
-        }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
-            $employeeClass = EmployeeSubject::select('class_id')->where('employee_id', $employee->id)->get();
-            if(count($employeeClass) > 0){
-                $teacherClass = $employeeClass->first()->class_id;
-                return $teacherClass == $studentSubject->class_id;
-            }
+        }else if($employee->role_id == Role::IS_CLASSTEACHER){
+            $teacherClass = Classes::select('id')->where('class_teacher', $employee->id)->get()->first()->id;
+            $studentClass = Student::find($studentSubject->student_id)->class_id;
+
+            return $teacherClass == $studentClass;
         }
     }
 
@@ -54,23 +53,41 @@ class StudentSubjectPolicy
         }else if($employee->role_id == Role::IS_PRINCIPAL){
             $classID = Student::select('class_id')->where('id', $studentSubject->student_id)->get()->first()->class_id;
             $studentSubjectSchool = Classes::select('school_id')->where('id', $classID)->get()->first()->school_id;
+
             return $employee->school_id == $studentSubjectSchool;
         }else if($employee->role_id == Role::IS_CLASSTEACHER){
             $employeeClass = Classes::select('id')->where('class_teacher', $employee->id)->get()->first()->id;
             
-            return $employeeClass == $studentSubject->class_id;
+            return $employeeClass == Student::find($studentSubject->student_id)->class_id;
         }
     }
 
     public function delete(Employee $employee, StudentSubject $studentSubject)
     {
         //Principal and admin can delete student subject
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+        if($employee->role_id == Role::IS_SUPERADMIN){
+            return true;
+        }else if($employee->role_id == Role::IS_PRINCIPAL){
+            $classID = Student::select('class_id')->where('id', $studentSubject->student_id)->get()->first()->class_id;
+            $studentSubjectSchool = Classes::select('school_id')->where('id', $classID)->get()->first()->school_id;
+
+            return $employee->school_id == $studentSubjectSchool;
+        }
     }
 
     public function restore(Employee $employee)
     {
         //Principal and admin can restore student subject
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+    }
+
+    public function restoreOne(Employee $employee, StudentSubject $studentSubject)
+    {
+        //admin can restore all/any student subject
+        //principal can restore all student subjects linked to their school
+        $classID = Student::select('class_id')->where('id', $studentSubject->student_id)->get()->first()->class_id;
+        $studentSubjectSchool = Classes::select('school_id')->where('id', $classID)->get()->first()->school_id;
+
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $studentSubjectSchool == $employee->school_id);
     }
 }

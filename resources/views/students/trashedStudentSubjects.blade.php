@@ -21,7 +21,7 @@
 						<td>{{ App\Http\Controllers\StudentsController::getStudentName($studentsubject->student_id) }}</td>
 						<td>{{ App\Http\Controllers\SubjectsController::getSubjectName($studentsubject->subject_id) }}</td>
 						
-						@can('restore', '\App\Models\StudentSubject')
+						@can('restoreOne', $studentsubject)
 							<td><a href = "{{ url('/restorestudentsubject/'.$studentsubject->id) }}" class = "btn btn-sm btn-success">Restore</a></td>
 						@endcan
 					</tr>

@@ -36,7 +36,7 @@
             $('#studentSubjectsView').DataTable();
         });
     </script>
-    @can('create', '\App\Models\StudentSubject')
+    @can('view', $student)
         <form method = "post" action = "{{ url('/studentsubjects') }}" id = "teachingSubjects" class="row g-3 form">
             @csrf
             @if(session()->has('message'))

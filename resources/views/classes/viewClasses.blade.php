@@ -15,6 +15,7 @@
 			</thead>
 			<tbody>
 				@foreach($classes as $class)
+				@can('view', $class)
 				<tr>
 					<td>{{ $class->class_name }}</td>
                     <td>{{ $class->year }}</td>
@@ -37,6 +38,7 @@
 						@endcan
 					</td>
 				</tr>
+				@endcan
 				@endforeach
 			</tbody>
 		</table>

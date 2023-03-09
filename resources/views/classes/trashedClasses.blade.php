@@ -27,7 +27,7 @@
 							<td>{{App\Http\Controllers\SchoolsController::getSchoolName($class->school_id) }}</td>
 						@endif
 						<td>{{ App\Http\Controllers\EmployeesController::getEmployeeName($class->class_teacher) }}</td>
-						@can('restore', 'App\Models\Classes')
+						@can('restoreoNE', $class)
 							<td><a href = "{{ url('/restoreclass/'.$class->id) }}" class = "btn btn-sm btn-success">Restore</a></td>
 						@endcan
 					</tr>

@@ -89,7 +89,6 @@ class StudentsController extends Controller
         }
     }
     public function viewStudentsTaughtByEmployee($id){
-        $this->authorize('viewAny',  Student::class);
         //if admin select all students
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $students = Student::select('*')->where('deleted_at', NULL)->get();
@@ -142,17 +141,18 @@ class StudentsController extends Controller
         return view('students/viewStudentstoAddMarks', ['students'=>$students, 'subject'=>EmployeeSubject::find($id)->subject_id]);
     }
     
-    public function edit($id, Student $editStudent){
-        $this->authorize('update',  $editStudent);
-
+    public function edit($id){
         $student = Student::find($id);
+        $this->authorize('update',  $student);
+
         $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
 
         return view('students/editstudent', ['student'=>$student, 'classes' => $classes]);
     }
 
-    public function update(Request $request, $id, Student $editStudent){
-        $this->authorize('update',  $editStudent);
+    public function update(Request $request, $id){
+        $student = Student::find($id);
+        $this->authorize('update',  $student);
 
         $request->validate([
             'fname' => 'required',
@@ -162,8 +162,6 @@ class StudentsController extends Controller
             'phoneNo' => 'required | min:9',
             'admNo' => 'required'
         ]);
-        
-        $student = Student::find($id);
         
         $student->first_name= $request->input('fname');
         $student->last_name= $request->input('lname');
@@ -178,11 +176,13 @@ class StudentsController extends Controller
         return redirect('/viewstudents')->with('message', 'Student updated successfully!');
     }
 
-    public function destroy($id, Student $deleteStudent)
+    public function destroy($id)
     {
-        $this->authorize('delete',  $deleteStudent);
+        $student = Student::find($id);
+        $this->authorize('delete',  $student);
 
-        $student = Student::find($id)->delete();
+        $student->delete();
+        
         return redirect('/viewstudents')->with('message', 'Student deleted successfully!');
     }
 
@@ -210,6 +210,12 @@ class StudentsController extends Controller
     //softDeletes students
     public function trashedStudents(){
         $this->authorize('restore',  Student::class);
+
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $students = Student::onlyTrashed()->get()->whereIn('class_id', Classes::select('id')->whereIn('school_id', Auth::user()->school_id));
+        }else{
+            $students = Student::onlyTrashed()->get();
+        }
 
         $students = Student::onlyTrashed()->get();
         return view('students/trashedStudents', compact('students'));

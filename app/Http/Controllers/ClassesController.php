@@ -64,17 +64,18 @@ class ClassesController extends Controller
         }
         return view('classes/viewclasses', ['classes'=> $classes]);
     }
-    public function edit($id, Classes $class){
+    public function edit($id){
+        $class = Classes::find($id);
         $this->authorize('update',  $class);
 
-        $class = Classes::find($id);
         $schools = School::all()->where('deleted_at', NULL)->where('payment_status', 'Payment Complete');
         $teachers = Employee::all()->where('deleted_at', NULL)->where('role_id', '!=', Role::IS_SUPERADMIN)->where('role_id', '!=', Role::IS_PRINCIPAL);
 
         return view('classes/editclass', ['class'=>$class, 'schools'=>$schools, 'teachers'=>$teachers]);
     }
 
-    public function update(Request $request, $id, Classes $class){
+    public function update(Request $request, $id){
+        $class = Classes::find($id);
         $this->authorize('update',  $class);
 
         $request->validate([
@@ -82,8 +83,6 @@ class ClassesController extends Controller
             'year' => 'required',
             'teacher'=>'required'
         ]);
-
-        $class = Classes::find($id);
         
         $class->class_name= $request->input('classname');
         $class->year = $request->input('year');
@@ -95,11 +94,12 @@ class ClassesController extends Controller
         return redirect('/viewclasses')->with('message', 'Class updated successfully!');
     }
 
-    public function destroy($id, Classes $class)
+    public function destroy($id)
     {
+        $class = Classes::find($id);
         $this->authorize('delete',  $class);
 
-        $class = Classes::find($id)->delete();
+        $class->delete();
 
         return redirect('/viewclasses')->with('message', 'Class deleted successfully!');
     }
@@ -108,7 +108,12 @@ class ClassesController extends Controller
     public function trashedClasses(){
         $this->authorize('restore',  Classes::class);
 
-        $classes = Classes::onlyTrashed()->get();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $classes = Classes::onlyTrashed()->get()->where('school_id', Auth::user()->school_id);
+        }else{
+            $classes = Classes::onlyTrashed()->get();
+        }
+        
         return view('classes/trashedClasses', compact('classes'));
     }
 

@@ -14,6 +14,7 @@
 			</thead>
 			<tbody>
 				@foreach($employees as $employee)
+				@can('view', $employee)
 					<tr>
 						@if ($employee->role_id == \App\Models\Role::IS_SUPERADMIN)
 							<td>Not Applicable</td>
@@ -45,6 +46,7 @@
 						
 						</td>
 					</tr>
+				@endcan
 				@endforeach
 			</tbody>
 		</table>

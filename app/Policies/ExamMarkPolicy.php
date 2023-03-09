@@ -43,7 +43,8 @@ class ExamMarkPolicy
             
             //subject done by student
             $Studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
-            return in_array($studentSubject, $teacherSubjects); 
+            return true;
+            // return in_array($studentSubject, $teacherSubjects); 
         }
     }
 
@@ -95,12 +96,21 @@ class ExamMarkPolicy
     public function delete(Employee $employee, ExamMark $mark)
     {
         //Only principal and admin can delete marks
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+        $school = Classes::select('school_id')->whereIn('id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id)))->get()->first()->school_id;
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employee->school_id == $school);
     }
 
     public function restore(Employee $employee)
     {
         //Only principal and admin can restore marks
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
+    }
+
+    public function restoreOne(Employee $employee, ExamMark $mark)
+    {
+        //admin can restore all/any subject
+        //principal can restore all subject linked to their school
+        $school = Classes::select('school_id')->whereIn('id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id)))->get()->first()->school_id;
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employee->school_id == $school);
     }
 }

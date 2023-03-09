@@ -47,14 +47,15 @@ class EmployeeSubjectPolicy
     public function update(Employee $employee, EmployeeSubject $employeeSubject)
     {
         //admin/principal can update all/any employee subjects
-
-        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL);
+        $school = Employee::select('*')->where('id', $employeeSubject->employee_id)->get()->first()->school_id;
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employee->school_id == $school);
     }
 
     public function delete(Employee $employee, EmployeeSubject $employeeSubject)
     {
         //admin/principal can delete all/any employee subjects
-        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL);
+        $school = Employee::select('*')->where('id', $employeeSubject->employee_id)->get()->first()->school_id;
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employee->school_id == $school);
     }
 
     public function restore(Employee $employee)

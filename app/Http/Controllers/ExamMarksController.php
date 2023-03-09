@@ -10,6 +10,7 @@ use App\Models\Classes;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\StudentSubject;
+use App\Models\EmployeeSubject;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -52,14 +53,26 @@ class ExamMarksController extends Controller
         ]);
         
         $year = date('Y');
+        //get the subject and validate it is actually taught by that teacher
+        $subject = request('subject');
 
         //get the exam marks so that you can validate the results for the specific term and student do not already exist
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $studentsubject = StudentSubject::select('id')->where('student_id', request('student_id'))->where('subject_id', request('subject'))->get()->first()->id;
             $exams = ExamMark::where('student_subject_id', $studentsubject)->get();
         }else{
+            $teachingSubjects = array();
             $studentsubject = request('studentSubject');
-            $exams = ExamMark::all()->where('student_subject_id', studentsubject);
+
+            $employeesubjects = EmployeeSubject::select('subject_id')->where('employee_id', Auth::user()->id)->whereIn('class_id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $studentsubject)))->get();
+            foreach($employeesubjects as $employeesubject){
+                $teachingSubjects[] = $employeesubject->subject_id;
+            }
+
+            if(!(in_array(request('subject'), $teachingSubjects))){
+                return redirect('/marks/'.StudentSubject::find($studentsubject)->student_id.'/'.StudentSubject::find($studentsubject)->subject_id)->with('message', 'Not authorized to add marks for '.request('subject')); 
+            }
+            $exams = ExamMark::all()->where('student_subject_id', $studentsubject);
         }
 
         foreach($exams as $exam){
@@ -105,24 +118,24 @@ class ExamMarksController extends Controller
         return view('exams/viewAllMarks', ['marks'=>$marks, 'classID'=>$id]);
     }
 
-    public function edit($id, $class, ExamMark $examMark){
-        $this->authorize('update',  $examMark);
-
+    public function edit($id, $class){
         $marks = ExamMark::find($id);
+        $this->authorize('update',  $marks);
+        
         $studentsubject = StudentSubject::find($marks->student_subject_id);
         $student = Student::find($studentsubject->student_id);
 
         return view('exams/editExamMark', ['marks'=>$marks, 'class'=>$class, 'student'=>$student, 'studentsubject'=>$studentsubject]);
     }
 
-    public function update(Request $request, $id, $class, ExamMark $examMark){
-        $this->authorize('update',  $examMark);
+    public function update(Request $request, $id, $class){
+        $mark = ExamMark::find($id);
+        $this->authorize('update',  $mark);
 
         $request->validate([
             'mark' => 'required'
         ]);
 
-        $mark = ExamMark::find($id);
         $mark->mark= $request->input('mark');
 
         $mark->save();
@@ -130,10 +143,11 @@ class ExamMarksController extends Controller
         return redirect('/viewclassmarks/'.$class)->with('message', 'Marks updated successfully!');
     }
 
-    public function destroy($id, $class, ExamMark $examMark){
-        $this->authorize('delete',  $examMark);
+    public function destroy($id, $class){
+        $mark = ExamMark::find($id);
+        $this->authorize('delete',  $mark);
 
-        $mark = ExamMark::find($id)->delete();
+        $mark->delete();
 
         return redirect('/viewclassmarks/'.$class)->with('message', 'Mark deleted successfully!');
     }
@@ -142,7 +156,12 @@ class ExamMarksController extends Controller
     public function trashedExamMarks(){
         $this->authorize('restore',  ExamMark::class);
 
-        $marks = ExamMark::onlyTrashed()->get();
+        if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $marks = ExamMark::onlyTrashed()->get()->whereIn('student_subject_id', StudentSubject::select('id')->whereIn('student_id', Student::select('id')->whereIn('class_id', Classes::select('id')->where('school_id', Auth::user()->school_id))));
+        }else{
+            $marks = ExamMark::onlyTrashed()->get();
+        }
+        
         return view('exams/trashedExamMarks', compact('marks'));
     }
 

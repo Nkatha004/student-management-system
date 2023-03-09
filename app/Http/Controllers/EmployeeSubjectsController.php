@@ -51,11 +51,11 @@ class EmployeeSubjectsController extends Controller
         return redirect("/employeesubjects/".request('employee'))->with("message", "Employee Subject added successfully");
     }
 
-    public function edit($id, EmployeeSubject $employeesubject){
-
+    public function edit($id){
+        $employeesubject = EmployeeSubject::find($id);
         $this->authorize('update',  $employeesubject);
 
-        $employeesubject = EmployeeSubject::find($id);
+       
         $employee = Employee::find($employeesubject->employee_id);
 
         $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);
@@ -64,16 +64,15 @@ class EmployeeSubjectsController extends Controller
         return view('employees/editEmployeeSubject', ['employeesubject'=>$employeesubject, 'subjects'=>$subjects, 'classes'=>$classes]);
     }
 
-    public function update(Request $request, $id, EmployeeSubject $employeesubject){
+    public function update(Request $request, $id){
 
+        $employeesubject = EmployeeSubject::find($id);
         $this->authorize('update',  $employeesubject);
 
         $request->validate([
             'subject' => 'required',
             'class' => 'required'
         ]);
-
-        $employeesubject = EmployeeSubject::find($id);
         
         $employeesubject->subject_id= $request->input('subject');
         $employeesubject->class_id= $request->input('class');
@@ -83,11 +82,11 @@ class EmployeeSubjectsController extends Controller
         return redirect("/employeesubjects/".request('employee'))->with("Employee Subject edited successfully");
     }
 
-    public function destroy($id, EmployeeSubject $employeesubject)
+    public function destroy($id)
     {
-        $this->authorize('delete',  $employeesubject);
-
         $employeesubject = EmployeeSubject::find($id);
+        $this->authorize('delete',  $employeesubject);
+        
         $employeesubject->delete();
 
         return redirect("/employeesubjects/".$employeesubject->employee_id)->with("Employee Subject deleted successfully");

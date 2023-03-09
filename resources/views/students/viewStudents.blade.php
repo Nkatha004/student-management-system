@@ -23,6 +23,7 @@
 			<tbody>
 				
 				@foreach($students as $student)
+					@can('view', $student)
 					<tr>
 						<td>{{ $student->admission_number }}</td>
 						<td>{{ $student->first_name.' '.$student->last_name }}</td>
@@ -57,6 +58,7 @@
 							@endif
 						</td>
 					</tr>
+					@endcan
 				@endforeach
 			</tbody>
 		</table>
