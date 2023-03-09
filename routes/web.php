@@ -57,7 +57,7 @@ Route::group(['middleware' => ['auth']], function() {
         'middleware' => 'is_admin',
     ], function(){
         Route::get('/admindashboard', [DashboardController::class, 'adminDashboard']);
-
+        Route::get('/addmarks/{id}', [StudentsController::class,'addMarksByAdmin']);
         Route::controller(PaymentsController::class)->group(function(){
             Route::get('/viewpayments', 'viewPayments')->name('allPayments');
             Route::get('/pendingpayments', 'pendingPayments');
@@ -195,7 +195,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/viewstudents', 'viewStudents')->name('viewstudents');
         Route::get('/viewstudents/{id}', 'viewStudentsTaughtByEmployee');
         Route::get('/addstudentmarks', 'viewStudentsToAddMarks');
-        Route::get('/addmarks/{id}', 'addMarksByAdmin');
         Route::post('/updatestudent/{id}', 'update');
         Route::get('/deletestudent/{id}', 'destroy');
         Route::get('/trashedstudents', 'trashedStudents');

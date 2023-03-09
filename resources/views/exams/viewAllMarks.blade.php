@@ -16,6 +16,7 @@
 			</thead>
 			<tbody>
 				@foreach($marks as $mark)
+					@can('view', $mark)
 					<tr>
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getStudentName($mark->student_subject_id) }}</td>
 						<td>{{ App\Http\Controllers\StudentSubjectsController::getSubject($mark->student_subject_id) }}</td>
@@ -32,6 +33,7 @@
 						</td>
 						@endcan
 					</tr>
+					@endcan
 				@endforeach
 			</tbody>
 		</table>

@@ -51,10 +51,11 @@ class StudentSubjectsController extends Controller
         }
     }
 
-    public function edit($id, StudentSubject $studentSubject){
-        $student = Student::find($id);
+    public function edit($id){
+        $studentsubject = StudentSubject::find($id);
+        $student = Student::find($studentsubject->student_id);
         
-        $this->authorize('update',  $studentSubject);
+        $this->authorize('update',  $studentsubject);
 
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $schoolID = Classes::all()->where('id', $student->class_id)->first()->school_id;
@@ -63,19 +64,19 @@ class StudentSubjectsController extends Controller
             $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
         }
 
-        $studentsubject = StudentSubject::find($id);
+        
 
         return view('students/editstudentsubject', ['studentsubject'=>$studentsubject, 'subjects'=>$subjects]);
     }
 
-    public function update(Request $request, $id, StudentSubject $studentSubject){
-        $this->authorize('update',  $studentSubject);
+    public function update(Request $request, $id){
+        $studentsubject = StudentSubject::find($id);
+        
+        $this->authorize('update',  $studentsubject);
 
         $request->validate([
             'subject' => 'required'
         ]);
-
-        $studentsubject = StudentSubject::find($id);
         
         $studentsubject->subject_id= $request->input('subject');
         $studentsubject->save();
@@ -84,11 +85,11 @@ class StudentSubjectsController extends Controller
         return redirect("/studentsubjects/".request('student'))->with("Student Subject edited successfully");
     }
 
-    public function destroy($id, StudentSubject $studentSubject)
+    public function destroy($id)
     {
-        $this->authorize('delete',  $studentSubject);
-
         $studentsubject = StudentSubject::find($id);
+        $this->authorize('delete',  $studentsubject);
+        
         $studentsubject->delete();
 
         return redirect("/studentsubjects/".$studentsubject->student_id)->with("Student Subject deleted successfully");

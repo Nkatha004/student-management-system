@@ -52,8 +52,9 @@
                         {{ $errors->first('student') }}
                     </div>
                 @endif
-                <label for="student" class="form-label">Student ID</label>
-                <input type="text" class="form-control" id="student" name = "student" value = "{{$student->id}}" readonly>
+                <label for="student" class="form-label">Student Name</label>
+                <input type="text" class="form-control" id="student" name = "student" value = "{{$student->id}}" hidden>
+                <input type="text" class="form-control" id="studentName" name = "studentName" value = "{{$student->first_name.' '.$student->last_name}}" readonly>
             </div>
             
             @if($errors->has('subject'))

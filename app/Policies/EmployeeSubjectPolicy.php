@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Role;
 use App\Models\EmployeeSubject;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Auth;
 
 class EmployeeSubjectPolicy
 {
@@ -21,9 +22,14 @@ class EmployeeSubjectPolicy
     {
         //Admin and principal can view all employee subjects
         //Classteacher and teacher can view their employee subjects only
-        $employeeSubjectSchool = Employee::all()->where('id', $employeeSubject->employee_id)->first()->school_id;
-
-        return in_array($employee->role_id, [Role::IS_SUPERADMIN, (Role::IS_PRINCIPAL && $employee->school_id == $employeeSubjectSchool)]) || (in_array($employee->role_id, [Role::IS_CLASSTEACHER, Role::IS_TEACHER]) && ($employee->id == $employeeSubject->employee_id));
+        if($employee->role_id == Role::IS_SUPERADMIN){
+            return true;
+        }else if($employee->role_id == Role::IS_PRINCIPAL){
+            $employeeSubjectSchool = Employee::all()->where('id', $employeeSubject->employee_id)->first()->school_id;
+            return $employee->school_id == $employeeSubjectSchool;
+        }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
+            return $employeeSubject->employee_id == $employee->id;
+        }
     }
 
     public function hasEmployeeSubjects(Employee $employee)
@@ -40,16 +46,15 @@ class EmployeeSubjectPolicy
 
     public function update(Employee $employee, EmployeeSubject $employeeSubject)
     {
-        //admin can update all/any employee subjects
-        //principal can update all employee subjects linked to their school
-        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employeeSubject->school_id == $employee->school_id);
+        //admin/principal can update all/any employee subjects
+
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL);
     }
 
     public function delete(Employee $employee, EmployeeSubject $employeeSubject)
     {
-        //admin can delete all/any employee subjects
-        //principal can delete all employee subjects linked to their school
-        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $employeeSubject->school_id == $employee->school_id);
+        //admin/principal can delete all/any employee subjects
+        return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL);
     }
 
     public function restore(Employee $employee)
@@ -57,4 +62,5 @@ class EmployeeSubjectPolicy
         //Principal and admin can restore employee subject
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL]);
     }
+
 }

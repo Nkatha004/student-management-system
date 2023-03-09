@@ -12,6 +12,9 @@
                 @can('restore', '\App\Models\EmployeeSubject')
                     <th scope="col">Actions</th>
                 @endcan
+                @if(Auth::user()->role_id == \App\Models\Role::IS_TEACHER)
+                    <th scope="col">Actions</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -39,6 +42,9 @@
                                 @endif
                             </td>
                         @endcan
+                        @if(Auth::user()->role_id == \App\Models\Role::IS_TEACHER)
+                            <td><a href = "{{ url('/viewstudents/'.$e_subject->id) }}" class = "btn btn-sm btn-secondary">Add Students Marks</a></td>
+                        @endif
                     </tr>
                 @endcan
             @endforeach

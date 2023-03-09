@@ -94,7 +94,7 @@ class StudentsController extends Controller
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $students = Student::select('*')->where('deleted_at', NULL)->get();
         }else{
-             //select all students who are in the class and do the subject taught by the teacher
+            //select all students who are in the class and do the subject taught by the teacher
             $students = Student::select('*')->where('class_id', EmployeeSubject::find($id)->class_id)->whereIn('id', StudentSubject::select('student_id')->where('subject_id', EmployeeSubject::find($id)->subject_id)->get())->get();
         }
         return view('students/viewStudentsToAddMarks', ['students'=>$students, 'subject'=>EmployeeSubject::find($id)->subject_id]);
