@@ -88,27 +88,60 @@ class ExamMarksController extends Controller
         return redirect('/viewclassmarks/'.$class);
 
     }
-    public function viewClassMarks($id){
+    public function viewClassMarks($id, request $request){
         $this->authorize('view',  Classes::find($id));
 
+        $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', Auth::user()->school_id);
+        
         if(Auth::user()->role_id == Role::IS_CLASSTEACHER){
             //marks of all students in the class
-            $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
+            $marks = ExamMark::when($request->subject != null, function($query) use($request, $id){
+                                            return $query->whereIn('student_subject_id', StudentSubject::select('id')
+                                                            ->where('subject_id', $request->subject)
+                                                            ->whereIn('student_id', Student::select("id")
+                                                            ->where('class_id', $id)
+                                                            ->whereIn('class_id', Classes::select('id')
+                                                            ->where('deleted_at', NULL)
+                                                            ->where('class_teacher', Auth::user()->id))))->get();
+                                        })
+                                        ->when($request->term != null, function($query) use($request, $id){
+                                            return $query->where('term', $request->term)
+                                                            ->whereIn('student_subject_id', StudentSubject::select('id')
+                                                            ->whereIn('student_id', Student::select("id")
+                                                            ->where('class_id', $id)
+                                                            ->whereIn('class_id', Classes::select('id')
+                                                            ->where('deleted_at', NULL)
+                                                            ->where('class_teacher', Auth::user()->id))))->get();
+                                        })
+                                        
+                                        ->whereIn('student_subject_id', StudentSubject::select('id')
                                         ->whereIn('student_id', Student::select("id")
                                         ->where('class_id', $id)
                                         ->whereIn('class_id', Classes::select('id')
                                         ->where('deleted_at', NULL)
-                                        ->where('class_teacher', Auth::user()->id)->get())))
-                                        ->paginate(15);
+                                        ->where('class_teacher', Auth::user()->id))))->get();
         }else{
-            $marks = ExamMark::select('*')->whereIn('student_subject_id', StudentSubject::select('id')
-                                        ->whereIn('student_id', Student::select("id")
-                                        ->where('class_id', $id)
-                                        ->where('deleted_at', NULL)->get()))
-                                        ->paginate(15);
+            $marks = ExamMark::when($request->subject != null, function($query) use($request, $id){
+                                            return $query->whereIn('student_subject_id', StudentSubject::select('id')
+                                                        ->where('subject_id', $request->subject)
+                                                        ->whereIn('student_id', Student::select("id")
+                                                        ->where('class_id', $id)
+                                                        ->where('deleted_at', NULL)));
+                                })
+                                ->when($request->term != null, function($query) use($request, $id){
+                                    return $query->where('term', $request->term)
+                                                ->whereIn('student_subject_id', StudentSubject::select('id')
+                                                ->whereIn('student_id', Student::select("id")
+                                                ->where('class_id', $id)
+                                                ->where('deleted_at', NULL)));
+                                })    
+                                ->whereIn('student_subject_id', StudentSubject::select('id')
+                                ->whereIn('student_id', Student::select("id")
+                                ->where('class_id', $id)
+                                ->where('deleted_at', NULL)))->get();
         }
 
-        return view('exams/viewAllMarks', ['marks'=>$marks, 'classID'=>$id]);
+        return view('exams/viewAllMarks', ['marks'=>$marks, 'classID'=>$id, 'subjects'=>$subjects]);
     }
 
     public function edit($id, $class){
