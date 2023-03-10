@@ -25,8 +25,10 @@ class EmployeeSubjectPolicy
         if($employee->role_id == Role::IS_SUPERADMIN){
             return true;
         }else if($employee->role_id == Role::IS_PRINCIPAL){
+            
             $employeeSubjectSchool = Employee::all()->where('id', $employeeSubject->employee_id)->first()->school_id;
             return $employee->school_id == $employeeSubjectSchool;
+       
         }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
             return $employeeSubject->employee_id == $employee->id;
         }

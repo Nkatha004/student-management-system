@@ -65,14 +65,13 @@ class StudentsController extends Controller
         }
         //display students in the class where the logged in teacher is a classteacher only
         elseif(Auth::user()->role_id == Role::IS_CLASSTEACHER){
-            $students = Student::select("*")
-                    ->whereIn('class_id', Classes::select('id')->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->get())
-                    ->get();
-                    
-           
+            $students = Student::select("*")->whereIn('class_id', Classes::select('id')
+                                            ->where('deleted_at', NULL)
+                                            ->where('class_teacher', Auth::user()->id)
+                                            ->get())->get();
+
             return view('students/viewStudents', ['students'=> $students]);
-        }
-        else{
+        }else{
             //display students specific to school of logged in user
             $students = Student::select("*")
                     ->whereIn('class_id', Classes::select('id')
@@ -89,6 +88,9 @@ class StudentsController extends Controller
         }
     }
     public function viewStudentsTaughtByEmployee($id){
+        $employeesubject = EmployeeSubject::find($id);
+        $this->authorize('view', $employeesubject);
+
         //if admin select all students
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $students = Student::select('*')->where('deleted_at', NULL)->get();

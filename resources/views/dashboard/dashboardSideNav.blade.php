@@ -211,7 +211,7 @@
                     </div>
                 @endcan
 
-                @can('viewAny', '\App\Models\ExamMark')
+                @can('viewAny', '\App\Models\Classes')
                     <a class = "dropdown-btn">
                         <li>
                             <i class="uil uil-chart"></i>

@@ -18,6 +18,10 @@ class HomeController extends Controller
         return view('index');
     }
 
+    public function example(){
+        return view('example');
+    }
+
     public function login(){
         return view('login');
     }

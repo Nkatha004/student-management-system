@@ -16,8 +16,10 @@ class EmployeeSubjectsController extends Controller
 {
     public function index($id){
         $employee = Employee::find($id);
-        $this->authorize('viewAny',  EmployeeSubject::class);
         $employeesubjects = EmployeeSubject::all()->where('employee_id', $id)->where('deleted_at', NULL);
+        foreach($employeesubjects as $employeesubject){
+            $this->authorize('view',  $employeesubject);
+        }       
 
         $subjects = Subject::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);
         $classes = Classes::all()->where('deleted_at', NULL)->where('school_id', $employee->school_id);

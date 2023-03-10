@@ -22,21 +22,25 @@ class ExamMarksController extends Controller
                                                 ->where('subject_id', Subject::find($subjectID)->id)
                                                 ->get()
                                                 ->first();
-        $mark = ExamMark::select('*')->where('student_subject_id', $studentsubjects->id)->get()->first();
-        $this->authorize('createMark',  $mark);
+        if($studentsubjects){
+            $mark = ExamMark::select('*')->where('student_subject_id', $studentsubjects->id)->get()->first();
+            $this->authorize('createMark',  $mark);
 
-        //find the subjects done by the student
-        $subjects = StudentSubject::select('*')->where('deleted_at', NULL)
-                                                        ->where('student_id', Student::find($studentID)->id)
-                                                        ->get();
-        //find the student subject done by the student
-        $studentsubjects = StudentSubject::select('*')->where('deleted_at', NULL)
-                                                ->where('student_id', Student::find($studentID)->id)
-                                                ->where('subject_id', Subject::find($subjectID)->id)
-                                                ->get()
-                                                ->first();
+            //find the subjects done by the student
+            $subjects = StudentSubject::select('*')->where('deleted_at', NULL)
+                                                            ->where('student_id', Student::find($studentID)->id)
+                                                            ->get();
+            //find the student subject done by the student
+            $studentsubjects = StudentSubject::select('*')->where('deleted_at', NULL)
+                                                    ->where('student_id', Student::find($studentID)->id)
+                                                    ->where('subject_id', Subject::find($subjectID)->id)
+                                                    ->get()
+                                                    ->first();
 
-        return view('exams.addExamMarks', ['student'=>Student::find($studentID),'subject'=>Subject::find($subjectID), 'studentsubjects'=>$studentsubjects, 'subjects'=>$subjects]);
+            return view('exams.addExamMarks', ['student'=>Student::find($studentID),'subject'=>Subject::find($subjectID), 'studentsubjects'=>$studentsubjects, 'subjects'=>$subjects]);
+        }else{
+            return redirect()->back()->with('message', 'No student does the selected subject');
+        }
     }
     public function store(Request $request){
         $this->authorize('create',  ExamMark::class);
@@ -61,20 +65,10 @@ class ExamMarksController extends Controller
             $studentsubject = StudentSubject::select('id')->where('student_id', request('student_id'))->where('subject_id', request('subject'))->get()->first()->id;
             $exams = ExamMark::where('student_subject_id', $studentsubject)->get();
         }else{
-            $teachingSubjects = array();
             $studentsubject = request('studentSubject');
 
-            $employeesubjects = EmployeeSubject::select('subject_id')->where('employee_id', Auth::user()->id)->whereIn('class_id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $studentsubject)))->get();
-            foreach($employeesubjects as $employeesubject){
-                $teachingSubjects[] = $employeesubject->subject_id;
-            }
-
-            if(!(in_array(request('subject'), $teachingSubjects))){
-                return redirect('/marks/'.StudentSubject::find($studentsubject)->student_id.'/'.StudentSubject::find($studentsubject)->subject_id)->with('message', 'Not authorized to add marks for '.request('subject')); 
-            }
             $exams = ExamMark::all()->where('student_subject_id', $studentsubject);
         }
-
         foreach($exams as $exam){
             if($year == $exam->year && request('term') == $exam->term){
                 $studentName = StudentSubjectsController::getStudentName(request('student_id'));
@@ -95,8 +89,7 @@ class ExamMarksController extends Controller
 
     }
     public function viewClassMarks($id){
-
-        $this->authorize('viewAny',  ExamMark::class);
+        $this->authorize('view',  Classes::find($id));
 
         if(Auth::user()->role_id == Role::IS_CLASSTEACHER){
             //marks of all students in the class

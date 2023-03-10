@@ -39,12 +39,22 @@ class ExamMarkPolicy
             return $classID == $studentClass;
         }else{
             $teacherSubjects = EmployeeSubject::select('subject_id')->where('employee_id', $employee->id)->get();
-            $teacherClasses = EmployeeSubject::select('class_id')->where('employee_id', $employee->id)->get();
+            
+            $teachingSubjects = array();
+
+            foreach($teacherSubjects as $teacherSubject){
+                $teachingSubjects[] = $teacherSubject->subject_id;
+            }
             
             //subject done by student
-            $Studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
-            return true;
-            // return in_array($studentSubject, $teacherSubjects); 
+            $studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
+            
+            //compare if subjects taught by teacher are done by student
+            if(in_array($studentsubject, $teachingSubjects)){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
 
@@ -65,21 +75,26 @@ class ExamMarkPolicy
         }else if($employee->role_id == Role::IS_PRINCIPAL){
             $schoolID = Classes::select('school_id')->whereIn('id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))) ->get()->first()->school_id;
             return $employee->school_id == $schoolID;
-        }else if($employee->role_id == Role::IS_CLASSTEACHER){
-            $classID = Classes::select('id')->where('class_teacher', $employee->id)->get()->first()->id;
-            $studentClass = Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))->get()->first()->class_id;
-           
-            return $classID == $studentClass;
-        }else{
+        }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
             $teacherSubjects = EmployeeSubject::select('subject_id')->where('employee_id', $employee->id)->get();
             $teacherClasses = EmployeeSubject::select('class_id')->where('employee_id', $employee->id)->get();
             
+            $teachingSubjects = array();
+
+            foreach($teacherSubjects as $teacherSubject){
+                $teachingSubjects[] = $teacherSubject->subject_id;
+            }
+
             //subject done by student
-            $Studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
-            return true;
-            // return in_array($Studentsubject, $teacherSubjects); 
+            $studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
+            
+            //compare if subjects taught by teacher are done by student
+            if(in_array($studentsubject, $teachingSubjects)){
+                return true;
+            }else{
+                return false;
+            }
         }
-        // return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
     }
     
     public function update(Employee $employee, ExamMark $mark)

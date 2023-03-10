@@ -4,6 +4,9 @@ namespace App\Policies;
 
 use App\Models\Classes;
 use App\Models\Employee;
+use App\Models\EmployeeSubject;
+use App\Models\StudentSubject;
+use App\Models\Student;
 use App\Models\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Auth;
@@ -28,9 +31,26 @@ class ClassesPolicy
         }else if(Auth::user()->role_id == Role::IS_PRINCIPAL){
             $school = Classes::find($class->id)->school_id;
             return $employee->school_id == $school;
-        }else{
+        }else if(Auth::user()->role_id == Role::IS_CLASSTEACHER){
             $classTeacher = Classes::find($class->id)->class_teacher;
             return $employee->id == $classTeacher;
+        }else{
+            $employeesubjects = EmployeeSubject::select('*')->where('class_id', $class->id)->where('employee_id', $employee->id)->get();
+            $subjects = array();
+
+            foreach ($employeesubjects as $employeesubject) {
+                $subjects[] = $employeesubject->subject_id;
+            }
+
+            $studentsubjects = StudentSubject::select('*')->whereIn('student_id', Student::select('id')->where('class_id', $class->id))->get();
+
+            foreach ($studentsubjects as $studentsubject) {
+                if(in_array($studentsubject->subject_id, $subjects)){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
     }
 

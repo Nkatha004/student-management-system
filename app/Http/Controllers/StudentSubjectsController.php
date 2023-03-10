@@ -13,8 +13,10 @@ use Auth;
 class StudentSubjectsController extends Controller
 {
     public function index($id){
-        $this->authorize('viewAny',  StudentSubject::class);
-
+        $studentsubjects = StudentSubject::all()->where('student_id', $id)->where('deleted_at', NULL);
+        foreach($studentsubjects as $studentsubject){
+            $this->authorize('view',  $studentsubject);
+        } 
         $student = Student::find($id);
 
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
