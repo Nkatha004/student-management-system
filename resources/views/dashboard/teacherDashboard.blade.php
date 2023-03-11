@@ -19,7 +19,7 @@
 		    </div>
 			<div class="single-card">
 		        <a href = "{{ URL::to('/viewstudents') }}"><div>
-		            <span>Number of Students</span>
+		            <span>Total Number of Students</span>
 		            <h2>{{$students}}</h2>
 		        </div></a>
 		        <i class="uil uil-graduation-cap"></i>

@@ -25,6 +25,7 @@ class StudentFactory extends Factory
             'admission_number' => fake()->numerify('#####'),
             'first_name' => fake()->firstName,
             'last_name' => fake()->lastName,
+            'gender' => fake()->randomElement(['male', 'female']),
             'guardian_name' => fake()->name,
             'guardian_phone_number' => fake()->numerify('0#########'),
             'guardian_email' => fake()->email(),

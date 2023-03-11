@@ -27,6 +27,7 @@ class EmployeeFactory extends Factory
             'email' => fake()->email,
             'tsc_number' => fake()->numerify('########'),
             'telephone_number' => fake()->numerify('0#########'),
+            'gender' => fake()->randomElement(['male', 'female']),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'school_id' => School::factory()->create()->id,
             'role_id' => fake()->randomElement([2,3,4])

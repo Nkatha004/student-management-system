@@ -13,5 +13,5 @@ class Employee extends Authenticatable implements Auditable
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable; 
 
-    protected $fillable = ['id', 'first_name', 'last_name', 'email', 'tsc_number', 'telephone_number','password', 'school_id', 'role_id', 'profile_image'];
+    protected $fillable = ['id', 'first_name', 'last_name', 'email', 'tsc_number', 'telephone_number','password', 'school_id', 'role_id', 'profile_image', 'gender'];
 }

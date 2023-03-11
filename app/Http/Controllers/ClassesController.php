@@ -57,6 +57,8 @@ class ClassesController extends Controller
 
         if(Auth::user()->role_id == Role::IS_SUPERADMIN){
             $classes = Classes::where('deleted_at', NULL)->get();
+        }else if(Auth::user()->role_id == Role::IS_PRINCIPAL){
+            $classes = Classes::where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->get();
         }elseif (Auth::user()->role_id == Role::IS_CLASSTEACHER){
             $classes = Classes::where('deleted_at', NULL)->where('school_id', Auth::user()->school_id)->where('class_teacher', Auth::user()->id)->get();
         }else{

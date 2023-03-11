@@ -90,4 +90,38 @@ class StudentSubjectPolicy
 
         return $employee->role_id == Role::IS_SUPERADMIN || ($employee->role_id == Role::IS_PRINCIPAL && $studentSubjectSchool == $employee->school_id);
     }
+
+    public function createMark(Employee $employee, StudentSubject $studentSubject)
+    {
+        //All can add marks
+        //Admin can add all marks
+        //Principal can add marks in their school
+        //Class Teacher/teacher can add marks of their students only
+        if($employee->role_id == Role::IS_SUPERADMIN){
+            return true;
+        }else if($employee->role_id == Role::IS_PRINCIPAL){
+            
+            $classID = Student::select('class_id')->where('id', $studentSubject->student_id)->get()->first()->class_id;
+            $studentSubjectSchool = Classes::select('school_id')->where('id', $classID)->get()->first()->school_id;
+
+            return $employee->school_id == $studentSubjectSchool;
+
+        }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
+            $teacherSubjects = EmployeeSubject::select('subject_id')->where('employee_id', $employee->id)->get();
+           
+            $teachingSubjects = array();
+
+            foreach($teacherSubjects as $teacherSubject){
+                $teachingSubjects[] = $teacherSubject->subject_id;
+            }
+
+            //subject done by student
+            $studentsubject = StudentSubject::find($studentSubject->id)->subject_id;
+            
+            //compare if subjects taught by teacher are done by student
+            if(in_array($studentsubject, $teachingSubjects)){
+                return true;
+            }
+        }
+    }
 }

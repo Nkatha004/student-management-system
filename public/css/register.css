@@ -201,6 +201,16 @@ form{
     text-align: center;
 }
 
+.radio{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radio-items{
+    margin: 1rem;
+}
+
 @media (max-width: 870px) {
     .container{
         min-height: 800px;

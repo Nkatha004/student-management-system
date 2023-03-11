@@ -122,8 +122,27 @@
                     @endif
                     <div class="input-field">
                         <i class="fa fa-id-card"></i>
-                        <input type = "number" min="6" placeholder = "Principal TSC Number" name = "principal_tscNo">
+                        <input type = "number" placeholder = "Principal TSC Number" name = "principal_tscNo">
                     </div>
+
+                    @if($errors->has('gender'))
+                        <div class = "alert alert-danger" role = "alert">
+                            {{ $errors->first('gender') }}
+                        </div>
+                    @endif
+                    <label>Gender: </label>
+                    <div class = "radio">
+                        <div class = "radio-items">
+                            <input type="radio" id="male" name="gender" value="male">
+                            <label for="male">Male</label>
+                        </div>
+
+                        <div class = "radio-items">
+                            <input type="radio" id="female" name="gender" value="female">
+                            <label for="female">Female</label>
+                        </div>
+                    </div>
+            
                     <input type = "submit" value = "Register" class = "btn solid"/>
                 </form>
             </div>

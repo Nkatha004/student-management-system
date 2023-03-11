@@ -63,39 +63,6 @@ class ExamMarkPolicy
         //All can add marks
         return in_array($employee->role_id, [Role::IS_SUPERADMIN, Role::IS_PRINCIPAL, Role::IS_CLASSTEACHER, Role::IS_TEACHER]);
     }
-
-    public function createMark(Employee $employee, ExamMark $mark)
-    {
-        //All can add marks
-        //Admin can add all marks
-        //Principal can add marks in their school
-        //Class Teacher/teacher can add marks of their students only
-        if($employee->role_id == Role::IS_SUPERADMIN){
-            return true;
-        }else if($employee->role_id == Role::IS_PRINCIPAL){
-            $schoolID = Classes::select('school_id')->whereIn('id', Student::select('class_id')->whereIn('id', StudentSubject::select('student_id')->where('id', $mark->student_subject_id))) ->get()->first()->school_id;
-            return $employee->school_id == $schoolID;
-        }else if($employee->role_id == Role::IS_CLASSTEACHER || $employee->role_id == Role::IS_TEACHER){
-            $teacherSubjects = EmployeeSubject::select('subject_id')->where('employee_id', $employee->id)->get();
-            $teacherClasses = EmployeeSubject::select('class_id')->where('employee_id', $employee->id)->get();
-            
-            $teachingSubjects = array();
-
-            foreach($teacherSubjects as $teacherSubject){
-                $teachingSubjects[] = $teacherSubject->subject_id;
-            }
-
-            //subject done by student
-            $studentsubject = StudentSubject::select('subject_id')->where('id', $mark->student_subject_id)->get()->first()->subject_id;
-            
-            //compare if subjects taught by teacher are done by student
-            if(in_array($studentsubject, $teachingSubjects)){
-                return true;
-            }else{
-                return false;
-            }
-        }
-    }
     
     public function update(Employee $employee, ExamMark $mark)
     {

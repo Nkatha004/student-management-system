@@ -23,8 +23,7 @@ class ExamMarksController extends Controller
                                                 ->get()
                                                 ->first();
         if($studentsubjects){
-            $mark = ExamMark::select('*')->where('student_subject_id', $studentsubjects->id)->get()->first();
-            $this->authorize('createMark',  $mark);
+            $this->authorize('createMark',  $studentsubjects);
 
             //find the subjects done by the student
             $subjects = StudentSubject::select('*')->where('deleted_at', NULL)
@@ -39,7 +38,7 @@ class ExamMarksController extends Controller
 
             return view('exams.addExamMarks', ['student'=>Student::find($studentID),'subject'=>Subject::find($subjectID), 'studentsubjects'=>$studentsubjects, 'subjects'=>$subjects]);
         }else{
-            return redirect()->back()->with('message', 'No student does the selected subject');
+            return redirect()->with('message', 'No student does the selected subject');
         }
     }
     public function store(Request $request){
@@ -102,7 +101,7 @@ class ExamMarksController extends Controller
                                                             ->where('class_id', $id)
                                                             ->whereIn('class_id', Classes::select('id')
                                                             ->where('deleted_at', NULL)
-                                                            ->where('class_teacher', Auth::user()->id))))->get();
+                                                            ->where('class_teacher', Auth::user()->id))));
                                         })
                                         ->when($request->term != null, function($query) use($request, $id){
                                             return $query->where('term', $request->term)
@@ -111,7 +110,7 @@ class ExamMarksController extends Controller
                                                             ->where('class_id', $id)
                                                             ->whereIn('class_id', Classes::select('id')
                                                             ->where('deleted_at', NULL)
-                                                            ->where('class_teacher', Auth::user()->id))))->get();
+                                                            ->where('class_teacher', Auth::user()->id))));
                                         })
                                         
                                         ->whereIn('student_subject_id', StudentSubject::select('id')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\SchoolsController;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Subject;
@@ -38,18 +39,29 @@ class StudentsController extends Controller
             'guardianname' => 'required',
             'email' => 'required | email',
             'phoneNo' => 'required',
-            'admNo' => 'required'
+            'gender' => 'required'
         ]);
 
         Student::create([
-            'admission_number' => request('admNo'),
             'first_name' => request('fname'), 
             'last_name' => request('lname'),
             'guardian_name' => request('guardianname'),
             'guardian_email' => request('email'),
+            'gender' => request('gender'),
             'guardian_phone_number' => request('phoneNo'),
             'class_id' => request('class')
         ]);
+
+        $student = Student::select('*')->where('first_name', request('fname'))->where('last_name', request('lname'))->where('guardian_email', request('email'))->get()->first();
+        $class = Classes::find($student->class_id);
+
+        //get the first word in school name eg Kilimani in Kilimani High School
+        $schoolname = SchoolsController::getSchoolName($class->school_id);
+        $words = explode(' ', $schoolname);
+
+        //concat first word of school name, year of enrollment and studentID eg Kilimani/2023/1
+        $student->admission_number = $words[0].'/'.$class->year.'/'.$student->id;
+        $student->save();
 
         return redirect('/viewstudents')->with('message', 'Student added successfully!');
     }
@@ -162,7 +174,7 @@ class StudentsController extends Controller
             'guardianname' => 'required',
             'email' => 'required | email',
             'phoneNo' => 'required | min:9',
-            'admNo' => 'required'
+            'gender' => 'required'
         ]);
         
         $student->first_name= $request->input('fname');
@@ -170,7 +182,7 @@ class StudentsController extends Controller
         $student->guardian_name = $request->input('guardianname');
         $student->guardian_email = $request->input('email');
         $student->guardian_phone_number = $request->input('phoneNo');
-        $student->admission_number = $request->input('admNo');
+        $student->gender = $request->input('gender');
         $student->class_id = $request->input('class');
 
         $student->save();

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('admission_number');
+            $table->string('admission_number')->nullable();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('gender');
             $table->string('guardian_name');
             $table->string('guardian_phone_number');
             $table->string('guardian_email');

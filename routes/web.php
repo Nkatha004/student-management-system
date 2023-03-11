@@ -28,7 +28,6 @@ use App\Http\Controllers\ContactUsController;
 */
 
 Route::controller(HomeController::class)->group(function(){
-    Route::get('/example', 'example');
     Route::get('/', 'index');
     Route::get('/login', 'login')->name('login');
     Route::get('/register', 'register');

@@ -12,5 +12,5 @@ class Student extends Model implements Auditable
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable; 
 
-    protected $fillable = ['id', 'admission_number','first_name', 'last_name', 'guardian_name', 'guardian_phone_number', 'guardian_email', 'class_id'];
+    protected $fillable = ['id', 'admission_number','first_name', 'last_name', 'guardian_name', 'guardian_phone_number', 'guardian_email', 'class_id', 'gender'];
 }

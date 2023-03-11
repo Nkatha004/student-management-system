@@ -37,6 +37,7 @@ class ClassesPolicy
         }else{
             $employeesubjects = EmployeeSubject::select('*')->where('class_id', $class->id)->where('employee_id', $employee->id)->get();
             $subjects = array();
+            $found = false;
 
             foreach ($employeesubjects as $employeesubject) {
                 $subjects[] = $employeesubject->subject_id;
@@ -46,11 +47,11 @@ class ClassesPolicy
 
             foreach ($studentsubjects as $studentsubject) {
                 if(in_array($studentsubject->subject_id, $subjects)){
-                    return true;
-                }else{
-                    return false;
+                    $found = true;
+                    break;
                 }
             }
+            return $found;
         }
     }
 

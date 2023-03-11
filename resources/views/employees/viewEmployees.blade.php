@@ -9,6 +9,7 @@
 					<th scope="col">Name</th>
                     <th scope="col">School Name</th>
                     <th scope="col">Role Name</th>
+					<th scope="col">Gender</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -31,7 +32,7 @@
 						@endif
 
 	                    <td>{{App\Http\Controllers\RolesController::getRoleName($employee->role_id) }}</td>
-
+						<td>{{ $employee->gender }}</td>
 						<td>
 							@if($employee->role_id != \App\Models\Role::IS_SUPERADMIN)
 								<a href = "{{ url('/employeesubjects/'.$employee->id) }}" class = "btn btn-sm btn-info">Subjects</a>

@@ -97,7 +97,10 @@ class StudentSubjectsController extends Controller
         return redirect("/studentsubjects/".$studentsubject->student_id)->with("Student Subject deleted successfully");
     }
     public static function getStudentName($id){
-        $student = Student::find($id);
+        $student = Student::find(StudentSubject::find($id)->student_id);
+        if(!$student){
+            return 'Not Found';
+        }
         return $student->first_name. ' '. $student->last_name;
     }
     public static function getSubject($id){

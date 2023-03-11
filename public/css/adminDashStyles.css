@@ -176,6 +176,9 @@ main{
 .single-card:nth-child(4){
   border-left: 5px solid orange;
 }
+.single-card:nth-child(5){
+  border-left: 5px solid darkmagenta;
+}
 
 .single-card:nth-child(1) span{
   color: royalblue;
@@ -189,6 +192,9 @@ main{
 }
 .single-card:nth-child(4) span{
   color: orange;
+}
+.single-card:nth-child(5) span{
+  color: darkmagenta;
 }
 
 .single-card:hover{

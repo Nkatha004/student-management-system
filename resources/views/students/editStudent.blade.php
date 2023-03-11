@@ -29,7 +29,7 @@
         @endif
         <div class="col-12">
             <label for="admNo" class=" form-label">Admission Number</label>
-            <input type="text" class="form-control" id="admNo" name = "admNo" value = "{{$student->admission_number}}">
+            <input type="text" class="form-control" id="admNo" name = "admNo" value = "{{$student->admission_number}}" readonly>
         </div>
 
         @if($errors->has('fname'))
@@ -51,6 +51,20 @@
             <input type="text" class="form-control" id="lname" name = "lname" value = "{{$student->last_name}}">
         </div>
 
+        @if($errors->has('gender'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('gender') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="gender" class=" form-label">Student Gender</label>
+            <select class="form-select" name = "gender">
+                <option selected disabled value = "">Select gender</option>
+                <option value = "male">Male</option>
+                <option value = "female">Female</option>
+            </select>
+        </div>
+        
         @if($errors->has('guardianname'))
             <div class = "alert alert-danger" role = "alert">
                 {{ $errors->first('guardianname') }}

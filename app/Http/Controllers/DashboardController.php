@@ -18,11 +18,22 @@ class DashboardController extends Controller
     public function teacherDashboard(){
         $classes = Classes::all()->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->first();
         $assignedClasses = EmployeeSubject::all()->where('deleted_at', NULL)->where('employee_id', Auth::user()->id)->count('id');
-        $students = Student::select("*")
-                    ->whereIn('class_id', Classes::select('id')->where('deleted_at', NULL)->where('class_teacher', Auth::user()->id)->get())
-                    ->get()->count('id');
+        $students = Student::select("*")->whereIn('class_id', Classes::select('id')
+                                        ->where('deleted_at', NULL)
+                                        ->where('class_teacher', Auth::user()->id)->get())
+                                        ->get()->count('id');
+        $maleStudents = Student::select("*")->where('gender', 'male')
+                                                        ->whereIn('class_id', Classes::select('id')
+                                                        ->where('deleted_at', NULL)
+                                                        ->where('class_teacher', Auth::user()->id)->get())
+                                                        ->get()->count('id');
+        $femaleStudents = Student::select("*")->where('gender', 'female')
+                                                        ->whereIn('class_id', Classes::select('id')
+                                                        ->where('deleted_at', NULL)
+                                                        ->where('class_teacher', Auth::user()->id)->get())
+                                                        ->get()->count('id');
 
-        return view('dashboard/teacherDashboard', ['classes'=>$classes, 'assignedClasses'=>$assignedClasses, 'students'=>$students]);
+        return view('dashboard/teacherDashboard', ['classes'=>$classes, 'assignedClasses'=>$assignedClasses, 'students'=>$students, 'malestudents'=>$maleStudents, 'femalestudents'=>$femaleStudents]);
     }
 
     public function principalDashboard(){

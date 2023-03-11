@@ -20,7 +20,8 @@ return new class extends Migration
             $table->integer('tsc_number')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('telephone_number');
+            $table->string('telephone_number');
+            $table->string('gender');
             $table->integer('school_id')->unsigned()->nullable();
             $table -> foreign('school_id') -> references('id') -> on('schools');
             $table->integer('role_id')->unsigned();

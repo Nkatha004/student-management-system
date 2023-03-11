@@ -82,7 +82,7 @@
         @endif
         <div class="col-12">
             <label for="principal_tscNo" class=" form-label">TSC Number</label>
-            <input type="text" class="form-control" id="principal_tscNo" name = "principal_tscNo">
+            <input type="number" class="form-control" id="principal_tscNo" name = "principal_tscNo">
         </div>
 
         @if($errors->has('principal_telNo'))
@@ -110,7 +110,7 @@
                 {{ $errors->first('password') }}
             </div>
         @endif
-        <div class="col-12">
+        <div class="col-md-6">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name = "password">
         </div>
@@ -120,9 +120,23 @@
                 {{ $errors->first('password_confirmation') }}
             </div>
         @endif
-        <div class="col-12">
+        <div class="col-md-6">
             <label for="password_confirmation" class="form-label">Password Confirmation</label>
             <input type="password" class="form-control" id="password_confirmation" name = "password_confirmation">
+        </div>
+
+        @if($errors->has('gender'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('gender') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="gender" class=" form-label">Gender</label>
+            <select class="form-select" name = "gender">
+                <option selected disabled value = "">Select gender</option>
+                <option value = "male">Male</option>
+                <option value = "female">Female</option>
+            </select>
         </div>
         
         <div class="col-12 text-center">

@@ -55,7 +55,7 @@
                 {{ $errors->first('password') }}
             </div>
         @endif
-        <div class="col-12">
+        <div class="col-md-6">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name = "password">
         </div>
@@ -65,7 +65,7 @@
                 {{ $errors->first('password_confirmation') }}
             </div>
         @endif
-        <div class="col-12">
+        <div class="col-md-6">
             <label for="password_confirmation" class="form-label">Password Confirmation</label>
             <input type="password" class="form-control" id="password_confirmation" name = "password_confirmation">
         </div>
@@ -80,8 +80,22 @@
             <input type="text" class="form-control" id="tscNo" name = "tscNo">
         </div>
 
+        @if($errors->has('gender'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('gender') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="gender" class=" form-label">Gender</label>
+            <select class="form-select" name = "gender">
+                <option selected disabled value = "">Select gender</option>
+                <option value = "male">Male</option>
+                <option value = "female">Female</option>
+            </select>
+        </div>
+
         @if (Auth::check())
-        <input value = '4' name = "role" hidden>
+        <input value = '{{\App\Models\Role::IS_TEACHER}}' name = "role" hidden>
         @endif
 
         @if (Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)

@@ -27,7 +27,6 @@
 					<tr>
 						<td>{{ $student->admission_number }}</td>
 						<td>{{ $student->first_name.' '.$student->last_name }}</td>
-
 						<!-- Display phone number to all users except from admin -->
 						@if (Auth::user()->role_id != \App\Models\Role::IS_SUPERADMIN)
 						<td>{{ $student->guardian_phone_number }}</td>

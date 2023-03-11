@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('school_name');
             $table->string('email');
-            $table->integer('phone_number');
+            $table->string('phone_number');
             $table->enum('payment_status', ['Payment Complete', 'Payment Pending'])->default('Payment Pending');
             $table->softDeletes();
             $table->timestamps();

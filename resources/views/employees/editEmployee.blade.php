@@ -65,6 +65,20 @@
                 <input type="text" class="form-control" id="tscNo" name = "tscNo" value = "{{ $employee->tsc_number }}">
             </div>
         @endif
+        
+        @if($errors->has('gender'))
+            <div class = "alert alert-danger" role = "alert">
+                {{ $errors->first('gender') }}
+            </div>
+        @endif
+        <div class="col-12">
+            <label for="gender" class=" form-label">Gender</label>
+            <select class="form-select" name = "gender">
+                <option selected disabled value = "">Select gender</option>
+                <option value = "male">Male</option>
+                <option value = "female">Female</option>
+            </select>
+        </div>
 
         @if($errors->has('role'))
             <div class = "alert alert-danger" role = "alert">

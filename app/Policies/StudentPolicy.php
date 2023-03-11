@@ -40,6 +40,7 @@ class StudentPolicy
 
         }else if(Auth::user()->role_id == Role::IS_CLASSTEACHER || Auth::user()->role_id == Role::IS_TEACHER){
             $teachingSubjects = array();
+            $found = false;
             //subjects taught by teacher
             $teacherSubjects = EmployeeSubject::select('subject_id')->where('class_id', $student->class_id)->where('employee_id', $employee->id)->get();
             foreach($teacherSubjects as $teacherSubject){
@@ -51,12 +52,12 @@ class StudentPolicy
             foreach($studentSubjects as $studentSubject){
                 //compare if subjects taught by teacher are done by student
                 if(in_array($studentSubject->subject_id, $teachingSubjects)){
-                    return true;
-                }else{
-                    return false;
+                    $found = true;
+                    break;
                 }
             }
-        }   
+            return $found;
+        }
     }
 
     public function create(Employee $employee)

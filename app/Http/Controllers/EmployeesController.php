@@ -28,6 +28,7 @@ class EmployeesController extends Controller
             'lname' => 'required',
             'email' => 'required | email | unique:employees',
             'telNo' => 'required',
+            'gender' => 'required',
             'password' => [
                 'required',
                 Password::min(8)
@@ -47,6 +48,7 @@ class EmployeesController extends Controller
             'email' => request('email'),
             'password' => Hash::make(request('password')),
             'telephone_number' => request('telNo'),
+            'gender' => request('gender'),
             'school_id' => request('school'),
             'role_id' => request('role')
         ]);
@@ -90,6 +92,7 @@ class EmployeesController extends Controller
             'lname' => 'required',
             'email' => 'required | email',
             'telNo' => 'required | min: 9',
+            'gender' => 'required',
             'role' => 'required'
         ]);
         
@@ -98,6 +101,7 @@ class EmployeesController extends Controller
         $employee->email = $request->input('email');
         $employee->telephone_number = $request->input('telNo');
         $employee->tsc_number = $request->input('tscNo');
+        $employee->gender = $request->input('gender');
         $employee->role_id = $request->input('role');
     
         $employee->save();

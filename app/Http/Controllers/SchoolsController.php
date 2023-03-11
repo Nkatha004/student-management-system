@@ -24,6 +24,7 @@ class SchoolsController extends Controller
             'school_telNo' => 'required',
             'principal_fname' => 'required',
             'principal_lname' => 'required',
+            'gender'=>'required',
             'principal_tscNo' => 'required',
             'principal_telNo' => 'required',
             'principal_email' => 'required | email',
@@ -58,16 +59,22 @@ class SchoolsController extends Controller
                 'last_name' => request('principal_lname'),
                 'tsc_number' => request('principal_tscNo'),
                 'email' => request('principal_email'),
+                'gender' => request('gender'),
                 'password' => Hash::make(request('password')),
                 'telephone_number' => request('principal_telNo'),
                 'school_id' => $school->id,
                 'role_id' => $role->id
             ]);
-            if(Auth::user()->role_id == Role::IS_SUPERADMIN){
-                return redirect('/viewschools')->with('message', 'School registered successfully!');
+            if(Auth::check()){
+                if(Auth::user()->role_id == Role::IS_SUPERADMIN){
+                    return redirect('/viewschools')->with('message', 'School registered successfully!');
+                }else{
+                    return redirect('/login')->with('messageLogin', 'School registered successfully!');
+                }
             }else{
                 return redirect('/login')->with('messageLogin', 'School registered successfully!');
             }
+            
         }else{
             return back()->with('messageWarning', request('schoolname').' already exists! Contact the administrator for further assistance!'); 
         }
