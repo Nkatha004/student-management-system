@@ -45,8 +45,7 @@
                 <div class="content">
                     <h3>New here ?</h3>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                        Temporibus illo quibusdam nobis pariatur fugit voluptas numquam optio.
+                        You can consider registering your school with us by clicking the button below. 
                     </p>
                     <a href = "{{ URL::to('/register') }}"><button class="btn transparent" id = "sign-up-btn">Sign up</button></a>
                     <img src="{{ URL::asset('images/maker_launch.svg') }}" alt="" class="image">
