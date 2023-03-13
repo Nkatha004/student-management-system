@@ -38,7 +38,7 @@
                         </div>
                     @endif
                     <label for="phoneNo" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phoneNo" name = "phoneNo" value = "{{ '0'.$phoneNumber }}">
+                    <input type="text" class="form-control" id="phoneNo" name = "phoneNo" value = "{{$phoneNumber }}">
                 </div>
                 
                 <div class="col-12 text-center">
