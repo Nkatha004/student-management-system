@@ -134,7 +134,7 @@ class PaymentsController extends Controller
         //generate timestamp
         $timestamp = Carbon::rawParse('now')->format('YmdHms');
         //use passkey
-        $passKey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+        $passKey = env('MPESA_PASS_KEY');
         //businessShortcode
         $businessShortCode = 174379;
         //generate password
@@ -146,9 +146,10 @@ class PaymentsController extends Controller
     //mpesa generate access token request
     public function newAccessToken(){
         
-        $consumer_key = "ubqH6wgnrcANAAJD2HN9AZNG6YF7tReY";
-        $consumer_secret = "Ng4Z5Y6bvXnqG4bx";
+        $consumer_key = env('MPESA_CONSUMER_KEY');
+        $consumer_secret = env('MPESA_CONSUMER_SECRET');
         $credentials = base64_encode($consumer_key.":".$consumer_secret);
+        
         $url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
         //POST request using curl
@@ -180,12 +181,12 @@ class PaymentsController extends Controller
             'Password' => $this->LipaNaMpesaPassword(),
             'Timestamp' => Carbon::rawParse('now')->format('YmdHms'),
             'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => $request->amount,
+            'Amount' => 1,
             'PartyA' => $phoneNumber,
             'PartyB' => 174379,
             'PhoneNumber' => $phoneNumber,
             //mpesa sends transaction response to this callback url
-            'CallBackURL' => 'https://490e-105-162-23-59.ngrok.io/api/stk/push/callback/url',
+            'CallBackURL' => 'https://8713-41-80-112-95.in.ngrok.io/api/stk/push/callback/url',
             'AccountReference' => "School Management System Payment",
             'TransactionDesc' => "Lipa Na M-PESA"
         ];
@@ -205,6 +206,7 @@ class PaymentsController extends Controller
     //Save MPESA data to database
     public function mpesaResponse(Request $request){
         $response = json_decode($request->getContent());
+        Log::info(json_encode($response));
 
         $responseData = $response->Body->stkCallback->CallbackMetadata;
         $amount = $responseData->Item[0]->Value;
