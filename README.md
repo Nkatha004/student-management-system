@@ -82,7 +82,3 @@ Based on the login credentials, one is redirected to a dashboard based on their 
 
 Principal's dashboard is shown below, the side navigation bar shows the different functionalities a principal has!
 ![Screenshot (17)](https://github.com/Nkatha004/student-management-system/assets/69391540/bc8fbb8f-3fc6-42bb-b306-762ab72651b6)
-
-Class views:
-
-![Screenshot (96)](https://github.com/Nkatha004/student-management-system/assets/69391540/7bd78626-4e70-4102-9992-f259bfcd4e50)
