@@ -66,6 +66,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 # student-management-system
+A sneak peek of the system!
+
 The landing page has a dark mode and light mode version that you can toggle.
 (Light mode) landing page:
 ![Screenshot (14)](https://github.com/Nkatha004/student-management-system/assets/69391540/7c293758-eec5-4741-be2b-874e3c169926)
