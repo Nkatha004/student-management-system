@@ -66,3 +66,20 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 # student-management-system
+The landing page has a dark mode and light mode version that you can toggle.
+(Light mode) landing page:
+![Screenshot (14)](https://github.com/Nkatha004/student-management-system/assets/69391540/7c293758-eec5-4741-be2b-874e3c169926)
+
+(Dark mode) landing page:
+![Screenshot (15)](https://github.com/Nkatha004/student-management-system/assets/69391540/057c0d42-c7d2-4d52-8c95-37b0002fc107)
+
+The login page:
+![Screenshot (16)](https://github.com/Nkatha004/student-management-system/assets/69391540/71d31350-66c9-424a-8edc-0c9ecf05c56e)
+
+Based on the login credentials, one is redirected to a dashboard based on their role, a principal, teacher, class teacher or the system admin.
+
+Principal's dashboard is shown below, the side navigation bar shows the different functionalities a principal has!
+![Screenshot (17)](https://github.com/Nkatha004/student-management-system/assets/69391540/bc8fbb8f-3fc6-42bb-b306-762ab72651b6)
+
+Class views:
+![Screenshot (96)](https://github.com/Nkatha004/student-management-system/assets/69391540/7bd78626-4e70-4102-9992-f259bfcd4e50)
